@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ParkMeApp</string>
+    <string name="SingUp_button">Sign Up</string>
+    <string name="email_input">Email</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="save_credentials">Remember Me</string>
+
 </resources>
