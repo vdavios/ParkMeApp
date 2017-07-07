@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -109,7 +108,7 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     public void onLocationChanged(Location location) {
         mUsersLocation = location;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 
     }
 
