@@ -75,7 +75,7 @@
             android:textColor="@color/white"
             android:fontFamily="sans-serif"/>
 
-
+        <!-- NewUser Button -->
         <Button
             android:id="@+id/SingUpButton"
             android:layout_width="match_parent"
