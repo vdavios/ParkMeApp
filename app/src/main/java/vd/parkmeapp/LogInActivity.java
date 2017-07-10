@@ -34,6 +34,7 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
+
     private void parkMeAppMainAct(View v) {
         Intent intent = new Intent(this, ParkMeAppMainActivity.class);
         startActivity(intent);
