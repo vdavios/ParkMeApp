@@ -110,7 +110,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
 
     }
 
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         LocationRequest  mLocationRequest = new LocationRequest();
