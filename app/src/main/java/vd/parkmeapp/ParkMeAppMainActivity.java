@@ -20,10 +20,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 
 public class ParkMeAppMainActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -31,12 +29,10 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         LocationListener {
 
     private GoogleMap mMap;
-    private static final int CODE = 1 ;
-    private LocationRequest mLocationRequest;
+    private static final int CODE = 1;
     private GoogleApiClient mGoogleApiClient;
-    private Location mUsersLocation;
-    private Marker mMarker;
-    private UiSettings mUiSettings;
+
+
 
 
 
@@ -48,6 +44,9 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        if(!doWeHaveAccessToUsersLocation()){
+            accessUsersLocation();
+        }
 
     }
 
@@ -61,15 +60,14 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 == PackageManager.PERMISSION_GRANTED)) {
             accessUsersLocation();
         } else {
-            mMap.setMyLocationEnabled(true);
             buildGoogleApiClient();
-            //mUiSettings.setScrollGesturesEnabled(true);
-
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setRotateGesturesEnabled(false);
+            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         }
 
-
-
     }
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -77,6 +75,7 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
         mGoogleApiClient.connect();
     }
 
@@ -106,16 +105,15 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
 
     @Override
     public void onLocationChanged(Location location) {
-        mUsersLocation = location;
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+        LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
 
     }
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mLocationRequest = new LocationRequest();
+        LocationRequest  mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
