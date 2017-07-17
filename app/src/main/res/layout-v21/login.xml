@@ -56,10 +56,11 @@
             android:layout_height="wrap_content"
             android:theme="@style/Theme.TextInputLayOut">
             <EditText
+                android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password_hint"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/mainColor"
                 android:fontFamily="sans-serif"/>

@@ -13,5 +13,8 @@
     <string name="google_maps_key">AIzaSyChvEEyCE0VI4wdj4phb2EaD5dQKqOHfz8</string>
     <string name="access_location">We need access to your location to find a parking space for you!</string>
     <string name="ParkMeApp">ParkMeApp</string>
+    <string name="invalidEmail">Please enter a valid email address</string>
+    <string name="passwordSize">Your password must be at least 6\n characters long and contain at least 1 uppercase
+        and 1 number</string>
 
 </resources>

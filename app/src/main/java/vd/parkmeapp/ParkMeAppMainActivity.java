@@ -26,14 +26,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class ParkMeAppMainActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, GoogleMap.OnCameraMoveListener {
+        LocationListener, GoogleMap.OnCameraMoveStartedListener {
 
     private GoogleMap mMap;
     private static final int CODE = 1;
     private GoogleApiClient mGoogleApiClient;
-
-
-
 
 
     @Override
@@ -47,7 +44,21 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
 
     }
 
+    @Override
+    protected void onPause(){
+        cancelLocationRequest();
+        super.onPause();
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(!doWeHaveAccess()){
+            accessUsersLocation();
+        }
+        customLocationRequest();
+
+    }
 
 
     @Override
@@ -62,14 +73,12 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
             setUpMap();
         }
 
-
-
     }
 
     private void setUpMap(){
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mMap.setOnCameraMoveListener(this);
+        mMap.setOnCameraMoveStartedListener(this);
     }
 
 
@@ -86,6 +95,11 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     private void accessUsersLocation(){
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
+    }
+
+    private boolean doWeHaveAccess(){
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -146,10 +160,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
     }
 
-    private boolean doWeHaveAccessToUsersLocation(){
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) ;
-    }
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -162,8 +172,11 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     }
 
     @Override
-    public void onCameraMove() {
-        cancelLocationRequest();
+    public void onCameraMoveStarted(int i) {
+        if(i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+            cancelLocationRequest();
+        }
+
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -171,5 +184,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 return true;
             }
         });
+
     }
 }
