@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class ParkMeAppMainActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnCameraMoveListener {
 
     private GoogleMap mMap;
     private static final int CODE = 1;
@@ -44,9 +44,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        if(!doWeHaveAccessToUsersLocation()){
-            accessUsersLocation();
-        }
 
     }
 
@@ -60,12 +57,19 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 == PackageManager.PERMISSION_GRANTED)) {
             accessUsersLocation();
         } else {
-            buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setRotateGesturesEnabled(false);
-            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            buildGoogleApiClient();
+            setUpMap();
         }
 
+
+
+    }
+
+    private void setUpMap(){
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        mMap.setOnCameraMoveListener(this);
     }
 
 
@@ -84,11 +88,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
     }
 
-    private boolean doWeHaveAccessToUsersLocation(){
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) ;
-    }
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
@@ -100,11 +99,22 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 Toast.makeText(this, R.string.access_location, Toast.LENGTH_LONG)
                         .show();
             }
+        } else {
+            if((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)){
+                if(mGoogleApiClient == null) {
+                    buildGoogleApiClient();
+                }
+                mMap.setMyLocationEnabled(true);
+                setUpMap();
+            }
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Toast.makeText(getApplicationContext(), "Gia na doume", Toast.LENGTH_SHORT)
+                .show();
         LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
 
@@ -112,6 +122,13 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
+        customLocationRequest();
+
+    }
+
+
+    private void customLocationRequest(){
         LocationRequest  mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
@@ -121,9 +138,16 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi
                     .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
         }
+    }
 
+    private void cancelLocationRequest(){
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+    }
+
+    private boolean doWeHaveAccessToUsersLocation(){
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) ;
     }
 
     @Override
@@ -134,5 +158,17 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onCameraMove() {
+        cancelLocationRequest();
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                customLocationRequest();
+                return true;
+            }
+        });
     }
 }

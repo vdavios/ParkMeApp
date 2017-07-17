@@ -43,12 +43,6 @@
             android:name=".ParkMeAppMainActivity"
             android:label="@string/title_activity_park_me_app_main">
         </activity>
-        <activity android:name=".test">
-        </activity>
-        <activity android:name=".TryingMapsActivity">
-        </activity>
-        <activity android:name=".LocationActivity">
-        </activity>
     </application>
 
 </manifest>
