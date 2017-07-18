@@ -26,8 +26,9 @@ public class EmailAndPasswordTest {
                 "validEmail_@yahoo.com", "valid-123-email@gmail.com", "valid+email@gmail.com"
         };
 
-        validPasswords = new String[]{"123V123v", "Vasilis7", "vasiL7", "ParkMeApp15", "ValidPass0rd"};
-        invalidPasswords = new String[]{"1", "vasilis7", "vasiliS", "VASILIS", "V1v"};
+        validPasswords = new String[]{"123V123v", "Vasilis7", "vasiL7", "ParkMeApp15", "ValidPass0rd",
+                "@vasI7", "@%#Ss7"};
+        invalidPasswords = new String[]{"1", "vasilis7", "vasiliS", "VASILIS", "V1v", "@asS7"};
     }
 
     @Test
