@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class EmailAndPasswordTest {
-    private EmailAndPasswordValidator validator;
+    private Validator validator;
     private String[] invalidEmails;
     private String[] validEmails;
     private String[] validPasswords;
@@ -15,7 +15,7 @@ public class EmailAndPasswordTest {
 
     @Before
     public void beforeTest(){
-        validator = new EmailAndPasswordValidator();
+        validator = new Validator();
         invalidEmails = new String[]{"InvalidEmail", ".Invalid@gmail.com", "InvalidEmail@.gmail.com"
         ,"InvalidEmail@gmail.c", "invalidEmail()@gmail.com", "InvalidEmail@#*.com",
                 "Invalid..Email@gmail.com", "InvalidEmail.@gmail.com",
@@ -35,7 +35,7 @@ public class EmailAndPasswordTest {
     @Test
     public void validEmailTest(){
         for(String email : validEmails){
-            boolean isValid = validator.emailValidator(email);
+            boolean isValid = validator.validateEmail(email);
             System.out.println("Email("+email+")" + " is valid : " + isValid);
             Assert.assertEquals(isValid, true);
 
@@ -45,7 +45,7 @@ public class EmailAndPasswordTest {
     @Test
     public void invalidEmailTest(){
         for(String email : invalidEmails){
-            boolean isNotValid = validator.emailValidator(email);
+            boolean isNotValid = validator.validateEmail(email);
             System.out.println("Email("+email +")"+ " is valid : "+ isNotValid);
             Assert.assertEquals(isNotValid, false);
         }
@@ -54,7 +54,7 @@ public class EmailAndPasswordTest {
     @Test
     public void validPasswordTest(){
         for(String password: validPasswords){
-            boolean isValid = validator.passwordValidator(password);
+            boolean isValid = validator.validatePassword(password);
             System.out.println("Password("+password+") is valid :"+ isValid);
             Assert.assertEquals(isValid, true);
         }
@@ -63,7 +63,7 @@ public class EmailAndPasswordTest {
     @Test
     public void setInvalidPasswords(){
         for(String password: invalidPasswords){
-            boolean isNotValid = validator.passwordValidator(password);
+            boolean isNotValid = validator.validatePassword(password);
             System.out.println("Password("+password+") is valid :"+ isNotValid);
             Assert.assertEquals(isNotValid,false);
         }

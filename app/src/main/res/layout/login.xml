@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/white">
 
     <!-- Welcome msg-->
     <LinearLayout
@@ -20,7 +20,7 @@
             android:paddingTop="50dp"
             android:textSize="@dimen/large"
             android:text="@string/welcome"
-            android:textColor="@color/mainColor"/>
+            android:textColor="@color/mainColor" />
 
     </LinearLayout>
 
@@ -47,6 +47,7 @@
                 android:layout_height="45dp"
                 android:hint="@string/email_hint"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/mainColor"
                 android:fontFamily="sans-serif"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -59,9 +60,8 @@
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password_hint"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/mainColor"
                 android:fontFamily="sans-serif"/>
         </android.support.design.widget.TextInputLayout>
@@ -88,6 +88,7 @@
 
         <!-- CheckBox -->
         <CheckBox
+            android:id="@+id/LoginCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save_credentials"

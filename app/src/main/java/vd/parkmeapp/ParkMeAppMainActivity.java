@@ -50,7 +50,7 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         super.onPause();
     }
 
-    @Override
+   /* @Override
     protected void onResume(){
         super.onResume();
         if(!doWeHaveAccess()){
@@ -58,7 +58,7 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
         }
         customLocationRequest();
 
-    }
+    }*/
 
 
     @Override

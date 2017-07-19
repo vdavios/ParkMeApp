@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/white">
 
     <!-- Welcome msg-->
     <LinearLayout
@@ -47,7 +47,8 @@
                 android:layout_height="45dp"
                 android:hint="@string/email_hint"
                 android:inputType="textEmailAddress"
-                android:fontFamily="sans-serif"/>
+                android:fontFamily="sans-serif"
+                android:textColor="@color/mainColor"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password -->
@@ -59,9 +60,8 @@
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password_hint"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="@color/mainColor"
                 android:fontFamily="sans-serif"/>
         </android.support.design.widget.TextInputLayout>
@@ -76,7 +76,7 @@
             android:textColor="@color/white"
             android:fontFamily="sans-serif"/>
 
-        <!-- NewUser Button -->
+
         <Button
             android:id="@+id/SingUpButton"
             android:layout_width="match_parent"

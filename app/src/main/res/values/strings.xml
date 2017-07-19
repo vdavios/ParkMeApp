@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ParkMeApp</string>
     <string name="LogIn">LOGIN</string>
+    <string name="SignUp">Sing Up</string>
     <string name="email_hint">name@example.com</string>
     <string name="password_hint">At least 5 characters</string>
     <string name="password">Password</string>
@@ -14,7 +15,11 @@
     <string name="access_location">We need access to your location to find a parking space for you!</string>
     <string name="ParkMeApp">ParkMeApp</string>
     <string name="invalidEmail">Please enter a valid email address</string>
-    <string name="passwordSize">Your password must be at least 6\n characters long and contain at least 1 uppercase
+    <string name="passwordInstructions">Your password must be at least 6\n characters long and contain at least 1 uppercase
         and 1 number</string>
-
+    <string name="firstName">First Name</string>
+    <string name="singUp">Sign Up</string>
+    <string name="lastName">Last Name</string>
+    <string name="creditCard">Credit card Number</string>
+    <string name="CVV">CVV</string>
 </resources>
