@@ -141,7 +141,7 @@
         android:layout_height="wrap_content"
         android:text="@string/save_credentials"
         android:layout_below="@+id/SignUp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="13dp"
         android:buttonTint="@color/mainColor"
         android:checked="true"
         android:textColor="@color/mainColor"

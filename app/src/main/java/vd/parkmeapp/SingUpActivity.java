@@ -12,6 +12,10 @@ public class SingUpActivity extends AppCompatActivity {
 
     private EditText emailText;
     private EditText passwordText;
+    private EditText creditCardNumberText;
+    private EditText cvvText;
+    private EditText firstNameText;
+    private EditText lastNameText;
     private Validator validator;
 
     @Override
@@ -20,6 +24,10 @@ public class SingUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sing_up);
         emailText = (EditText)(findViewById(R.id.SingUpEmail));
         passwordText = (EditText)(findViewById(R.id.SignUpPassword));
+        creditCardNumberText = (EditText) (findViewById(R.id.creditCard_input));
+        cvvText = (EditText) (findViewById(R.id.CVV));
+        firstNameText = (EditText) (findViewById(R.id.FirstName));
+        lastNameText = (EditText) (findViewById(R.id.LastName));
         validator = new Validator();
 
         Button singUpButton = (Button)(findViewById(R.id.SignUp));
@@ -28,6 +36,10 @@ public class SingUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailText.getText().toString().trim();
                 String password = passwordText.getText().toString().trim();
+                String creditCardNumber = creditCardNumberText.getText().toString().trim();
+                String cvvNumber =  cvvText.getText().toString().trim();
+                String firstName = firstNameText.getText().toString().trim();
+                String lastName = lastNameText.getText().toString().trim();
                 if(!validator.validateEmail(email)) {
                     Toast.makeText(getApplicationContext(), R.string.invalidEmail,
                             Toast.LENGTH_SHORT)
@@ -36,7 +48,26 @@ public class SingUpActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.passwordInstructions,
                             Toast.LENGTH_SHORT)
                             .show();
-                } else {
+                } else if(!validator.validateCreditCardNumber(creditCardNumber)) {
+                    Toast.makeText(getApplicationContext(), R.string.invalidCreditCard,
+                            Toast.LENGTH_SHORT )
+                            .show();
+                } else if(!validator.validateCVV(cvvNumber)){
+                    Toast.makeText(getApplicationContext(), R.string.invalidCVV,
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                } else if(!validator.validateName(firstName)){
+                    Toast.makeText(getApplicationContext(), R.string.invalidFirstName,
+                            Toast.LENGTH_SHORT )
+                            .show();
+
+                } else if(!validator.validateName(lastName)){
+                    Toast.makeText(getApplicationContext(), R.string.invalidLastName,
+                            Toast.LENGTH_SHORT )
+                            .show();
+
+                }else {
                     parkMeAppMainActivity(v);
                 }
 

@@ -21,5 +21,9 @@
     <string name="singUp">Sign Up</string>
     <string name="lastName">Last Name</string>
     <string name="creditCard">Credit card Number</string>
+    <string name="invalidCreditCard">Invalid credit card number</string>
+    <string name="invalidCVV">Invalid CVV number</string>
+    <string name="invalidFirstName"> Invalid First Name</string>
+    <string name="invalidLastName"> Invalid Last Name</string>
     <string name="CVV">CVV</string>
 </resources>
