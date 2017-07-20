@@ -25,7 +25,8 @@ public class ValidationTest {
         ,"..InvalidEmail@gmail.com"};
         validEmails= new String[]{"validEmail@gmail.com", "valid_Email@gmail.com",
                 "ValidEmail@gmail.com.uk", "valid-email@gmail.com", "valid123Email@gmail.com",
-                "validEmail_@yahoo.com", "valid-123-email@gmail.com", "valid+email@gmail.com"
+                "validEmail_@yahoo.com", "valid-123-email@gmail.com", "valid+email@gmail.com",
+                "v@g.com"
         };
 
         validPasswords = new String[]{"123V123v", "Vasilis7", "vasiL7", "ParkMeApp15",

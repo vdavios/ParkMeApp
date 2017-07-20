@@ -43,7 +43,7 @@
             android:name=".ParkMeAppMainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_park_me_app_main" />
-        <activity android:name=".SingUpActivity"
+        <activity android:name=".SignUpActivity"
             android:screenOrientation="portrait">
 
         </activity>

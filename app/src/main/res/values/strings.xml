@@ -26,4 +26,5 @@
     <string name="invalidFirstName"> Invalid First Name</string>
     <string name="invalidLastName"> Invalid Last Name</string>
     <string name="CVV">CVV</string>
+    <string name="authenticationFailed">"Please check your user name and your password"</string>
 </resources>

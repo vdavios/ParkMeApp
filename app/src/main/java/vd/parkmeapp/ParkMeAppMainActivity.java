@@ -1,6 +1,7 @@
 package vd.parkmeapp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ParkMeAppMainActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -33,6 +37,8 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     private GoogleApiClient mGoogleApiClient;
 
 
+    // TODO: 7/20/17 cancel location request when on pause, resume onResume
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +48,13 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
     }
 
     @Override
-    protected void onPause(){
-        cancelLocationRequest();
-        super.onPause();
+    public void onBackPressed(){
+        //Main page of the app
+        //If the user is logged in that's the starting page
     }
 
    /* @Override
@@ -95,11 +102,6 @@ public class ParkMeAppMainActivity extends FragmentActivity implements OnMapRead
     private void accessUsersLocation(){
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
-    }
-
-    private boolean doWeHaveAccess(){
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

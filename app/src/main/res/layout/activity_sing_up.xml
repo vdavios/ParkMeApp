@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="vd.parkmeapp.SingUpActivity">
+    tools:context="vd.parkmeapp.SignUpActivity">
 
     <!-- Sign Up -->
 
@@ -135,17 +135,6 @@
         android:layout_marginTop="15dp"
         android:background="@color/mainColor"/>
 
-    <CheckBox
-        android:id="@+id/SingUpCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save_credentials"
-        android:layout_below="@+id/SignUp"
-        android:layout_marginLeft="13dp"
-        android:buttonTint="@color/mainColor"
-        android:checked="true"
-        android:textColor="@color/mainColor"
-        android:fontFamily="sans-serif"/>
 
 
 

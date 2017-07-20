@@ -86,15 +86,7 @@
             android:textColor="@color/mainColor"
             android:textAllCaps="false"/>
 
-        <!-- CheckBox -->
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save_credentials"
-            android:buttonTint="@color/mainColor"
-            android:checked="true"
-            android:textColor="@color/mainColor"
-            android:fontFamily="sans-serif"/>
+
 
     </LinearLayout>
 
