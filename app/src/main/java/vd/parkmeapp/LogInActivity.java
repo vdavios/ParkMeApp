@@ -1,6 +1,7 @@
 package vd.parkmeapp;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,9 +26,12 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        //if the user is already logged in and authenticated from a previous session
+        //then he jumps  to ParkMeAppActivity
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null) {
-            parkMeAppMainActivity();
+            parkMeAppActivity();
         }
 
         setContentView(R.layout.login);
@@ -38,7 +42,9 @@ public class LogInActivity extends AppCompatActivity {
         logInButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                userAuthentication();
+
+                    userSignIn();
+
             }
         });
 
@@ -54,18 +60,18 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    private void userAuthentication(){
+    private void userSignIn(){
 
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(getApplicationContext(), "Please enter your email", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.emptyEmailAddress, Toast.LENGTH_SHORT)
                     .show();
             return;
         }
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(getApplicationContext(), "Please enter your password",
+            Toast.makeText(getApplicationContext(), R.string.emptyPassword,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -75,24 +81,26 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
+
                             Toast.makeText(getApplicationContext(),
                                     R.string.authenticationFailed, Toast.LENGTH_SHORT)
                                     .show();
                         } else {
-                            parkMeAppMainActivity();
+                            parkMeAppActivity();
                         }
                     }
                 });
 
     }
 
+
     @Override
     public void onBackPressed(){
         //Sign in page do nothing
     }
 
-    private void parkMeAppMainActivity() {
-        Intent intent = new Intent(getApplicationContext(), ParkMeAppMainActivity.class);
+    private void parkMeAppActivity() {
+        Intent intent = new Intent(getApplicationContext(), ParkMeAppActivity.class);
         startActivity(intent);
     }
 

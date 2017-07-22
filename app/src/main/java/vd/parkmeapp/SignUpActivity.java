@@ -13,6 +13,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -24,6 +27,11 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText lastNameText;
     private Validator validator;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mReference;
+    private UserInformation mUserInformation;
+    private String email, password, creditCardNumber, cvvNumber, firstName, lastName, userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,99 +43,76 @@ public class SignUpActivity extends AppCompatActivity {
         cvvText = (EditText) (findViewById(R.id.CVV));
         firstNameText = (EditText) (findViewById(R.id.FirstName));
         lastNameText = (EditText) (findViewById(R.id.LastName));
-        validator = new Validator();
+        validator = new Validator(SignUpActivity.this);
         mAuth = FirebaseAuth.getInstance();
-
 
         Button singUpButton = (Button)(findViewById(R.id.SignUp));
         singUpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                //Convert text to string
+                email = emailText.getText().toString().trim();
+                password = passwordText.getText().toString().trim();
+                creditCardNumber = creditCardNumberText.getText().toString().trim();
+                cvvNumber =  cvvText.getText().toString().trim();
+                firstName = firstNameText.getText().toString().trim();
+                lastName = lastNameText.getText().toString().trim();
+                mUserInformation =
+                        new UserInformation(firstName, lastName, creditCardNumber, cvvNumber);
+
                 if(!validateForm()){
                     return;
                 }
                 registerUser();
-                //parkMeAppMainActivity();
+
 
             }
         });
     }
 
 
-    private void parkMeAppMainActivity(){
-        Intent intent = new Intent(this, ParkMeAppMainActivity.class);
+    private void parkMeAppActivity(){
+        Intent intent = new Intent(this, ParkMeAppActivity.class);
         startActivity(intent);
     }
 
     private boolean validateForm() {
-        boolean valid = true;
+
+
         String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
-        String creditCardNumber = creditCardNumberText.getText().toString().trim();
-        String cvvNumber =  cvvText.getText().toString().trim();
-        String firstName = firstNameText.getText().toString().trim();
-        String lastName = lastNameText.getText().toString().trim();
-
-        if (!validator.validateEmail(email)) {
-            Toast.makeText(getApplicationContext(), R.string.invalidEmail,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        } else if (!validator.validatePassword(password)) {
-            Toast.makeText(getApplicationContext(), R.string.passwordInstructions,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        } else if (!validator.validateCreditCardNumber(creditCardNumber)) {
-            Toast.makeText(getApplicationContext(), R.string.invalidCreditCard,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        } else if (!validator.validateCVV(cvvNumber)) {
-            Toast.makeText(getApplicationContext(), R.string.invalidCVV,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        } else if (!validator.validateName(firstName)) {
-            Toast.makeText(getApplicationContext(), R.string.invalidFirstName,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        } else if (!validator.validateName(lastName)) {
-            Toast.makeText(getApplicationContext(), R.string.invalidLastName,
-                    Toast.LENGTH_SHORT)
-                    .show();
-            valid = false;
-        }
-
-        return valid;
+        return validator.validateEmail(email) && validator.validatePassword(password) &&
+                validator.validateCreditCardNumber(creditCardNumber) &&
+                validator.validateCVV(cvvNumber) && validator.validateName(firstName)
+                && validator.validateName(lastName);
     }
 
-    private void createAccount(String email, String password){
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email, password);
-
-
-    }
 
     private void registerUser(){
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this, "Authentication failed." ,
+                            Toast.makeText(SignUpActivity.this, R.string.signUpFailed,
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            parkMeAppMainActivity();
-                            Toast.makeText(SignUpActivity.this, "Success!!",
+
+                            mFirebaseDatabase = FirebaseDatabase.getInstance();
+                            mReference = mFirebaseDatabase.getReference();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            userId = user.getUid();
+                            mReference.child("Users").child(userId).setValue(mUserInformation);
+                            parkMeAppActivity();
+                            Toast.makeText(SignUpActivity.this, R.string.welcomeMessage,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
+
+
+
 
 }

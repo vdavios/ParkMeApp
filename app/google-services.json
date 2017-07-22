@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "213365542403-k8vv05qe6vrsh0v3md4acj2r63d9ftde.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vd.parkmeapp",
+            "certificate_hash": "a453daf1fae5b7b595ee0455916f5c4ed9895c71"
+          }
+        },
+        {
           "client_id": "213365542403-pc685cm0obvs2h29i4rdn57rc28al8rh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

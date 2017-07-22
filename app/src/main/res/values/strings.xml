@@ -23,8 +23,18 @@
     <string name="creditCard">Credit card Number</string>
     <string name="invalidCreditCard">Invalid credit card number</string>
     <string name="invalidCVV">Invalid CVV number</string>
-    <string name="invalidFirstName"> Invalid First Name</string>
-    <string name="invalidLastName"> Invalid Last Name</string>
+    <string name="invalidName"> Invalid Name </string>
     <string name="CVV">CVV</string>
-    <string name="authenticationFailed">"Please check your user name and your password"</string>
+    <string name="welcomeMessage">Welcome to ParkMeApp</string>
+    <string name="emptyEmailAddress">Please enter your email address</string>
+    <string name="emptyPassword">Please enter your password</string>
+    <string name="authenticationFailed">Authentication failed</string>
+    <string name="signUpFailed">Sign Up Failed</string>
+    <string name="Payment">Payment</string>
+    <string name="History">History</string>
+    <string name="Settings">Settings</string>
+    <string name="Help">Help</string>
+    <string name="SignOut">Sign Out</string>
+    <string name="ParkingOwner">Parking Owner </string>
+    <string name="title_activity_park_me_app"> </string>
 </resources>
