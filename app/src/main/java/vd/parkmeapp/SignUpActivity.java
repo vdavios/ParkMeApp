@@ -29,7 +29,6 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mReference;
-    private UserInformation mUserInformation;
     private String email, password, creditCardNumber, cvvNumber, firstName, lastName, userId;
 
 
@@ -63,8 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 //Creating object for user Information after checking that the user input
                 //is valid
-                mUserInformation =
-                        new UserInformation(firstName, lastName, creditCardNumber, cvvNumber);
+
                 registerUser();
 
 
@@ -105,6 +103,11 @@ public class SignUpActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(user != null){
                                 userId = user.getUid();
+                                //Creating UserInformation object inside the scope
+                                // of OnCompleteListener to avoid security problems
+                                UserInformation mUserInformation =
+                                        new UserInformation(firstName,
+                                                lastName, creditCardNumber, cvvNumber);
                                 mReference.child("Users").child(userId).setValue(mUserInformation);
                             }
 
