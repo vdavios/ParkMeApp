@@ -58,12 +58,13 @@ public class SignUpActivity extends AppCompatActivity {
                 cvvNumber =  cvvText.getText().toString().trim();
                 firstName = firstNameText.getText().toString().trim();
                 lastName = lastNameText.getText().toString().trim();
-                mUserInformation =
-                        new UserInformation(firstName, lastName, creditCardNumber, cvvNumber);
-
                 if(!validateForm()){
                     return;
                 }
+                //Creating object for user Information after we checking that the user input
+                //is valid
+                mUserInformation =
+                        new UserInformation(firstName, lastName, creditCardNumber, cvvNumber);
                 registerUser();
 
 
