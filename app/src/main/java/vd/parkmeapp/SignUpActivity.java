@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(!validateForm()){
                     return;
                 }
-                //Creating object for user Information after we checking that the user input
+                //Creating object for user Information after checking that the user input
                 //is valid
                 mUserInformation =
                         new UserInformation(firstName, lastName, creditCardNumber, cvvNumber);
