@@ -103,8 +103,11 @@ public class SignUpActivity extends AppCompatActivity {
                             mFirebaseDatabase = FirebaseDatabase.getInstance();
                             mReference = mFirebaseDatabase.getReference();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userId = user.getUid();
-                            mReference.child("Users").child(userId).setValue(mUserInformation);
+                            if(user != null){
+                                userId = user.getUid();
+                                mReference.child("Users").child(userId).setValue(mUserInformation);
+                            }
+
                             parkMeAppActivity();
                             Toast.makeText(SignUpActivity.this, R.string.welcomeMessage,
                                     Toast.LENGTH_SHORT).show();
