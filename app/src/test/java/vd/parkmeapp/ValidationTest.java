@@ -2,13 +2,14 @@ package vd.parkmeapp;
 
 
 import android.test.mock.MockContext;
-import android.widget.Toast;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
+
+import vd.parkmeapp.Models.Validator;
+import vd.parkmeapp.Models.ValidatorImpl;
 
 public class ValidationTest  {
     private Validator validator;
@@ -21,7 +22,7 @@ public class ValidationTest  {
 
     @Before
     public void beforeTest(){
-        validator = new Validator(new MockContext());
+        validator = new ValidatorImpl();
         invalidEmails = new String[]{"InvalidEmail", ".Invalid@gmail.com", "InvalidEmail@.gmail.com"
         ,"InvalidEmail@gmail.c", "invalidEmail()@gmail.com", "InvalidEmail@#*.com",
                 "Invalid..Email@gmail.com", "InvalidEmail.@gmail.com",
@@ -52,14 +53,14 @@ public class ValidationTest  {
         }
     }
 
-  /*  @Test
+    @Test
     public void invalidEmailTest(){
         for(String email : invalidEmails){
             boolean isNotValid = validator.validateEmail(email);
             System.out.println("Email("+email +")"+ " is valid : "+ isNotValid);
             Assert.assertEquals(isNotValid, false);
         }
-    }*/
+    }
 
     @Test
     public void validPasswordTest(){
@@ -71,14 +72,14 @@ public class ValidationTest  {
         }
     }
 
-  /*  @Test
+    @Test
     public void invalidPasswords(){
         for(String password: invalidPasswords){
             boolean isNotValid = validator.validatePassword(password);
             System.out.println("Password("+password+") is valid :"+ isNotValid);
             Assert.assertEquals(isNotValid,false);
         }
-    }*/
+    }
 
     @Test
     public void validNames(){
@@ -89,14 +90,14 @@ public class ValidationTest  {
         }
     }
 
-  /*  @Test
+    @Test
     public void invalidNames(){
         for(String name: invalidNames){
             boolean isNotValid = validator.validateName(name);
             System.out.println("Name("+name+") is valid :"+ isNotValid);
             Assert.assertEquals(isNotValid, false);
         }
-    }*/
+    }
 
     @After
     public void afterTest(){

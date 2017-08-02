@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="vd.parkmeapp.Views.EditUserInfoActivity">
+        <TextView
+            android:id="@+id/Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            android:paddingLeft="20dp"/>
+
+
+        <EditText
+            android:id="@+id/value_Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:inputType="textPersonName"
+            android:layout_below="@+id/Label"
+            android:paddingLeft="20dp"
+            android:maxLines="1"
+            android:textColor="@color/mainColor"
+            android:textSize="18sp"
+            android:theme="@style/Theme.TextInputLayOut"/>
+
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/value_Input"
+            android:background="@color/mainColor"
+            android:text="@string/SaveButton"
+            android:textColor="@color/white" />
+
+
+</RelativeLayout>

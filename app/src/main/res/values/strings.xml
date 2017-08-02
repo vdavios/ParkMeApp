@@ -30,6 +30,7 @@
     <string name="emptyPassword">Please enter your password</string>
     <string name="authenticationFailed">Authentication failed</string>
     <string name="signUpFailed">Sign Up Failed</string>
+    <string name="name">Name</string>
     <string name="Payment">Payment</string>
     <string name="History">History</string>
     <string name="Settings">Settings</string>
@@ -37,4 +38,11 @@
     <string name="SignOut">Sign Out</string>
     <string name="ParkingOwner">Parking Owner </string>
     <string name="title_activity_park_me_app"> </string>
+    <string name="UserProfile">User Profile</string>
+    <string name="EditProfile">Edit Profile</string>
+    <string name="SaveButton">Save</string>
+    <string name="NoChanges">You didn\'t make any changes</string>
+    <string name="PaymentMethods">Payment Methods</string>
+
+
 </resources>

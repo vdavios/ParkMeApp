@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="vd.parkmeapp.Views.UserProfileActivity">
+
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/editProfile_header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textColor="@color/white"
+        android:text="@string/EditProfile"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="@color/mainColor"
+        android:fontFamily="sans-serif" />
+
+
+    <!-- First Name Label -->
+    <TextView
+        android:id="@+id/firstNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editProfile_header"
+        android:text="@string/firstName"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+    <!-- First Name -->
+    <TextView
+        android:id="@+id/firstNameEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/mainColor"
+        android:layout_below="@+id/firstNameLabel"
+        android:textSize="18sp"
+        android:paddingLeft="20dp"/>
+
+
+    <!-- Last Name Label -->
+    <TextView
+        android:id="@+id/lastNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lastName"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/firstNameEditProfile"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+
+    <!-- Last Name -->
+    <TextView
+        android:id="@+id/lastNameEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/mainColor"
+        android:layout_below="@+id/lastNameLabel"
+        android:textSize="18sp"
+        android:paddingLeft="20dp"/>
+
+
+    <!-- Email Label -->
+    <TextView
+        android:id="@+id/emailLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/lastNameEditProfile"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/emailEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailLabel"
+        android:textColor="@color/mainColor"
+        android:textSize="18sp"
+        android:paddingLeft="20dp"/>
+
+    <!-- Password Label -->
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/emailEditProfile"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+
+    <!-- Password  -->
+    <TextView
+        android:id="@+id/passwordEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/mainColor"
+        android:inputType="textPassword"
+        android:layout_below="@+id/passwordLabel"
+        android:textSize="18sp"
+        android:paddingLeft="20dp"/>
+
+
+
+
+</RelativeLayout>
