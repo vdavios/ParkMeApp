@@ -43,7 +43,6 @@ public class ParkMeAppActivity extends AppCompatActivity
     private static final int CODE = 1;
     private User tenant;
     private ParkMeAppPresenter mPresenter;
-    private static final String TAG ="Location Button";
 
 
 
@@ -55,25 +54,16 @@ public class ParkMeAppActivity extends AppCompatActivity
 
         // Creating ParkMeApp presenter
         mPresenter = new ParkMeAppPresenter(this, getApplicationContext());
-        tenant  = mPresenter.getUser();
+
+
+        tenant  = mPresenter.getUser((User) getIntent().getParcelableExtra("User"));
+
         //request permission for location (must be done inside an activity or a fragment)
         accessUsersLocation();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-        Button parkMeAppButton = (Button) (findViewById(R.id.parkMeAppResultsButton));
-        parkMeAppButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(ParkMeAppActivity.this,
-                        FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
 
@@ -154,8 +144,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         if (id == R.id.nav_history) {
             // History
         } else if (id == R.id.nav_settings) {
-            Toast.makeText(getApplicationContext(), " In settings", Toast.LENGTH_SHORT)
-                    .show();
+            showMessage("in settings");
 
             mPresenter.pauseRequests();
             Intent intent = new Intent(ParkMeAppActivity.this, SettingsActivity.class);
@@ -168,8 +157,10 @@ public class ParkMeAppActivity extends AppCompatActivity
         } else if (id == R.id.nav_signOut) {
             //Cancel Location Requests
             mPresenter.pauseRequests();
+
             //Sign Out user
-            FirebaseAuth.getInstance().signOut();
+            mPresenter.signOut();
+
             // move to sign in activity
             startActivity(new Intent(ParkMeAppActivity.this, LogInActivity.class));
         } else if (id == R.id.nav_help) {

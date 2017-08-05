@@ -92,7 +92,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void onLocationChanged(Location location) {
-        presenter.passMessage("edw");
+        //presenter.passMessage("edw");
         LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         ((ParkMeAppPresenter)presenter).setUserLocation(mLatLng);
 

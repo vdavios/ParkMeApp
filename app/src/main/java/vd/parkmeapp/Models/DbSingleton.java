@@ -2,7 +2,6 @@ package vd.parkmeapp.Models;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import vd.parkmeapp.Presenters.LoginPresenter;
 import vd.parkmeapp.Presenters.Presenter;
 import vd.parkmeapp.Presenters.SignUpPresenter;
-import vd.parkmeapp.R;
+
 
 import static android.content.ContentValues.TAG;
 
@@ -33,6 +32,8 @@ public class DbSingleton {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mReference;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser mUser;
+    private String userID;
 
 
     private static final DbSingleton ourInstance = new DbSingleton();
@@ -45,6 +46,8 @@ public class DbSingleton {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mReference = mFirebaseDatabase.getReference();
+        mUser = mAuth.getCurrentUser();
+        userID = mUser.getUid();
     }
 
 
@@ -184,6 +187,35 @@ public class DbSingleton {
         }
     }
 
+    private void setValue(String userId, String field, String value) {
+        mReference.child("Users").child(userId).child(field).setValue(value);
+    }
 
 
+    public void signOut() {
+        mAuth.signOut();
+    }
+
+    public void setFirstName(String firstName) {
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null) {
+           String userId = mUser.getUid();
+            setValue(userId, "firstName", firstName);
+        }
+    }
+
+    public void setLastName(String lastName) {
+
+        setValue(userID, "lastName", lastName);
+
+    }
+
+
+    public void setEmail (String email) {
+        setValue(userID, "email", email);
+    }
+
+    public void setPassword (String password) {
+        setValue(userID, "password", password);
+    }
 }

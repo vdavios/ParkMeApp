@@ -40,7 +40,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(this, ParkMeAppActivity.class));
+        Intent intent = new Intent(this, ParkMeAppActivity.class);
+        intent.putExtra("User", myTenant);
+        startActivity(intent);
     }
 
 

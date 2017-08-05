@@ -46,15 +46,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onBackPressed(){
+        Intent intent = new Intent(UserProfileActivity.this, SettingsActivity.class);
+        intent.putExtra("User", myTenant);
+        startActivity(intent);
 
-        if(myTenant == null) {
-            Intent intent = new Intent(UserProfileActivity.this, ParkMeAppActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(UserProfileActivity.this, SettingsActivity.class);
-            intent.putExtra("User", myTenant);
-            startActivity(intent);
-        }
 
     }
 

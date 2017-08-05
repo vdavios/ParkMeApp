@@ -71,6 +71,6 @@ public class ValidatorImpl implements Validator {
 
     @Override
     public boolean sameValues(String newValue, String oldValue) {
-        return !newValue.equals(oldValue);
+        return newValue.equals(oldValue);
     }
 }

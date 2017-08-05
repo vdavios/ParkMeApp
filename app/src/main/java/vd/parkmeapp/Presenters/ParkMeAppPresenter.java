@@ -17,12 +17,11 @@ public class ParkMeAppPresenter implements Presenter{
 
     private LocationRequests locationRequests;
     private ParkMeAppView mView;
-    private Context context;
+
 
     public ParkMeAppPresenter(ParkMeAppView mView, Context context) {
 
         this.mView = mView;
-        this.context = context;
         locationRequests = new LocationRequests(context, this);
 
     }
@@ -52,10 +51,26 @@ public class ParkMeAppPresenter implements Presenter{
         mView.setCamera(usersLatLng);
     }
 
-    public User getUser() {
+    /**
+     * Check if a user object is passed to parkMeAppActivity.
+     * if user is not null then we return the user object otherwise we request
+     * one from our database.
+     * @param mUser user object that was passed to the activity
+     * @return user
+     */
+    public User getUser(User mUser) {
 
-       return DbSingleton.getInstance().getUser();
+        if(mUser == null ) {
+            return DbSingleton.getInstance().getUser();
+        } else {
+            return mUser;
+        }
+
+
     }
 
 
+    public void signOut() {
+        DbSingleton.getInstance().signOut();
+    }
 }
