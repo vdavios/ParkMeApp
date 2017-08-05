@@ -8,50 +8,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vd.parkmeapp.Models.User;
+import vd.parkmeapp.Presenters.UserProfilePresenter;
 import vd.parkmeapp.R;
 
-public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView firstNameView, lastNameView, emailView, passwordView;
-    private TextView firstNameLabelView;
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener, UserProfileView {
+
     private User myTenant;
+    private TextView firstNameView, lastNameView, emailView, passwordView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_info);
-        firstNameView = (TextView)(findViewById(R.id.firstNameEditProfile));
-        lastNameView = (TextView)(findViewById(R.id.lastNameEditProfile));
-        emailView = (TextView)(findViewById(R.id.emailEditProfile));
-        passwordView = (TextView)(findViewById(R.id.passwordEditProfile));
-        firstNameLabelView = (TextView)(findViewById(R.id.firstNameLabel));
+        firstNameView = (TextView) (findViewById(R.id.firstNameEditProfile));
+        lastNameView = (TextView) (findViewById(R.id.lastNameEditProfile));
+        emailView = (TextView) (findViewById(R.id.emailEditProfile));
+        passwordView = (TextView) (findViewById(R.id.passwordEditProfile));
 
-        /*firstName = getIntent().getStringExtra("First Name");
-        lastName = getIntent().getStringExtra("Last Name");
-        email = getIntent().getStringExtra("Email");
-        password = getIntent().getStringExtra("Password");*/
+
         myTenant = getIntent().getParcelableExtra("User");
-        //
-        if(myTenant == null) {
-            firstNameView.setText("");
-            lastNameView.setText("");
-            emailView.setText("");
-            passwordView.setText("");
-            Toast.makeText(this, "Please check you internet connection", Toast.LENGTH_SHORT)
-                    .show();
-
-
-        } else {
-            firstNameView.setText(myTenant.getFirstName());
-            firstNameView.setOnClickListener(this);
-            lastNameView.setText(myTenant.getLastName());
-            lastNameView.setOnClickListener(this);
-            emailView.setText(myTenant.getEmail());
-            emailView.setOnClickListener(this);
-            passwordView.setText(myTenant.getPassword());
-            passwordView.setOnClickListener(this);
-        }
-
-
-
+        //Creating presenter
+        UserProfilePresenter mPresenter = new UserProfilePresenter(this);
+        //passing user object to presenter and requesting for user info
+        mPresenter.usersInfo(myTenant);
     }
 
 
@@ -62,7 +41,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         intent.putExtra("R.id", rId);
         intent.putExtra("User", myTenant);
         startActivity(intent);
-
     }
 
 
@@ -78,5 +56,40 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public void emptyUserInfo() {
+
+        firstNameView.setText("");
+        lastNameView.setText("");
+        emailView.setText("");
+        passwordView.setText("");
+    }
+
+    @Override
+    public void setUserInfo(String firstName, String lastName, String email, String password) {
+
+        firstNameView.setText(firstName);
+        lastNameView.setText(lastName);
+        emailView.setText(email);
+        passwordView.setText(password);
+
+    }
+
+    @Override
+    public void enableListeners() {
+
+        firstNameView.setOnClickListener(this);
+        lastNameView.setOnClickListener(this);
+        emailView.setOnClickListener(this);
+        passwordView.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT)
+                .show();
     }
 }
