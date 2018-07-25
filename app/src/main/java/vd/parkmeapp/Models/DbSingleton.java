@@ -49,7 +49,7 @@ public class DbSingleton {
         //userID = mUser.getUid();
     }
 
-
+    
     public void signUpUser(final String firstName, final String lastName,
                            final String email, final String password,
                            final String creditCardNumber, final String cvvNumber, final Presenter presenter) {
