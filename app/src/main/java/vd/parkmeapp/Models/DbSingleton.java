@@ -47,7 +47,7 @@ public class DbSingleton {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mReference = mFirebaseDatabase.getReference();
         mUser = mAuth.getCurrentUser();
-        userID = mUser.getUid();
+        //userID = mUser.getUid();
     }
 
 
@@ -69,16 +69,16 @@ public class DbSingleton {
 
                         }
                         else if(task.isSuccessful()){
-                            mFirebaseDatabase = FirebaseDatabase.getInstance();
-                            mReference = mFirebaseDatabase.getReference();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String userID = mAuth.getCurrentUser().getUid();
-                            Log.d(TAG, "onComplete: Authstate changed: " + userID);
-                            User newUser = new Tenant(firstName, lastName, email, password,
-                                    creditCardNumber, cvvNumber);
-                            mReference.child("Users").child(userID).setValue(newUser);
-                            ((SignUpPresenter)presenter).singUpSuccessfully();
-
+                            if(user!=null){
+                                String userID = mAuth.getCurrentUser().getUid();
+                                Log.d(TAG, "onComplete: Authstate changed: " + userID);
+                                User newUser = new Tenant(firstName, lastName, email, password,
+                                        creditCardNumber, cvvNumber);
+                                mReference.child("Users").child(userID).setValue(newUser);
+                                ((SignUpPresenter)presenter).singUpSuccessfully();
+                            }
+                            
                         }
 
                     }
@@ -199,7 +199,7 @@ public class DbSingleton {
     public void setFirstName(String firstName) {
         FirebaseUser mUser = mAuth.getCurrentUser();
         if(mUser!=null) {
-           String userId = mUser.getUid();
+            String userId = mUser.getUid();
             setValue(userId, "firstName", firstName);
         }
     }
