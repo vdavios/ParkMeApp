@@ -34,7 +34,7 @@ public class DbSingleton {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
     private String userID;
-    
+
     private static final DbSingleton ourInstance = new DbSingleton();
 
     public static DbSingleton getInstance() {
