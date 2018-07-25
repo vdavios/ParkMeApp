@@ -67,7 +67,7 @@ public class EditUserInfoPresenter implements Presenter{
 
         Validator validator = new ValidatorImpl();
         DbSingleton myDb = DbSingleton.getInstance();
-        
+
         switch (field) {
             case "First Name":
 

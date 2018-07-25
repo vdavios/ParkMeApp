@@ -38,15 +38,15 @@ public class LoginPresenter implements Presenter {
     }
 
     public void isLoggedIn() {
-       if(myDb.isUserLoggedIn()){
-           mView.mainActivity();
-       }
+        if(myDb.isUserLoggedIn()){
+            mView.mainActivity();
+        }
 
     }
 
     public void userLoggedIn() {
 
-       mView.mainActivity();
+        mView.mainActivity();
     }
 
 
@@ -55,7 +55,7 @@ public class LoginPresenter implements Presenter {
     }
 
     public void stopAuthListener() {
-       myDb.cancelAuthListener();
+        myDb.cancelAuthListener();
     }
 
     public void logInFailReason(String s) {

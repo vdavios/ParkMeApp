@@ -78,7 +78,7 @@ public class DbSingleton {
                                 mReference.child("Users").child(userID).setValue(newUser);
                                 ((SignUpPresenter)presenter).singUpSuccessfully();
                             }
-                            
+
                         }
 
                     }

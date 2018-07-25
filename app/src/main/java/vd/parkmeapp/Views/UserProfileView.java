@@ -5,7 +5,7 @@ package vd.parkmeapp.Views;
  */
 
 public interface UserProfileView {
-    
+
     void emptyUserInfo();
 
     void setUserInfo(String firstName, String lastName, String email, String password);
