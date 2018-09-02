@@ -4,8 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import vd.parkmeapp.Models.Tenant;
-import vd.parkmeapp.Models.User;
+import vd.parkmeapp.models.Tenant;
+import vd.parkmeapp.models.User;
 
 /**
  *

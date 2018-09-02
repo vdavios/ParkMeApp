@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="vd.parkmeapp.Views.SignUpActivity">
+    tools:context="vd.parkmeapp.views.SignUpActivity">
 
     <!-- Sign Up -->
 
@@ -51,16 +51,15 @@
         android:id="@+id/LastName"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:hint="@string/lastName"
-        android:layout_marginTop="50dp"
-        android:inputType="textPersonName"
+        android:layout_alignEnd="@+id/SingUpEmail"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="185dp"
         android:fontFamily="sans-serif"
+        android:hint="@string/lastName"
+        android:inputType="textPersonName"
+        android:textColor="@color/mainColor"
         android:theme="@style/Theme.TextInputLayOut"
-        android:layout_below="@+id/signUpText"
-        android:layout_toRightOf="@+id/FirstName"
-        android:layout_toEndOf="@+id/FirstName"
-        android:layout_marginLeft="40dp"
-        android:textColor="@color/mainColor"/>
+        android:layout_alignRight="@+id/SingUpEmail" />
 
     <!-- Email -->
     <EditText

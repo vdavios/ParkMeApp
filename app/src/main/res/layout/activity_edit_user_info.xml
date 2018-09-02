@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="vd.parkmeapp.Views.EditUserInfoActivity">
+    tools:context="vd.parkmeapp.views.EditUserInfoActivity">
         <TextView
             android:id="@+id/Label"
             android:layout_width="match_parent"
@@ -13,7 +13,9 @@
             android:layout_marginTop="40dp"
             android:textColor="@color/grey"
             android:textSize="15sp"
-            android:paddingLeft="20dp"/>
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            tools:ignore="RtlSymmetry" />
 
 
         <EditText
@@ -27,7 +29,9 @@
             android:maxLines="1"
             android:textColor="@color/mainColor"
             android:textSize="18sp"
-            android:theme="@style/Theme.TextInputLayOut"/>
+            android:theme="@style/Theme.TextInputLayOut"
+            android:paddingStart="20dp"
+            tools:ignore="RtlSymmetry" />
 
 
         <Button

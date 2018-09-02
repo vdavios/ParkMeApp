@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Views.LogInActivity"
+            android:name=".views.LogInActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,16 +27,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Views.SignUpActivity"
+            android:name=".views.SignUpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Views.ParkMeAppActivity"
+            android:name=".views.ParkMeAppActivity"
             android:label="@string/title_activity_park_me_app"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Views.SettingsActivity"
+            android:name=".views.SettingsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".views.AvailableParkingListActivity" />
+        <activity android:name=".views.LoadingScreenActivity" />
+        <activity android:name=".views.AddParkingActivity" />
+        <activity android:name=".views.EditUserInfoActivity" />
+        <activity android:name=".views.UserProfileActivity" />
+
         <!--
             The API key for Google Maps-based APIs is defined as a string resource.
             (See the file "res/values/google_maps_api.xml").
@@ -49,9 +55,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Views.UserProfileActivity" />
-        <activity android:name=".Views.EditUserInfoActivity" />
-        <activity android:name=".Views.PaymentActivity" />
+        <activity android:name=".views.WelcomeActivity" />
+        <activity android:name=".views.ParkingOwnerInfo"></activity>
     </application>
 
 </manifest>

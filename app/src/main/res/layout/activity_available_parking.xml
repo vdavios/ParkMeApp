@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/AvailableParkingLabel"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:background="@color/mainColor"
+        android:text="@string/AvailableParking"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:gravity="center"/>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+
+        android:id="@+id/scrollableContents">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:divider="@color/mainColor"
+            android:dividerHeight="2dp"
+            android:layout_alignParentLeft="true" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+

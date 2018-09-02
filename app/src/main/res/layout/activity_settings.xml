@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="vd.parkmeapp.Views.SettingsActivity">
+    tools:context="vd.parkmeapp.views.SettingsActivity">
 
 
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/settings_header"
         android:textColor="@color/mainColor"
-        android:text="Account"
+        android:text="@string/Account"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center_horizontal"
@@ -43,31 +43,6 @@
         android:layout_below="@+id/account"
         android:layout_height="1dp"
         android:background="@color/mainColor"/>
-
-
-    <TextView
-        android:id="@+id/payment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line_under_account"
-        android:textColor="@color/mainColor"
-        android:text="Payment"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:gravity="center_horizontal"/>
-
-    <View
-        android:id="@+id/line_under_payment"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/payment"
-        android:layout_height="1dp"
-        android:background="@color/mainColor"/>
-
-
-
-
 
 
 </RelativeLayout>

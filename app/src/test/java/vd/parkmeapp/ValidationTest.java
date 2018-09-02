@@ -1,15 +1,13 @@
 package vd.parkmeapp;
 
 
-import android.test.mock.MockContext;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import vd.parkmeapp.Models.Validator;
-import vd.parkmeapp.Models.ValidatorImpl;
+import vd.parkmeapp.models.Validator;
+import vd.parkmeapp.models.ValidatorImpl;
 
 public class ValidationTest  {
     private Validator validator;

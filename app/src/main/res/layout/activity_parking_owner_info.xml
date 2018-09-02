@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".views.ParkingOwnerInfo">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/ParkingOwnerProfileHeader"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textColor="@color/mainColor"
+        android:text="@string/ParkingOwnerInfo"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textStyle="bold"
+
+        android:fontFamily="sans-serif" />
+
+    <!-- Address Label -->
+    <TextView
+        android:id="@+id/StreetNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ParkingOwnerProfileHeader"
+        android:text="@string/Address"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+    <!-- Address Name Text-->
+    <TextView
+        android:id="@+id/AddressText"
+        android:layout_width="316dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StreetNameLabel"
+        android:paddingLeft="20dp"
+        android:textColor="@color/mainColor"
+        android:textSize="18sp" />
+
+    <!-- Address Name Line -->
+    <View
+        android:id="@+id/AddressNameLine"
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/AddressText"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@color/mainColor"
+        android:paddingLeft="20dp" />
+
+
+    <!-- Name Label -->
+    <TextView
+        android:id="@+id/NameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AddressNameLine"
+        android:text="@string/name"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"/>
+
+    <!-- Name Text-->
+    <TextView
+        android:id="@+id/ParkingOwnerNameText"
+        android:layout_width="316dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/NameLabel"
+        android:paddingLeft="20dp"
+        android:textColor="@color/mainColor"
+        android:textSize="18sp"
+        android:layout_alignParentLeft="true" />
+
+    <!-- Address Name Line -->
+    <View
+        android:id="@+id/NameLine"
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:layout_alignStart="@+id/AddressNameLine"
+        android:layout_below="@+id/ParkingOwnerNameText"
+        android:background="@color/mainColor"
+        android:paddingLeft="20dp"
+        tools:ignore="UnknownId"
+        android:layout_alignLeft="@+id/AddressNameLine" />
+
+
+    <!-- Distance Label -->
+    <TextView
+        android:id="@+id/DistanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/AddressNameLine"
+        android:layout_below="@+id/ParkingOwnerNameText"
+        android:text="@string/Distance"
+        android:textColor="@color/grey"
+        android:layout_marginTop="30dp"
+        android:layout_alignLeft="@+id/AddressNameLine" />
+
+
+    <!-- Distance Text -->
+    <TextView
+        android:id="@+id/DistanceText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/DistanceLabel"
+        android:text="Vasileios Davios"
+        android:textColor="@color/mainColor"
+        android:textSize="18sp" />
+
+
+
+    <!-- Distance Line -->
+    <View
+        android:id="@+id/DistanceLine"
+        android:layout_width="352dp"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/AddressNameLine"
+        android:layout_alignStart="@+id/AddressNameLine"
+        android:layout_below="@+id/DistanceText"
+        android:background="@color/mainColor"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
+
+
+
+    <!-- Price Per Hour Label -->
+    <TextView
+        android:id="@+id/PricePerHourLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/AddressNameLine"
+        android:layout_marginBottom="224dp"
+        android:text="@string/PricePerHour"
+        android:textColor="@color/grey"
+        android:layout_alignLeft="@+id/AddressNameLine" />
+
+    <!-- Price Per Hour Text -->
+    <TextView
+        android:id="@+id/PricePerHourParkingOwnerText"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/AddressNameLine"
+        android:layout_below="@+id/PricePerHourLabel"
+        android:layout_marginTop="-224dp"
+        android:textSize="25dp"
+        android:textColor="@color/mainColor"
+        android:textStyle="bold"
+        android:layout_alignLeft="@+id/AddressNameLine" />
+
+
+
+
+
+
+    <Button
+        android:id="@+id/RentParking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/mainColor"
+        android:text="@string/RentParking"
+        android:textColor="@color/white"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

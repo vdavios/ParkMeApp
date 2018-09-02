@@ -9,7 +9,6 @@
     <string name="username_hint">Username</string>
     <string name="save_credentials">Remember Me</string>
     <string name="newUser">Not a Member yet? SignUp now!</string>
-    <string name="welcome">Welcome to ParkMeApp</string>
     <string name="title_activity_park_me_app_main">Map</string>
     <string name="google_maps_key">AIzaSyChvEEyCE0VI4wdj4phb2EaD5dQKqOHfz8</string>
     <string name="access_location">We need access to your location to find a parking space for you!</string>
@@ -25,7 +24,7 @@
     <string name="invalidCVV">Invalid CVV number</string>
     <string name="invalidName"> Invalid Name </string>
     <string name="CVV">CVV</string>
-    <string name="welcomeMessage">Welcome to ParkMeApp</string>
+    <string name="welcomeMessage">Welcome to\n ParkMeApp</string>
     <string name="emptyEmailAddress">Please enter your email address</string>
     <string name="emptyPassword">Please enter your password</string>
     <string name="authenticationFailed">Authentication failed</string>
@@ -34,6 +33,7 @@
     <string name="Payment">Payment</string>
     <string name="History">History</string>
     <string name="Settings">Settings</string>
+    <string name="Account">Account</string>
     <string name="Help">Help</string>
     <string name="SignOut">Sign Out</string>
     <string name="ParkingOwner">Parking Owner </string>
@@ -43,6 +43,17 @@
     <string name="SaveButton">Save</string>
     <string name="NoChanges">You didn\'t make any changes</string>
     <string name="PaymentMethods">Payment Methods</string>
+    <string name="AddParking">Add Parking</string>
+    <string name="StreetName">Street Name</string>
+    <string name="HouseNumber">House Number</string>
+    <string name="PostCode">Post Code</string>
+    <string name="PricePerHour">Price Per Hour</string>
+    <string name="RentMyParking">Rent My Parking</string>
+    <string name="AvailableParking">Available Parking</string>
+    <string name="RentParking">Rent Parking</string>
+    <string name="ParkingOwnerInfo">Parking Owner Profile</string>
+    <string name="Address">Address</string>
+    <string name="Distance">Distance</string>
 
 
 </resources>

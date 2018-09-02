@@ -19,7 +19,7 @@
             android:textStyle="bold"
             android:paddingTop="50dp"
             android:textSize="@dimen/large"
-            android:text="@string/welcome"
+            android:text="@string/welcomeMessage"
             android:textColor="@color/mainColor" />
 
     </LinearLayout>

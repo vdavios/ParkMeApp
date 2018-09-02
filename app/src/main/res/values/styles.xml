@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/mainColor</item>
         <item name="colorPrimaryDark">@color/mainColor</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/grey</item>
     </style>
     <!-- TextInputLayOut theme. -->
     <style name="Theme.TextInputLayOut" parent="Theme.AppCompat.Light.DarkActionBar">
