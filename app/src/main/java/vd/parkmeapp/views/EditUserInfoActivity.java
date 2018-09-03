@@ -29,20 +29,22 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
         setContentView(R.layout.activity_edit_user_info);
         valueText = (findViewById(R.id.value_Input));
         label = (findViewById(R.id.Label));
-
-
-        final EditUserInfoPresenter mPresenter =
-                new EditUserInfoPresenter(this, getIntent().getExtras());
-
-        mPresenter.setEditableInfo();
         tenant = getIntent().getParcelableExtra("User");
         caller = getIntent().getStringExtra("caller");
+        int id = getIntent().getIntExtra("R.id",1);
+
+        final EditUserInfoPresenter mPresenter =
+                new EditUserInfoPresenter(this, tenant,id);
+
+        mPresenter.setEditableInfo();
+
         valueText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if(mPresenter.newText(valueText.getText().toString().trim())){
+                        Log.d("Caller: ", caller);
                         if(caller.equals("AddParkingActivity")){
                             userAddParkingActivity();
                         } else {
@@ -57,25 +59,26 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
             }
         });
 
-        Button saveButton = (findViewById(R.id.saveButton));
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mPresenter.newText(valueText.getText().toString().trim())){
-                    if(caller.equals("AddParkingActivity")){
-                        userAddParkingActivity();
-                    } else {
-                        userProfileActivity();
-                    }
+      Button saveButton = findViewById(R.id.saveButton);
+      saveButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              if(mPresenter.newText(valueText.getText().toString())){
+                  if(caller.equals("AddParkingActivity")){
+                      userAddParkingActivity();
+                  } else {
+                      userProfileActivity();
+                  }
 
+              }
 
-                }
-            }
-        });
+          }
+      });
     }
 
     public void userAddParkingActivity(){
-        Intent intent = new Intent(this, AddParkingActivity.class);
+        Log.d("Going to: ", "AddParkingActivity");
+        Intent intent = new Intent(EditUserInfoActivity.this, AddParkingActivity.class);
         intent.putExtra("User", tenant);
         startActivity(intent);
     }
@@ -84,19 +87,20 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
     public void updateUser(User tenant) {
         this.tenant = tenant;
     }
+
     private void userProfileActivity(){
-        Intent intent = new Intent(this, UserProfileActivity.class);
+        Intent intent = new Intent(EditUserInfoActivity.this, UserProfileActivity.class);
         intent.putExtra("User", tenant);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed(){
-        if(caller.equals("AddParkingActivity")){
+         if(caller.equals("AddParkingActivity")){
             userAddParkingActivity();
-        } else {
+         } else {
             userProfileActivity();
-        }
+         }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
+import vd.parkmeapp.views.ParkMeAppActivity;
 import vd.parkmeapp.views.ParkMeAppView;
 
 /**
@@ -49,6 +50,18 @@ public class ParkMeAppPresenter implements Presenter{
 
     public void setUserLocation(LatLng usersLatLng) {
         mView.setCamera(usersLatLng);
+    }
+
+    public void getCurrentLocation(){
+        locationRequests.getDeviceLocation();
+    }
+
+    public void moveToLocation(Context context, String address){
+        locationRequests.geoLocate(context, address);
+    }
+
+    public void moveCameraTo(LatLng location){
+        ((ParkMeAppActivity)mView).moveCamera(location,15f);
     }
 
     public void signOut() {

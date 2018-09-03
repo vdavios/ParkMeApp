@@ -2,6 +2,7 @@ package vd.parkmeapp.presenters;
 
 import android.util.Log;
 
+import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.views.AddParkingActivity;
@@ -39,7 +40,11 @@ public class AddParkingPresenter implements Presenter{
                     && !tenant.getPostCode().startsWith("Please")
                     && !tenant.getPph().startsWith("Please");
 
+    }
 
+
+    public void parkingAvailableToRent(){
+        DbSingleton.getInstance().setHasParking("yes");
     }
     @Override
     public void passMessage(String message) {

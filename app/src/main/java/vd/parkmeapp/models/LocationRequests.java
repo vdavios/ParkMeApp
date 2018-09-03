@@ -1,13 +1,16 @@
 package vd.parkmeapp.models;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-
+import android.util.Log;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -17,9 +20,12 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.presenters.Presenter;
-
 
 /**
  *
@@ -78,10 +84,15 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             if(mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi
                         .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
             }
 
         }
     }
+
+
+
+
 
     public void cancelLocationRequest(){
         if(mGoogleApiClient.isConnected()) {
@@ -94,6 +105,46 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     public void onLocationChanged(Location location) {
         LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         ((ParkMeAppPresenter)presenter).setUserLocation(mLatLng);
+
+    }
+
+
+
+    //Last known Location
+    public void getDeviceLocation(){
+
+        if(ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            Location currentLocation =   LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            double lat = currentLocation.getLatitude();
+            String latitude = Double.toString(lat);
+            double lon = currentLocation.getLongitude();
+            String longitude = Double.toString(lon);
+            presenter.passMessage(latitude + " "+ longitude);
+        }
+
+    }
+
+
+    //GeoLocate
+    public void geoLocate(Context context, String address){
+        Geocoder geocoder = new Geocoder(context);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(address, 1);
+        }catch (IOException e){
+            Log.e("Test", "geoLocate: IOException: " + e.getMessage() );
+            //Well-known android framework problem
+            presenter.passMessage("NetworkLocation service is not working" +
+                    " please restart your phone to resolve this issue");
+        }
+        if(list.size() > 0){
+            Address addrss = list.get(0);
+
+            Log.d("Test", "geoLocate: found a location: " + addrss.toString());
+            ((ParkMeAppPresenter)presenter).moveCameraTo(new LatLng(addrss.getLatitude(),
+                    addrss.getLongitude()));
+        }
 
     }
 

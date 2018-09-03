@@ -8,12 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import vd.parkmeapp.R;
+import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 
 public class ParkingOwnerInfo extends AppCompatActivity {
     private User mCurrentUser, parkingOwner;
     private TextView parkingOwnerName, parkingAddress, parkingPrice, distanceFromParking;
+    private ArrayList<Tenant> owners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,8 @@ public class ParkingOwnerInfo extends AppCompatActivity {
         setContentView(R.layout.activity_parking_owner_info);
         mCurrentUser = getIntent().getParcelableExtra("User");
         parkingOwner = getIntent().getParcelableExtra("ParkingOwner");
+        owners = getIntent().getParcelableArrayListExtra("Results");
+
 
         parkingOwnerName = findViewById(R.id.ParkingOwnerNameText);
         parkingAddress = findViewById(R.id.AddressText);
@@ -44,6 +50,15 @@ public class ParkingOwnerInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(ParkingOwnerInfo.this, AvailableParkingListActivity.class);
+        intent.putExtra("User", mCurrentUser);
+        intent.putExtra("Results", owners);
+        startActivity(intent);
 
     }
 }

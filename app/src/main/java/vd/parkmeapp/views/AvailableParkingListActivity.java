@@ -24,7 +24,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
 
 
     private AvailableParkingListPresenter mPresenter;
-    private ArrayList<String> aL;
+    private ArrayList<Tenant> aL;
     private User mCurrentUser;
 
 
@@ -35,31 +35,16 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
         final ListView listView = findViewById(R.id.listView);
         //Creating the presenter
         mPresenter = new AvailableParkingListPresenter(this);
+
+        //Current User
         mCurrentUser = getIntent().getParcelableExtra("User");
 
+        //Array List with parking owners
+        aL = getIntent().getParcelableArrayListExtra("Results");
 
 
-
-
-        //String firstName, String lastName, String email,
-        //                  String password, String creditCardNumber, String cVV,
-        //                  String streetName, String houseNumber, String postCode, String pph, String rented
-        Tenant nT = new Tenant("Vasilis",
-                "Davios",
-                "vas.davios@gmail.com","123456bB",
-                "1656495495949595","466",
-                "Holliday Street","18","B11TH","2","no");
-
-        Tenant nt1 = new Tenant("tst","tst","tst@tst.com",
-                "123456bB","1356468676766867","469"
-                , "Dios","2","15127","3","no");
-
-        ArrayList<User> alUser = new ArrayList<>();
-        alUser.add(nT);
-        alUser.add(nt1);
-
-        //Testing Custom Adapter
-        CustomAdapter customAdapter = new CustomAdapter(alUser);
+        //Setting List View with Custom Adapter
+        CustomAdapter customAdapter = new CustomAdapter(aL);
         listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,24 +58,11 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
                 );
                 intent.putExtra("User",mCurrentUser);
                 intent.putExtra("ParkingOwner", selected);
+                intent.putParcelableArrayListExtra("Results",aL);
                 startActivity(intent);
             }
         });
-        //Getting the List with the available Parking
-       /** aL = getIntent().getStringArrayListExtra("Results");
 
-        ArrayAdapter listAdapter = new ArrayAdapter<>(this, R.layout.listitems,aL);
-        listView.setAdapter(listAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(
-                        AvailableParkingListActivity.this, ParkMeAppActivity.class
-                );
-                intent.putExtra("User",mCurrentUser);
-                startActivity(intent);
-            }
-        });**/
 
 
     }
@@ -106,8 +78,8 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
 
     class CustomAdapter extends BaseAdapter{
 
-        private ArrayList<User> uList;
-        public CustomAdapter(ArrayList<User> usersList){
+        private ArrayList<Tenant> uList;
+        public CustomAdapter(ArrayList<Tenant> usersList){
             uList = usersList;
 
 

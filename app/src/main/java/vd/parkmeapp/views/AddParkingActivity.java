@@ -45,6 +45,25 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
         if(mPresenter.hasSetParkingInfo()){
             mParkingButton.setVisibility(View.VISIBLE);
         }
+        mParkingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mPresenter.parkingAvailableToRent();
+                //Jumping to main activity
+                Intent intent = new Intent(AddParkingActivity.this
+                        , ParkMeAppActivity.class);
+                intent.putExtra("User",myTenant);
+                String result = myTenant.getHasParking();
+                if(myTenant.getHasParking().equals("yes")){
+                    showMessage(result);
+                }
+
+                startActivity(intent);
+
+
+            }
+        });
 
     }
 

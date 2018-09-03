@@ -65,8 +65,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
     }
 
     @Override
-    public void mainActivity(){
-        Intent intent = new Intent(this, ParkMeAppActivity.class);
+    public void welcomeActivity(){
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
 

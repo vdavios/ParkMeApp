@@ -3,6 +3,7 @@ package vd.parkmeapp.presenters;
 import java.util.ArrayList;
 
 import vd.parkmeapp.models.DbSingleton;
+import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.views.LoadingScreenActivity;
 
@@ -26,7 +27,7 @@ public class LoadingDataPresenter implements Presenter {
 
     }
 
-    public void resultsLoaded(ArrayList<String> results){
+    public void resultsLoaded(ArrayList<Tenant> results){
         mLds.dataLoaded(results);
     }
 }

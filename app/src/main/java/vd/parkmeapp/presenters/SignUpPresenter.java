@@ -51,7 +51,7 @@ public class SignUpPresenter implements Presenter{
     }
 
     public void singUpSuccessfully() {
-        mView.mainActivity();
+        mView.welcomeActivity();
     }
 
     public void failedToSignUp(String errorMessage) {

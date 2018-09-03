@@ -8,6 +8,6 @@ public interface SignUpView extends View{
 
     void initWidgets();
     void initSignUpButton();
-    void mainActivity();
+    void welcomeActivity();
 
 }

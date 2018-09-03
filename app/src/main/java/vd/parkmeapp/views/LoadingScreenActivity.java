@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import vd.parkmeapp.R;
+import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.LoadingDataPresenter;
 
@@ -26,7 +27,7 @@ public class LoadingScreenActivity extends AppCompatActivity implements View {
     }
 
 
-    public void dataLoaded(ArrayList<String> results){
+    public void dataLoaded(ArrayList<Tenant> results){
         Intent intent = new Intent(LoadingScreenActivity.this, AvailableParkingListActivity.class);
         intent.putExtra("Results", results);
         intent.putExtra("User",currentUser);

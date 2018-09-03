@@ -54,6 +54,7 @@
     <string name="ParkingOwnerInfo">Parking Owner Profile</string>
     <string name="Address">Address</string>
     <string name="Distance">Distance</string>
+    <string name="ParkingHistory">No parking history</string>
 
 
 </resources>

@@ -25,11 +25,11 @@ public class EditUserInfoPresenter implements Presenter{
     private String field;
 
 
-    public EditUserInfoPresenter(EditUserInfoView mView, Bundle bundle){
+    public EditUserInfoPresenter(EditUserInfoView mView, User currentUser, int rID){
 
         this.mView = mView;
-        tenant = bundle.getParcelable("User");
-        id = bundle.getInt("R.id", 1);
+        tenant = currentUser;
+        id = rID;
 
     }
 

@@ -34,7 +34,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +103,8 @@ public class ParkMeAppActivity extends AppCompatActivity
         parkMeAppButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Testing Current Location
+                mPresenter.getCurrentLocation();
                 Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
                 intent.putExtra("User",tenant);
                 startActivity(intent);
@@ -171,6 +176,9 @@ public class ParkMeAppActivity extends AppCompatActivity
 
         if (id == R.id.nav_history) {
             // History
+            Intent intent = new Intent(ParkMeAppActivity.this, HistoryActivity.class);
+            intent.putExtra("User", tenant);
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
             showMessage("in settings");
 
@@ -232,6 +240,9 @@ public class ParkMeAppActivity extends AppCompatActivity
 
     @Override
     public void setCamera(LatLng mLatLng) {
+        String lat = Double.toString(mLatLng.latitude);
+        String longtitude = Double.toString(mLatLng.longitude);
+        Log.d("LatLong: ", lat + " "+ longtitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
     }
 
@@ -287,27 +298,11 @@ public class ParkMeAppActivity extends AppCompatActivity
         Log.d(TAG, "geoLocate: geolocating");
 
         String searchString = mSearchText.getText().toString();
+        mPresenter.moveToLocation(ParkMeAppActivity.this, searchString);
 
-        Geocoder geocoder = new Geocoder(ParkMeAppActivity.this);
-        List<Address> list = new ArrayList<>();
-        try{
-            list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
-        }
-
-        if(list.size() > 0){
-            Address address = list.get(0);
-
-            Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
-
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), 15f,
-                   address.getAddressLine(0));
-        }
     }
 
-    private void moveCamera(LatLng latLng, float zoom, String title){
+    public void moveCamera(LatLng latLng, float zoom){
         mPresenter.pauseRequests();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -345,7 +340,5 @@ public class ParkMeAppActivity extends AppCompatActivity
         });
 
     }
-
-
 
 }

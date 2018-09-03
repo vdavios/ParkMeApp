@@ -9,14 +9,15 @@ import android.os.Parcel;
 public class Tenant implements User {
 
     private String firstName, lastName, email, password, creditCardNumber, cVV,
-            streetName, houseNumber, postCode, pph, rented;
+            streetName, houseNumber, postCode, pph, isRented, hasParking;
 
 
     public Tenant(){ }
 
     public Tenant(String firstName, String lastName, String email,
                   String password, String creditCardNumber, String cVV,
-                  String streetName, String houseNumber, String postCode, String pph, String rented) {
+                  String streetName, String houseNumber, String postCode, String pph,
+                  String hasParking, String isRented) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -27,7 +28,8 @@ public class Tenant implements User {
         this.houseNumber = houseNumber;
         this.postCode = postCode;
         this.pph = pph;
-        this.rented = rented;
+        this.hasParking = hasParking;
+        this.isRented = isRented;
     }
 
     public Tenant(Parcel in) {
@@ -41,7 +43,8 @@ public class Tenant implements User {
         houseNumber = in.readString();
         postCode = in.readString();
         pph = in.readString();
-        rented = in.readString();
+        isRented = in.readString();
+        hasParking = in.readString();
     }
 
     public static final Creator<Tenant> CREATOR = new Creator<Tenant>() {
@@ -134,9 +137,13 @@ public class Tenant implements User {
 
     @Override
     public String getRented() {
-        return rented;
+        return isRented;
     }
 
+    @Override
+    public String getHasParking() {
+        return hasParking;
+    }
 
 
     @Override
@@ -165,7 +172,12 @@ public class Tenant implements User {
 
     @Override
     public void setRented(String rented) {
-        this.rented = rented;
+        this.isRented = rented;
+    }
+
+    @Override
+    public void setHasParking(String hasParking) {
+        this.hasParking = hasParking;
     }
 
 
@@ -186,6 +198,7 @@ public class Tenant implements User {
         dest.writeString(houseNumber);
         dest.writeString(postCode);
         dest.writeString(pph);
-        dest.writeString(rented);
+        dest.writeString(isRented);
+        dest.writeString(hasParking);
     }
 }

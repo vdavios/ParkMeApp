@@ -26,6 +26,7 @@ public interface User extends Parcelable {
     String getPostCode();
     String getPph();
     String getRented();
+    String getHasParking();
 
     void setFirstName(String firstName);
 
@@ -48,4 +49,6 @@ public interface User extends Parcelable {
     void setPph(String pph);
 
     void setRented(String rented);
+
+    void setHasParking(String hasParking);
 }

@@ -52,11 +52,11 @@ public class DbSingleton {
     }
 
 
-    public void fetchData(final LoadingDataPresenter lDPresenter, final User tenant){
+    public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser){
 
         mReference.addValueEventListener(new ValueEventListener() {
             int count=0;
-            ArrayList<String> myArrL = new ArrayList<>();
+            ArrayList<Tenant> myArrL = new ArrayList<>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  DataSnapshot usersSnapShot = dataSnapshot.child("Users");
@@ -67,13 +67,16 @@ public class DbSingleton {
                  Iterable<DataSnapshot> usersChildren = usersSnapShot.getChildren();
                  for(DataSnapshot user: usersChildren){
                      count++;
-                     String usrFn = user.child("firstName").getValue(String.class);
-                     String usrLastName = user.child("lastName").getValue(String.class);
-                     String fullName = usrFn + " " + usrLastName;
-                     if(!tenant.getFirstName().equals(usrFn)
-                             && !tenant.getLastName().equals(usrLastName)){
-                         if(!myArrL.contains(fullName)){
-                             myArrL.add(fullName);
+                     Tenant tenant = user.getValue(Tenant.class);
+                     String usrFn = tenant.getFirstName();
+                     String usrLastName = tenant.getLastName();
+
+                     if(!currentUser.getFirstName().equals(usrFn)
+                             && !currentUser.getLastName().equals(usrLastName)){
+                         Log.d("Added: ", tenant.toString());
+                         if(!myArrL.contains(tenant)){
+                             //Log.d("Added: ", tenant.toString());
+                             myArrL.add(tenant);
                          }
                      }
 
@@ -91,7 +94,7 @@ public class DbSingleton {
     }
 
     // Loading data completed passing the results to the presenter so we can move to the next activity
-    private void loadingCompleted(ArrayList<String> results, LoadingDataPresenter ldPresenter){
+    private void loadingCompleted(ArrayList<Tenant> results, LoadingDataPresenter ldPresenter){
         ldPresenter.resultsLoaded(results);
     }
 
@@ -119,7 +122,7 @@ public class DbSingleton {
                                         "Please add the House Number",
                                         "Please add the Post Code",
                                         "Please add Price per Hour",
-                                        "no");
+                                        "no","no");
                                 mReference.child("Users").child(userID).setValue(newUser);
                                 ((SignUpPresenter)presenter).singUpSuccessfully();
                             }
@@ -213,6 +216,8 @@ public class DbSingleton {
 
 
     }
+
+    private Boolean flag = false;
     private void getUser(final User tenant, final WelcomeActivityPresenter presenter) {
         Log.d("Updating Tenant", "Pulling for db");
         FirebaseUser mUser = mAuth.getCurrentUser();
@@ -222,18 +227,21 @@ public class DbSingleton {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot data: dataSnapshot.getChildren()) {
-                        String firstName = data.child(uID).getValue(Tenant.class).getFirstName();
-                        String lastName = data.child(uID).getValue(Tenant.class).getLastName();
-                        String creditCardNumber = data.child(uID)
-                                .getValue(Tenant.class).getCreditCardNumber();
-                        String cVV = data.child(uID).getValue(Tenant.class).getcVV();
-                        String email = data.child(uID).getValue(Tenant.class).getEmail();
-                        String password = data.child(uID).getValue(Tenant.class).getPassword();
-                        String streetName = data.child(uID).getValue(Tenant.class).getStreetName();
-                        String houseNumber = data.child(uID).getValue(Tenant.class).getHouseNumber();
-                        String postCode = data.child(uID).getValue(Tenant.class).getPostCode();
-                        String pph = data.child(uID).getValue(Tenant.class).getPph();
-                        String rented = data.child(uID).getValue(Tenant.class).getRented();
+                        Tenant tenant = data.child(uID).getValue(Tenant.class);
+                        //Required field for our users
+                        String firstName = tenant.getFirstName();
+                        String lastName = tenant.getLastName();
+                        String creditCardNumber = tenant.getCreditCardNumber();
+                        String cVV = tenant.getcVV();
+                        String email = tenant.getEmail();
+                        String password = tenant.getPassword();
+                        String streetName = tenant.getStreetName();
+                        String houseNumber = tenant.getHouseNumber();
+                        String postCode = tenant.getPostCode();
+                        String pph = tenant.getPph();
+                        String rented = tenant.getRented();
+                        String hasParking = tenant.getHasParking();
+
                         tenant.setFirstName(firstName);
                         tenant.setLastName(lastName);
                         tenant.setEmail(email);
@@ -244,9 +252,19 @@ public class DbSingleton {
                         tenant.setHouseNumber(houseNumber);
                         tenant.setPostCode(postCode);
                         tenant.setPph(pph);
+                        tenant.setHasParking(hasParking);
                         tenant.setRented(rented);
+                        Log.d("Flag value: ", flag.toString());
+                        //Avoid going to ParkMeApp activity whenever a value is change
+                        //It will go to ParkMeAppActivity only when loads data for the first time
+                        if(!flag){
+                            flag = true;
+                            Log.d("Going to: ", "ParkMeAppActivity");
+                            presenter.loadingUsersDataCompleted(tenant);
 
-                        presenter.loadingUsersDataCompleted(tenant);
+                        }
+
+
                     }
                 }
 
@@ -342,6 +360,14 @@ public class DbSingleton {
         if(mUser!=null) {
             String userId = mUser.getUid();
             setValue(userId, "rented", rented);
+        }
+    }
+
+    public void setHasParking(String hasParking){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setValue(userId,"hasParking", hasParking);
         }
     }
 }
