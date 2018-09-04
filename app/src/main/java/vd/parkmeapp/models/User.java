@@ -27,6 +27,14 @@ public interface User extends Parcelable {
     String getPph();
     String getRented();
     String getHasParking();
+    String getUid();
+    String getIsHeRenting();
+    String getUsersIdParkingThatHeIsRenting();
+
+    void setUsersIdParkingThatHeIsRenting(String usersIdParkingThatHeIsRenting);
+    void setIsHeRenting(String isHeRenting);
+
+    void setUid(String uid);
 
     void setFirstName(String firstName);
 

@@ -67,4 +67,16 @@ public class ParkMeAppPresenter implements Presenter{
     public void signOut() {
         DbSingleton.getInstance().signOut();
     }
+
+    public void leaveParking(String uId, User mCurrentUser){
+        mCurrentUser.setIsHeRenting("no");
+        mCurrentUser.setUsersIdParkingThatHeIsRenting("0");
+        mView.updateUser(mCurrentUser);
+        DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting("0");
+        DbSingleton.getInstance().setValue(uId,"no");
+        DbSingleton.getInstance().setIsHeRenting("no");
+        mView.showMessage("User left parking");
+    }
+
+
 }

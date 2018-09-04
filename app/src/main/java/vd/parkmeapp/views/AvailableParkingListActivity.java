@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +53,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
 
                 Log.d("Selected item: ", selected.toString());
                 Intent intent = new Intent(
-                        AvailableParkingListActivity.this, ParkingOwnerInfo.class
+                        AvailableParkingListActivity.this, ParkingOwnerInfoActivity.class
                 );
                 intent.putExtra("User",mCurrentUser);
                 intent.putExtra("ParkingOwner", selected);
@@ -110,7 +109,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
             String street = parkingOwner.getStreetName() + " " + parkingOwner.getHouseNumber();
             parkingAddress.setText(street);
             pricePerHour.setText(parkingOwner.getPph());
-            distance.setText("TODO");
+            distance.setText("15min");
             // add distance
             return view;
         }

@@ -120,7 +120,6 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             String latitude = Double.toString(lat);
             double lon = currentLocation.getLongitude();
             String longitude = Double.toString(lon);
-            presenter.passMessage(latitude + " "+ longitude);
         }
 
     }

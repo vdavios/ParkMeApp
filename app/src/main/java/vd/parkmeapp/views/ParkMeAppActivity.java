@@ -3,8 +3,6 @@ package vd.parkmeapp.views;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -31,15 +29,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
@@ -63,13 +52,14 @@ public class ParkMeAppActivity extends AppCompatActivity
         setContentView(R.layout.activity_park_me_app);
 
 
-        // Creating ParkMeApp presenter
+        // Creating ParkMeApp presenter-controller
         mPresenter = new ParkMeAppPresenter(this, getApplicationContext());
         if(savedInstanceState !=null){
             tenant = savedInstanceState.getParcelable("User");
         } else {
             tenant  = getIntent().getParcelableExtra("User");
         }
+
 
         //request permission for location (must be done inside an activity or a fragment)
         accessUsersLocation();
@@ -91,27 +81,51 @@ public class ParkMeAppActivity extends AppCompatActivity
                 drawer.openDrawer(GravityCompat.START);
             }
         });
-        //Remove after test for geo location
-        mSearchText = findViewById(R.id.input_search);
-        //
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //---------Search Box for location---------//
+        mSearchText = findViewById(R.id.input_search);
 
-        //-------------- Results Button ----------//
+
+        //---------- Parking Results Button ----------//
         Button parkMeAppButton = findViewById(R.id.parkMeAppResultsButton);
-        parkMeAppButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Testing Current Location
-                mPresenter.getCurrentLocation();
-                Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
-                intent.putExtra("User",tenant);
-                startActivity(intent);
-            }
-        });
+
+
+        //Checking if is currently renting a parking
+        if(tenant.getIsHeRenting().equals("yes")){
+            //If he is renting a parking, change the settings of the button
+            parkMeAppButton.setBackgroundColor(getResources().getColor(R.color.red));
+            parkMeAppButton.setText(R.string.UserIsCurrentlyRentingParking);
+            parkMeAppButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Reset button -> Welcome page
+                    mPresenter.leaveParking(tenant.getUsersIdParkingThatHeIsRenting(),tenant);
+                    Intent intent = new Intent(ParkMeAppActivity.this, WelcomeActivity.class);
+                    intent.putExtra("User", tenant);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            //User is not renting any parking
+            parkMeAppButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
+                    intent.putExtra("User",tenant);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
+
+
+
+    //---------------Google Maps and permissions Request ---------------------//
 
     @Override
     public void onMapReady( GoogleMap googleMap) {
@@ -125,11 +139,7 @@ public class ParkMeAppActivity extends AppCompatActivity
             setUpMap();
             init();
 
-
-
         }
-
-
     }
 
     private void setUpMap(){
@@ -167,6 +177,83 @@ public class ParkMeAppActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onCameraMoveStarted(int i) {
+        if(i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
+            mPresenter.pauseRequests();
+
+        }
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mPresenter.resumeRequests();
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public void setCamera(LatLng mLatLng) {
+        String lat = Double.toString(mLatLng.latitude);
+        String longitude = Double.toString(mLatLng.longitude);
+        Log.d("LatLong: ", lat + " "+ longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
+    }
+
+
+
+    //Geolocation
+    private static String TAG = "Test";
+    private EditText mSearchText;
+    private void geoLocate(){
+        Log.d(TAG, "geoLocate: geolocating");
+
+        String searchString = mSearchText.getText().toString();
+        mPresenter.moveToLocation(ParkMeAppActivity.this, searchString);
+
+    }
+
+    public void moveCamera(LatLng latLng, float zoom){
+        mPresenter.pauseRequests();
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mPresenter.resumeRequests();
+                return true;
+            }
+        });
+
+
+    }
+
+
+    private void init(){
+        Log.d(TAG, "init: initializing");
+
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                Log.d(TAG, "init: inside the listener");
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE){
+
+                    //Locate the input address
+                    geoLocate();
+                }
+
+                return false;
+            }
+        });
+
+    }
+
+    //----------------- Drawer/Burger Menu -----------------//
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -180,7 +267,6 @@ public class ParkMeAppActivity extends AppCompatActivity
             intent.putExtra("User", tenant);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
-            showMessage("in settings");
 
             mPresenter.pauseRequests();
             Intent intent =
@@ -215,35 +301,18 @@ public class ParkMeAppActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onCameraMoveStarted(int i) {
-        if(i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE){
-            mPresenter.pauseRequests();
 
-        }
 
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                mPresenter.resumeRequests();
-                return true;
-            }
-        });
-
-    }
-
+    //Creating toast/message to display
     @Override
     public void showMessage(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
                 .show();
     }
 
-    @Override
-    public void setCamera(LatLng mLatLng) {
-        String lat = Double.toString(mLatLng.latitude);
-        String longtitude = Double.toString(mLatLng.longitude);
-        Log.d("LatLong: ", lat + " "+ longtitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
+    //Updating User in Local Memory
+    public void updateUser(User tenant){
+        this.tenant = tenant;
     }
 
 
@@ -288,57 +357,4 @@ public class ParkMeAppActivity extends AppCompatActivity
         outState.putParcelable("User",tenant);
         super.onSaveInstanceState(outState);
     }
-
-
-
-    //testing geolocation
-    private static String TAG = "Test";
-    private EditText mSearchText;
-    private void geoLocate(){
-        Log.d(TAG, "geoLocate: geolocating");
-
-        String searchString = mSearchText.getText().toString();
-        mPresenter.moveToLocation(ParkMeAppActivity.this, searchString);
-
-    }
-
-    public void moveCamera(LatLng latLng, float zoom){
-        mPresenter.pauseRequests();
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                mPresenter.resumeRequests();
-                return true;
-            }
-        });
-
-
-    }
-
-
-
-    private void init(){
-        Log.d(TAG, "init: initializing");
-
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                Log.d(TAG, "init: inside the listener");
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE){
-
-                    //execute our method for searching
-                    geoLocate();
-                }
-
-                return false;
-            }
-        });
-
-    }
-
 }

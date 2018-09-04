@@ -1,6 +1,7 @@
 package vd.parkmeapp.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -8,6 +9,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +56,7 @@ public class DbSingleton {
 
     public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser){
 
-        mReference.addValueEventListener(new ValueEventListener() {
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
             int count=0;
             ArrayList<Tenant> myArrL = new ArrayList<>();
             @Override
@@ -64,22 +66,40 @@ public class DbSingleton {
                  //Finds the number of children in my database
                  Long chCount = usersSnapShot.getChildrenCount();
                  Log.d("Children Count: ", chCount.toString());
+
                  Iterable<DataSnapshot> usersChildren = usersSnapShot.getChildren();
                  for(DataSnapshot user: usersChildren){
+                     Log.d("Inside DataSnapshot: ", "passed");
                      count++;
                      Tenant tenant = user.getValue(Tenant.class);
                      String usrFn = tenant.getFirstName();
                      String usrLastName = tenant.getLastName();
+                     Log.d("Compairing: ", "First Name "+usrFn+" with "+ currentUser.getFirstName()+"\n");
+                     Log.d("Compairing: ", "Last Name "+usrLastName+" with "+ currentUser.getLastName()+"\n");
+                     Boolean flag = tenant.getHasParking().equals("yes");
+                     Boolean flag1 = tenant.getRented().equals("no");
+
+                     Log.d("Returns : ",flag.toString()+"\n");
+                     Log.d("Returns : ",flag1.toString()+"\n");
 
                      if(!currentUser.getFirstName().equals(usrFn)
-                             && !currentUser.getLastName().equals(usrLastName)){
-                         Log.d("Added: ", tenant.toString());
+                             && !currentUser.getLastName().equals(usrLastName)
+                             && tenant.getHasParking().equals("yes")
+                             && tenant.getRented().equals("no")){
+                            Log.d("FirstCondition: ", "Passed"+"\n");
                          if(!myArrL.contains(tenant)){
-                             //Log.d("Added: ", tenant.toString());
+                             Log.d("Added: ", tenant.toString()+"\n");
                              myArrL.add(tenant);
                          }
                      }
-
+                     Log.d(" ","\n" +
+                             "\n" +
+                             "\n" +
+                             "\n" +
+                             "\n" +
+                             "\n" +
+                             "\n" +
+                             "\n");
                      if(count>= chCount-1){
                          loadingCompleted(myArrL, lDPresenter);
                      }
@@ -122,7 +142,7 @@ public class DbSingleton {
                                         "Please add the House Number",
                                         "Please add the Post Code",
                                         "Please add Price per Hour",
-                                        "no","no");
+                                        "no","no",userID,"no","0");
                                 mReference.child("Users").child(userID).setValue(newUser);
                                 ((SignUpPresenter)presenter).singUpSuccessfully();
                             }
@@ -210,25 +230,24 @@ public class DbSingleton {
     }
 
     //Get users data
-    public void getUser(WelcomeActivityPresenter presenter) {
+   /** public void getUser(WelcomeActivityPresenter presenter) {
 
         getUser(new Tenant(),presenter);
 
 
-    }
+    }**/
 
-    private Boolean flag = false;
-    private void getUser(final User tenant, final WelcomeActivityPresenter presenter) {
+    public void getUser(final WelcomeActivityPresenter presenter) {
         Log.d("Updating Tenant", "Pulling for db");
         FirebaseUser mUser = mAuth.getCurrentUser();
         if(mUser != null) {
             final String uID = mUser.getUid();
-            mReference.addValueEventListener(new ValueEventListener() {
+            mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot data: dataSnapshot.getChildren()) {
                         Tenant tenant = data.child(uID).getValue(Tenant.class);
-                        //Required field for our users
+                      /**  //Required field for our users
                         String firstName = tenant.getFirstName();
                         String lastName = tenant.getLastName();
                         String creditCardNumber = tenant.getCreditCardNumber();
@@ -241,6 +260,9 @@ public class DbSingleton {
                         String pph = tenant.getPph();
                         String rented = tenant.getRented();
                         String hasParking = tenant.getHasParking();
+                        String isHeRenting = tenant.getIsHeRenting();
+                        String uId = tenant.getUid();
+                        String usersIdParkingThatHeIsRenting = tenant.getUsersIdParkingThatHeIsRenting();
 
                         tenant.setFirstName(firstName);
                         tenant.setLastName(lastName);
@@ -254,15 +276,12 @@ public class DbSingleton {
                         tenant.setPph(pph);
                         tenant.setHasParking(hasParking);
                         tenant.setRented(rented);
-                        Log.d("Flag value: ", flag.toString());
-                        //Avoid going to ParkMeApp activity whenever a value is change
-                        //It will go to ParkMeAppActivity only when loads data for the first time
-                        if(!flag){
-                            flag = true;
-                            Log.d("Going to: ", "ParkMeAppActivity");
-                            presenter.loadingUsersDataCompleted(tenant);
+                        tenant.setIsHeRenting(isHeRenting);
+                        tenant.setUid(uId);**/
+                        Log.d("Done: ", "Pulling for db");
+                        presenter.loadingUsersDataCompleted(tenant);
 
-                        }
+
 
 
                     }
@@ -355,11 +374,11 @@ public class DbSingleton {
         }
     }
 
-    public void setRented(String rented) {
+    public void setIsHeRenting(String flag) {
         FirebaseUser mUser = mAuth.getCurrentUser();
         if(mUser!=null) {
             String userId = mUser.getUid();
-            setValue(userId, "rented", rented);
+            setValue(userId, "isHeRenting", flag);
         }
     }
 
@@ -369,5 +388,19 @@ public class DbSingleton {
             String userId = mUser.getUid();
             setValue(userId,"hasParking", hasParking);
         }
+    }
+    public void setUsersIdParkingThatHeIsRenting(String usersIdParkingThatHeIsRenting){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setValue(userId,"usersIdParkingThatHeIsRenting", usersIdParkingThatHeIsRenting);
+        }
+    }
+
+    public void setValue(String uId, String rented){
+        Log.d("Inside setValue: ", "true");
+        Log.d("uID: ", uId);
+        mReference.child("Users").child(uId).child("rented").setValue(rented);
+
     }
 }

@@ -9,7 +9,8 @@ import android.os.Parcel;
 public class Tenant implements User {
 
     private String firstName, lastName, email, password, creditCardNumber, cVV,
-            streetName, houseNumber, postCode, pph, isRented, hasParking;
+            streetName, houseNumber, postCode, pph, isRented, hasParking, uId, isHeRenting,
+            usersIdParkingThatHeIsRenting;
 
 
     public Tenant(){ }
@@ -17,7 +18,7 @@ public class Tenant implements User {
     public Tenant(String firstName, String lastName, String email,
                   String password, String creditCardNumber, String cVV,
                   String streetName, String houseNumber, String postCode, String pph,
-                  String hasParking, String isRented) {
+                  String hasParking, String isRented, String uId, String isHeRenting, String usersIdParkingThatHeIsRenting) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -30,6 +31,9 @@ public class Tenant implements User {
         this.pph = pph;
         this.hasParking = hasParking;
         this.isRented = isRented;
+        this.isHeRenting = isHeRenting;
+        this.uId = uId;
+        this.usersIdParkingThatHeIsRenting = usersIdParkingThatHeIsRenting;
     }
 
     public Tenant(Parcel in) {
@@ -45,6 +49,9 @@ public class Tenant implements User {
         pph = in.readString();
         isRented = in.readString();
         hasParking = in.readString();
+        isHeRenting = in.readString();
+        uId = in.readString();
+        usersIdParkingThatHeIsRenting = in.readString();
     }
 
     public static final Creator<Tenant> CREATOR = new Creator<Tenant>() {
@@ -145,6 +152,36 @@ public class Tenant implements User {
         return hasParking;
     }
 
+    @Override
+    public String getUid() {
+        return uId;
+    }
+
+    @Override
+    public String getIsHeRenting() {
+        return isHeRenting;
+    }
+
+    @Override
+    public String getUsersIdParkingThatHeIsRenting() {
+        return usersIdParkingThatHeIsRenting;
+    }
+
+    @Override
+    public void setUsersIdParkingThatHeIsRenting(String usersIdParkingThatHeIsRenting) {
+        this.usersIdParkingThatHeIsRenting = usersIdParkingThatHeIsRenting;
+    }
+
+    @Override
+    public void setIsHeRenting(String isHeRenting) {
+        this.isHeRenting = isHeRenting;
+    }
+
+    @Override
+    public void setUid(String uid) {
+        this.uId = uid;
+    }
+
 
     @Override
     public void setStreetName(String streetName) {
@@ -200,5 +237,8 @@ public class Tenant implements User {
         dest.writeString(pph);
         dest.writeString(isRented);
         dest.writeString(hasParking);
+        dest.writeString(isHeRenting);
+        dest.writeString(uId);
+        dest.writeString(usersIdParkingThatHeIsRenting);
     }
 }

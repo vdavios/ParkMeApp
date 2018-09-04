@@ -55,6 +55,7 @@
     <string name="Address">Address</string>
     <string name="Distance">Distance</string>
     <string name="ParkingHistory">No parking history</string>
+    <string name="UserIsCurrentlyRentingParking">Leave Parking</string>
 
 
 </resources>
