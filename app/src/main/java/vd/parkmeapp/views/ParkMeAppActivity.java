@@ -3,6 +3,8 @@ package vd.parkmeapp.views;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -29,7 +31,26 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import vd.parkmeapp.models.DataParser;
+import vd.parkmeapp.models.DirectionsUrl;
+import vd.parkmeapp.models.Downloader;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.R;
@@ -43,6 +64,7 @@ public class ParkMeAppActivity extends AppCompatActivity
     private static final int CODE = 1;
     private User tenant;
     private ParkMeAppPresenter mPresenter;
+    private DirectionsUrl mDirectrionsUrl;
 
 
 
@@ -61,6 +83,11 @@ public class ParkMeAppActivity extends AppCompatActivity
         }
 
 
+        String shouldBeEmpty = getIntent().getStringExtra("Empty");
+        if(shouldBeEmpty == null){
+            showMessage("Empty string mofo");
+        }
+
         //request permission for location (must be done inside an activity or a fragment)
         accessUsersLocation();
 
@@ -78,6 +105,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMap.clear();
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -121,6 +149,10 @@ public class ParkMeAppActivity extends AppCompatActivity
             });
         }
 
+
+        //Create directions url object
+
+        mDirectrionsUrl = new DirectionsUrl();
     }
 
 
@@ -140,6 +172,7 @@ public class ParkMeAppActivity extends AppCompatActivity
             init();
 
         }
+
     }
 
     private void setUpMap(){
@@ -200,20 +233,25 @@ public class ParkMeAppActivity extends AppCompatActivity
         String longitude = Double.toString(mLatLng.longitude);
         Log.d("LatLong: ", lat + " "+ longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 17));
+
     }
 
+
+
+
+    //SetMarker test function
+
+    public void setMarker(LatLng point){
+
+        mMap.addMarker(new MarkerOptions().position(point));
+
+    }
 
 
     //Geolocation
     private static String TAG = "Test";
     private EditText mSearchText;
-    private void geoLocate(){
-        Log.d(TAG, "geoLocate: geolocating");
 
-        String searchString = mSearchText.getText().toString();
-        mPresenter.moveToLocation(ParkMeAppActivity.this, searchString);
-
-    }
 
     public void moveCamera(LatLng latLng, float zoom){
         mPresenter.pauseRequests();
@@ -223,6 +261,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
+                mMap.clear();
                 mPresenter.resumeRequests();
                 return true;
             }
@@ -252,6 +291,30 @@ public class ParkMeAppActivity extends AppCompatActivity
         });
 
     }
+
+
+    private void geoLocate(){
+        Log.d(TAG, "geoLocate: geolocating");
+
+        String searchString = mSearchText.getText().toString();
+        mPresenter.routeToParking(this, searchString);
+
+
+
+
+    }
+
+    public void addPolyline(ArrayList<LatLng> points){
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.addAll(points);
+        polylineOptions.width(7);
+        polylineOptions.color(Color.RED);
+        mMap.addPolyline(polylineOptions);
+
+    }
+
+
 
     //----------------- Drawer/Burger Menu -----------------//
 

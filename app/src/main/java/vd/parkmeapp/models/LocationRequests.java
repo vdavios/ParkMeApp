@@ -111,7 +111,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
 
 
     //Last known Location
-    public void getDeviceLocation(){
+    public LatLng getDeviceLocation(){
 
         if(ContextCompat.checkSelfPermission(mContext,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -120,13 +120,17 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             String latitude = Double.toString(lat);
             double lon = currentLocation.getLongitude();
             String longitude = Double.toString(lon);
+            return new LatLng(lat,lon);
+        } else {
+
+            return null;
         }
 
     }
 
 
-    //GeoLocate
-    public void geoLocate(Context context, String address){
+    //Returns the LatLng object of the desired location
+    public LatLng geoLocate(Context context, String address){
         Geocoder geocoder = new Geocoder(context);
         List<Address> list = new ArrayList<>();
         try{
@@ -141,8 +145,10 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             Address addrss = list.get(0);
 
             Log.d("Test", "geoLocate: found a location: " + addrss.toString());
-            ((ParkMeAppPresenter)presenter).moveCameraTo(new LatLng(addrss.getLatitude(),
-                    addrss.getLongitude()));
+
+            return new LatLng(addrss.getLatitude(),addrss.getLongitude());
+        } else {
+            return null;
         }
 
     }

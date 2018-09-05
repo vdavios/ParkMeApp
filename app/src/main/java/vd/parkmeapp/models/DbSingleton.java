@@ -92,14 +92,7 @@ public class DbSingleton {
                              myArrL.add(tenant);
                          }
                      }
-                     Log.d(" ","\n" +
-                             "\n" +
-                             "\n" +
-                             "\n" +
-                             "\n" +
-                             "\n" +
-                             "\n" +
-                             "\n");
+
                      if(count>= chCount-1){
                          loadingCompleted(myArrL, lDPresenter);
                      }

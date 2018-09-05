@@ -4,7 +4,11 @@ import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 import vd.parkmeapp.models.DbSingleton;
+import vd.parkmeapp.models.DirectionsUrl;
+import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
 import vd.parkmeapp.views.ParkMeAppActivity;
@@ -52,12 +56,27 @@ public class ParkMeAppPresenter implements Presenter{
         mView.setCamera(usersLatLng);
     }
 
-    public void getCurrentLocation(){
-        locationRequests.getDeviceLocation();
+    public LatLng getCurrentLocation(){
+       return locationRequests.getDeviceLocation();
     }
 
-    public void moveToLocation(Context context, String address){
-        locationRequests.geoLocate(context, address);
+    public LatLng getParkingLocation(Context context, String address){
+        return locationRequests.geoLocate(context, address);
+    }
+
+    public void routeToParking(Context context, String address){
+        LatLng parkingLocation = getParkingLocation(context,address);
+        LatLng currentLocation = getCurrentLocation();
+        DirectionsUrl directionsUrl = new DirectionsUrl();
+        String url = directionsUrl.getDirectionsUrl(currentLocation.latitude, currentLocation.longitude,
+                parkingLocation.latitude, parkingLocation.longitude);
+         new GetPointsToLocation(this,
+                currentLocation,parkingLocation, url);
+
+    }
+
+    public void routesReady(ArrayList<LatLng> route){
+        mView.addPolyline(route);
     }
 
     public void moveCameraTo(LatLng location){
