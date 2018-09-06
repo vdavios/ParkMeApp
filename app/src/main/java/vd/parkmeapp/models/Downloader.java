@@ -12,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import vd.parkmeapp.R;
 import vd.parkmeapp.views.ParkMeAppActivity;
 
@@ -29,11 +31,19 @@ public class Downloader {
 
             //Creates the Url (We access the google location API through an HTTP interface)
             URL mUrl = new URL(url);
+            String res = mUrl.toString();
+            Log.d("Url: ", res);
             //Creates an HttpURLConnection object
-            urlConnection = (HttpURLConnection)mUrl.openConnection();
+            urlConnection = (HttpsURLConnection)mUrl.openConnection();
             //Open a communications link to the resource referenced by the URL
+            
             urlConnection.connect();
-            //Returns an InputStream (directions data) from the open connection
+            int responseCode = urlConnection.getResponseCode();
+            String reason = Integer.toString(responseCode);
+            Log.d("response code: ", reason);
+            //Returns an InputStream (directions data) from the open connection;
+
+
             inputStream = urlConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
@@ -49,15 +59,19 @@ public class Downloader {
             Log.d("Results: ", data);
 
         } catch (MalformedURLException e) {
+            Log.d("Connection: ",e.toString());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d("Connection: ",e.toString());
             e.printStackTrace();
         }
         finally {
             try {
-                assert inputStream != null;
-                inputStream.close();
-                urlConnection.disconnect();
+                if(inputStream!=null){
+                    inputStream.close();
+                    urlConnection.disconnect();
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -66,4 +80,6 @@ public class Downloader {
 
         return data;
     }
+
+
 }

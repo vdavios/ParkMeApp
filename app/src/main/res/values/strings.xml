@@ -11,7 +11,6 @@
     <string name="newUser">Not a Member yet? SignUp now!</string>
     <string name="title_activity_park_me_app_main">Map</string>
     <string name="google_maps_key">AIzaSyChvEEyCE0VI4wdj4phb2EaD5dQKqOHfz8</string>
-    <string name="google_direction_key">AIzaSyD9N369yrrRunarmGgyuY-Qo3a1wPoLNcY</string>
     <string name="access_location">We need access to your location to find a parking space for you!</string>
     <string name="ParkMeApp">ParkMeApp</string>
     <string name="invalidEmail">Please enter a valid email address</string>

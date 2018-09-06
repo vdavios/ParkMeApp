@@ -15,17 +15,18 @@ import java.util.List;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 
 
-public class GetPointsToLocation {
+public class GetPointsToLocation implements RequiresDataFromWeb{
 
     private ParkMeAppPresenter parkMeAppPresenter;
-    public GetPointsToLocation(ParkMeAppPresenter mParkMeAppPresenter, LatLng from, LatLng to,
+
+    public GetPointsToLocation(ParkMeAppPresenter mParkMeAppPresenter,
                                String url){
         parkMeAppPresenter = mParkMeAppPresenter;
-        DownloadTask downloadTask = new DownloadTask();
+        DownloadTask downloadTask = new DownloadTask(new Downloader(),this);
         downloadTask.execute(url);
     }
 
-    private class DownloadTask extends AsyncTask<String, Void, String> {
+   /** private class DownloadTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... url) {
@@ -38,11 +39,16 @@ public class GetPointsToLocation {
 
         @Override
         protected void onPostExecute(String result){
-            ParserTask parserTask = new ParserTask();
-            //Invokes thread for parsing the JSON data
-            parserTask.execute(result);
+
+            downloadCompeted(result);
         }
 
+    }**/
+
+    @Override
+    public void downloadCompeted(String result){
+        ParserTask parserTask = new ParserTask();
+        parserTask.execute(result);
     }
 
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>>>{

@@ -1,13 +1,17 @@
 package vd.parkmeapp.presenters;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import vd.parkmeapp.models.DataParser;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.DirectionsUrl;
+import vd.parkmeapp.models.Downloader;
+import vd.parkmeapp.models.GetLatLngWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
@@ -60,19 +64,36 @@ public class ParkMeAppPresenter implements Presenter{
        return locationRequests.getDeviceLocation();
     }
 
-    public LatLng getParkingLocation(Context context, String address){
+    private LatLng getParkingLocation(Context context, String address){
+        Log.d("I am here: ", "calling location request");
+
         return locationRequests.geoLocate(context, address);
     }
 
     public void routeToParking(Context context, String address){
         LatLng parkingLocation = getParkingLocation(context,address);
+        if(parkingLocation == null){
+            Log.d("result null: ", "Getting latlng via http request");
+            geocodeFailed(new DirectionsUrl(), address, new Downloader(),
+                    new DataParser());
+        } else {
+           getRouteToLocation(parkingLocation);
+        }
+
+    }
+
+    public void getRouteToLocation(LatLng parkingLocation){
         LatLng currentLocation = getCurrentLocation();
         DirectionsUrl directionsUrl = new DirectionsUrl();
         String url = directionsUrl.getDirectionsUrl(currentLocation.latitude, currentLocation.longitude,
                 parkingLocation.latitude, parkingLocation.longitude);
-         new GetPointsToLocation(this,
-                currentLocation,parkingLocation, url);
+        new GetPointsToLocation(this, url);
+    }
 
+    private void geocodeFailed(DirectionsUrl directionsUrl, String address, Downloader downloader, DataParser dataParser){
+        GetLatLngWithHTTPRequest getLatLngWithHTTPRequest
+                = new GetLatLngWithHTTPRequest(directionsUrl, address,
+                downloader, dataParser,this);
     }
 
     public void routesReady(ArrayList<LatLng> route){

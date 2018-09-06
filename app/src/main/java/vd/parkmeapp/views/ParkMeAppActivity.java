@@ -270,7 +270,6 @@ public class ParkMeAppActivity extends AppCompatActivity
 
     }
 
-
     private void init(){
         Log.d(TAG, "init: initializing");
 
@@ -298,9 +297,6 @@ public class ParkMeAppActivity extends AppCompatActivity
 
         String searchString = mSearchText.getText().toString();
         mPresenter.routeToParking(this, searchString);
-
-
-
 
     }
 

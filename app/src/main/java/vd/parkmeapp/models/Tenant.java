@@ -3,7 +3,8 @@ package vd.parkmeapp.models;
 import android.os.Parcel;
 
 /**
- * T
+ * Tenant class implements user interface
+ * objects of this class are saved locally and passed through the activities and in our database
  */
 
 public class Tenant implements User {
@@ -12,13 +13,14 @@ public class Tenant implements User {
             streetName, houseNumber, postCode, pph, isRented, hasParking, uId, isHeRenting,
             usersIdParkingThatHeIsRenting;
 
-
     public Tenant(){ }
 
     public Tenant(String firstName, String lastName, String email,
                   String password, String creditCardNumber, String cVV,
                   String streetName, String houseNumber, String postCode, String pph,
-                  String hasParking, String isRented, String uId, String isHeRenting, String usersIdParkingThatHeIsRenting) {
+                  String hasParking, String isRented, String uId, String isHeRenting,
+                  String usersIdParkingThatHeIsRenting) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,9 +36,11 @@ public class Tenant implements User {
         this.isHeRenting = isHeRenting;
         this.uId = uId;
         this.usersIdParkingThatHeIsRenting = usersIdParkingThatHeIsRenting;
+
     }
 
     public Tenant(Parcel in) {
+
         firstName = in.readString();
         lastName = in.readString();
         email = in.readString();
@@ -52,6 +56,7 @@ public class Tenant implements User {
         isHeRenting = in.readString();
         uId = in.readString();
         usersIdParkingThatHeIsRenting = in.readString();
+
     }
 
     public static final Creator<Tenant> CREATOR = new Creator<Tenant>() {

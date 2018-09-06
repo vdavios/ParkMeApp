@@ -147,7 +147,11 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             Log.d("Test", "geoLocate: found a location: " + addrss.toString());
 
             return new LatLng(addrss.getLatitude(),addrss.getLongitude());
+
         } else {
+            Log.d("In else statement: ", "Returning null");
+
+
             return null;
         }
 

@@ -101,4 +101,24 @@ public class DataParser {
         return poly;
     }
 
+    public LatLng getLatLngOfLocation(JSONObject jsonObject){
+        Double lat = 0d;
+        Double lng = 0d;
+        try {
+
+            // JSON -> Results -> Geometry -> Location (lat, lng)
+            lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                    .getJSONObject("geometry").getJSONObject("location")
+                    .getDouble("lat");
+            lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                    .getJSONObject("geometry").getJSONObject("location")
+                    .getDouble("lng");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new LatLng(lat,lng);
+    }
+
 }
