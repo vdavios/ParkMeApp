@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,9 +40,9 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
 
     private GoogleApiClient mGoogleApiClient;
     private Context mContext;
-    private Presenter presenter;
+    private ParkMeAppPresenter presenter;
 
-    public LocationRequests(Context mContext, Presenter presenter){
+    public LocationRequests(Context mContext, ParkMeAppPresenter presenter){
         this.mContext = mContext;
         this.presenter = presenter;
         buildGoogleApiClient();
@@ -78,14 +80,12 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        Log.d("Location request: ", " Requesting location updates");
         if (ContextCompat.checkSelfPermission(mContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            if(mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi
                         .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-            }
 
         }
     }
@@ -100,6 +100,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onLocationChanged(Location location) {
         LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("Location changed: ", " True");
         ((ParkMeAppPresenter)presenter).setUserLocation(mLatLng);
 
     }
@@ -112,6 +113,9 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
         if(ContextCompat.checkSelfPermission(mContext,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             Location currentLocation =   LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+
+            Log.d("Get device location: ", "I am here");
             double lat = currentLocation.getLatitude();
             String latitude = Double.toString(lat);
             double lon = currentLocation.getLongitude();
@@ -154,6 +158,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         customLocationRequest();
+        presenter.apiConnected();
     }
 
     @Override

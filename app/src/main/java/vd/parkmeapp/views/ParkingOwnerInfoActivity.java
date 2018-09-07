@@ -86,7 +86,7 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
     @Override
     public void hasConnection(Boolean result) {
         if(result){
-            parkingOwnerInfoPresenter.isNowRented(parkingOwner.getUid());
+            parkingOwnerInfoPresenter.isNowRented(parkingOwner.getUid(), parkingAddress.getText().toString());
             Log.d("Going to: ", "ParkMeAppActivity");
             Intent intent = new Intent(ParkingOwnerInfoActivity.this, ParkMeAppActivity.class);
             intent.putExtra("User",mCurrentUser);

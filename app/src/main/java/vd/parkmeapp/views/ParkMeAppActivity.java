@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONException;
@@ -67,6 +68,8 @@ public class ParkMeAppActivity extends AppCompatActivity
     private User tenant;
     private ParkMeAppPresenter mPresenter;
     private ConnectivityManager connectivityManager;
+    private String address;
+    private Polyline polyline;
 
 
 
@@ -76,17 +79,16 @@ public class ParkMeAppActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_me_app);
 
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        // Creating ParkMeApp presenter-controller
-        mPresenter = new ParkMeAppPresenter(this, getApplicationContext());
         if(savedInstanceState !=null){
             tenant = savedInstanceState.getParcelable("User");
         } else {
             tenant  = getIntent().getParcelableExtra("User");
         }
 
-        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        // Creating ParkMeApp presenter-controller
+        mPresenter = new ParkMeAppPresenter(this, getApplicationContext(),tenant,connectivityManager);
 
         //request permission for location (must be done inside an activity or a fragment)
         accessUsersLocation();
@@ -122,8 +124,15 @@ public class ParkMeAppActivity extends AppCompatActivity
         Button parkMeAppButton = findViewById(R.id.parkMeAppResultsButton);
 
 
-        //Checking if is currently renting a parking
+        //Checking if the user is currently renting a parking
         if(tenant.getIsHeRenting().equals("yes")){
+
+            Log.d("Renting a parking: ", "true");
+            //find the parking location
+            address = tenant.getAddressOfTheParkingThatHeIsCurrentlyRenting();
+            //check connection and add route to parking
+            //mPresenter.activeInternetConnection(connectivityManager);
+
             //If he is renting a parking, change the settings of the button
             parkMeAppButton.setBackgroundColor(getResources().getColor(R.color.red));
             parkMeAppButton.setText(R.string.UserIsCurrentlyRentingParking);
@@ -132,6 +141,7 @@ public class ParkMeAppActivity extends AppCompatActivity
                 public void onClick(View view) {
                     // Reset button -> Welcome page
                     mPresenter.leaveParking(tenant.getUsersIdParkingThatHeIsRenting(),tenant);
+                   // polyline.remove();
                     Intent intent = new Intent(ParkMeAppActivity.this, WelcomeActivity.class);
                     intent.putExtra("User", tenant);
                     startActivity(intent);
@@ -279,9 +289,11 @@ public class ParkMeAppActivity extends AppCompatActivity
                 if(actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE){
 
-                    //Locate the input address
+                    address = mSearchText.getText().toString();
+
+                    //Check if user has active internet connection
                     mPresenter.activeInternetConnection(connectivityManager);
-                   // geoLocate();
+
                 }
 
                 return false;
@@ -291,11 +303,10 @@ public class ParkMeAppActivity extends AppCompatActivity
     }
 
 
-    private void geoLocate(){
+    private void geoLocate(String address){
         Log.d(TAG, "geoLocate: geolocating");
 
-        String searchString = mSearchText.getText().toString();
-        mPresenter.routeToParking(this, searchString);
+        mPresenter.routeToParking(this, address);
 
     }
 
@@ -305,7 +316,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         polylineOptions.addAll(points);
         polylineOptions.width(7);
         polylineOptions.color(Color.RED);
-        mMap.addPolyline(polylineOptions);
+        polyline =  mMap.addPolyline(polylineOptions);
 
     }
 
@@ -401,7 +412,8 @@ public class ParkMeAppActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.resumeRequests();
+        mPresenter.connectApiClient();
+        //mPresenter.resumeRequests();
     }
 
     @Override
@@ -426,7 +438,7 @@ public class ParkMeAppActivity extends AppCompatActivity
     @Override
     public void hasConnection(Boolean result) {
         if(result){
-            geoLocate();
+            geoLocate(address);
         } else {
             moveToInternetFailureActivity();
         }

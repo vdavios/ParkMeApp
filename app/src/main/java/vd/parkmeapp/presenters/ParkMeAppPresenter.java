@@ -28,12 +28,17 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
 
     private LocationRequests locationRequests;
     private ParkMeAppView mView;
+    private User mCurrentUser;
+    private ConnectivityManager connectivityManager;
 
 
-    public ParkMeAppPresenter(ParkMeAppView mView, Context context) {
+    public ParkMeAppPresenter(ParkMeAppView mView, Context context, User currentUser,
+                              ConnectivityManager connectivityManager) {
 
         this.mView = mView;
         locationRequests = new LocationRequests(context, this);
+        mCurrentUser = currentUser;
+        this.connectivityManager = connectivityManager;
 
     }
 
@@ -113,10 +118,12 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     public void leaveParking(String uId, User mCurrentUser){
         mCurrentUser.setIsHeRenting("no");
         mCurrentUser.setUsersIdParkingThatHeIsRenting("0");
+        mCurrentUser.setAddressOfTheParkingThatHeIsCurrentlyRenting("");
         mView.updateUser(mCurrentUser);
         DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting("0");
         DbSingleton.getInstance().setValue(uId,"no");
         DbSingleton.getInstance().setIsHeRenting("no");
+        DbSingleton.getInstance().setAddressOfTheParkingThatHeIsCurrentlyRenting("");
         mView.showMessage("User left parking");
     }
 
@@ -136,5 +143,12 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     public void connectionResults(Boolean result) {
         mView.hasConnection(result);
 
+    }
+
+    public void apiConnected() {
+        if(mCurrentUser.getIsHeRenting().equals("yes")){
+
+            activeInternetConnection(connectivityManager);
+        }
     }
 }

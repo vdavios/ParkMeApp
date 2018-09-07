@@ -24,10 +24,12 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
         mView.showMessage(message);
     }
 
-    public void isNowRented(String ownerId){
+    public void isNowRented(String ownerId, String parkingAddress){
         currentUser.setIsHeRenting("yes");
         currentUser.setUsersIdParkingThatHeIsRenting(ownerId);
+        currentUser.setAddressOfTheParkingThatHeIsCurrentlyRenting(parkingAddress);
         mView.updateUser(currentUser);
+        DbSingleton.getInstance().setAddressOfTheParkingThatHeIsCurrentlyRenting(parkingAddress);
         DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting(ownerId);
         DbSingleton.getInstance().setValue(ownerId,"yes");
         DbSingleton.getInstance().setIsHeRenting("yes");

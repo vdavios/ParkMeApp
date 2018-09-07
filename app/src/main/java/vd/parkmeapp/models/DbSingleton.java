@@ -139,7 +139,9 @@ public class DbSingleton {
                                         "Please add the House Number",
                                         "Please add the Post Code",
                                         "Please add Price per Hour",
-                                        "no","no",userID,"no","0");
+                                        "no","no",userID,"no"
+                                        ,"0",
+                                        "");
                                 mReference.child("Users").child(userID).setValue(newUser);
                                 ((SignUpPresenter)presenter).singUpSuccessfully();
                             }
@@ -356,6 +358,14 @@ public class DbSingleton {
         if(mUser!=null){
             String userId = mUser.getUid();
             setValue(userId,"usersIdParkingThatHeIsRenting", usersIdParkingThatHeIsRenting);
+        }
+    }
+
+    public void setAddressOfTheParkingThatHeIsCurrentlyRenting(String parkingAddress){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setValue(userId,"addressOfTheParkingThatHeIsCurrentlyRenting", parkingAddress);
         }
     }
 

@@ -11,7 +11,7 @@ public class Tenant implements User {
 
     private String firstName, lastName, email, password, creditCardNumber, cVV,
             streetName, houseNumber, postCode, pph, isRented, hasParking, uId, isHeRenting,
-            usersIdParkingThatHeIsRenting;
+            usersIdParkingThatHeIsRenting, addressOfTheParkingThatHeIsCurrentlyRenting;
 
     public Tenant(){ }
 
@@ -19,7 +19,8 @@ public class Tenant implements User {
                   String password, String creditCardNumber, String cVV,
                   String streetName, String houseNumber, String postCode, String pph,
                   String hasParking, String isRented, String uId, String isHeRenting,
-                  String usersIdParkingThatHeIsRenting) {
+                  String usersIdParkingThatHeIsRenting,
+                  String addressOfTheParkingThatHeIsCurrentlyRenting) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,6 +37,8 @@ public class Tenant implements User {
         this.isHeRenting = isHeRenting;
         this.uId = uId;
         this.usersIdParkingThatHeIsRenting = usersIdParkingThatHeIsRenting;
+        this.addressOfTheParkingThatHeIsCurrentlyRenting =
+                addressOfTheParkingThatHeIsCurrentlyRenting;
 
     }
 
@@ -56,6 +59,7 @@ public class Tenant implements User {
         isHeRenting = in.readString();
         uId = in.readString();
         usersIdParkingThatHeIsRenting = in.readString();
+        addressOfTheParkingThatHeIsCurrentlyRenting = in.readString();
 
     }
 
@@ -109,6 +113,11 @@ public class Tenant implements User {
     @Override
     public String getHouseNumber() {
         return houseNumber;
+    }
+
+    @Override
+    public String getAddressOfTheParkingThatHeIsCurrentlyRenting() {
+        return addressOfTheParkingThatHeIsCurrentlyRenting;
     }
 
     @Override
@@ -222,6 +231,11 @@ public class Tenant implements User {
         this.hasParking = hasParking;
     }
 
+    @Override
+    public void setAddressOfTheParkingThatHeIsCurrentlyRenting(String addressOfTheParkingThatHeIsCurrentlyRenting) {
+        this.addressOfTheParkingThatHeIsCurrentlyRenting = addressOfTheParkingThatHeIsCurrentlyRenting;
+    }
+
 
     @Override
     public int describeContents() {
@@ -245,5 +259,6 @@ public class Tenant implements User {
         dest.writeString(isHeRenting);
         dest.writeString(uId);
         dest.writeString(usersIdParkingThatHeIsRenting);
+        dest.writeString(addressOfTheParkingThatHeIsCurrentlyRenting);
     }
 }
