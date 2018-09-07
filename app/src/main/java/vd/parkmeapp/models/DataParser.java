@@ -107,6 +107,7 @@ public class DataParser {
         try {
 
             // JSON -> Results -> Geometry -> Location (lat, lng)
+
             lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
                     .getJSONObject("geometry").getJSONObject("location")
                     .getDouble("lat");

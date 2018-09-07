@@ -1,6 +1,8 @@
 package vd.parkmeapp.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +15,7 @@ import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.LoadingDataPresenter;
 
-public class LoadingScreenActivity extends AppCompatActivity implements View {
+public class LoadingScreenActivity extends AppCompatActivity implements ActivitiesThatNeedInternetAccess {
     private LoadingDataPresenter mPresenter;
     private User currentUser;
 
@@ -23,7 +25,10 @@ public class LoadingScreenActivity extends AppCompatActivity implements View {
         setContentView(R.layout.activity_loading_screen);
         currentUser = getIntent().getParcelableExtra("User");
         mPresenter = new LoadingDataPresenter(this,currentUser);
-        mPresenter.getParkingList();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //Checking for active internet connection
+        mPresenter.activeInternetConnection(connectivityManager);
+
     }
 
 
@@ -39,5 +44,20 @@ public class LoadingScreenActivity extends AppCompatActivity implements View {
 
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    public void moveToInternetFailureActivity(){
+        Intent intent = new Intent(LoadingScreenActivity.this,
+                InternetFailureActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void hasConnection(Boolean result) {
+        if(result){
+            mPresenter.getParkingList();
+        } else {
+            moveToInternetFailureActivity();
+        }
     }
 }

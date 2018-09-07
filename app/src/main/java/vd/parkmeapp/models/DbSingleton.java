@@ -23,6 +23,7 @@ import vd.parkmeapp.presenters.LoginPresenter;
 import vd.parkmeapp.presenters.Presenter;
 import vd.parkmeapp.presenters.SignUpPresenter;
 import vd.parkmeapp.presenters.WelcomeActivityPresenter;
+import vd.parkmeapp.views.WelcomeActivity;
 
 
 import static android.content.ContentValues.TAG;
@@ -37,6 +38,7 @@ public class DbSingleton {
     private FirebaseAuth mAuth;
     private DatabaseReference mReference;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference connectivityReference;
 
     private static DbSingleton ourInstance;
 
@@ -51,12 +53,14 @@ public class DbSingleton {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
         mReference = mFirebaseDatabase.getReference();
+
     }
 
 
     public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser){
 
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             int count=0;
             ArrayList<Tenant> myArrL = new ArrayList<>();
             @Override
@@ -101,7 +105,7 @@ public class DbSingleton {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                lDPresenter.moveToInternetFailureActivity();
             }
         });
     }
@@ -166,10 +170,17 @@ public class DbSingleton {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
 
-                            Log.w(TAG, "Sign In fail reason: ", task.getException());
 
-                            ((LoginPresenter)presenter).
-                                    logInFailReason("Authentication failed");
+                            if(task.getException()!=null){
+                                Log.w(TAG, "Sign In fail reason: ", task.getException());
+                                String reason = task.getException().getMessage();
+                                ((LoginPresenter)presenter).
+                                        logInFailReason(reason);
+                            } else {
+                                ((LoginPresenter)presenter).logInFailReason("Log in failed");
+
+                            }
+
 
 
 
@@ -222,14 +233,6 @@ public class DbSingleton {
 
     }
 
-    //Get users data
-   /** public void getUser(WelcomeActivityPresenter presenter) {
-
-        getUser(new Tenant(),presenter);
-
-
-    }**/
-
     public void getUser(final WelcomeActivityPresenter presenter) {
         Log.d("Updating Tenant", "Pulling for db");
         FirebaseUser mUser = mAuth.getCurrentUser();
@@ -240,42 +243,8 @@ public class DbSingleton {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot data: dataSnapshot.getChildren()) {
                         Tenant tenant = data.child(uID).getValue(Tenant.class);
-                      /**  //Required field for our users
-                        String firstName = tenant.getFirstName();
-                        String lastName = tenant.getLastName();
-                        String creditCardNumber = tenant.getCreditCardNumber();
-                        String cVV = tenant.getcVV();
-                        String email = tenant.getEmail();
-                        String password = tenant.getPassword();
-                        String streetName = tenant.getStreetName();
-                        String houseNumber = tenant.getHouseNumber();
-                        String postCode = tenant.getPostCode();
-                        String pph = tenant.getPph();
-                        String rented = tenant.getRented();
-                        String hasParking = tenant.getHasParking();
-                        String isHeRenting = tenant.getIsHeRenting();
-                        String uId = tenant.getUid();
-                        String usersIdParkingThatHeIsRenting = tenant.getUsersIdParkingThatHeIsRenting();
-
-                        tenant.setFirstName(firstName);
-                        tenant.setLastName(lastName);
-                        tenant.setEmail(email);
-                        tenant.setPassword(password);
-                        tenant.setCreditCardNumber(creditCardNumber);
-                        tenant.setcVV(cVV);
-                        tenant.setStreetName(streetName);
-                        tenant.setHouseNumber(houseNumber);
-                        tenant.setPostCode(postCode);
-                        tenant.setPph(pph);
-                        tenant.setHasParking(hasParking);
-                        tenant.setRented(rented);
-                        tenant.setIsHeRenting(isHeRenting);
-                        tenant.setUid(uId);**/
                         Log.d("Done: ", "Pulling for db");
                         presenter.loadingUsersDataCompleted(tenant);
-
-
-
 
                     }
                 }

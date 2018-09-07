@@ -75,7 +75,10 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
     @Override
     public void onBackPressed(){}
 
-    class CustomAdapter extends BaseAdapter{
+
+
+
+    private class CustomAdapter extends BaseAdapter{
 
         private ArrayList<Tenant> uList;
         public CustomAdapter(ArrayList<Tenant> usersList){

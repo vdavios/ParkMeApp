@@ -10,7 +10,7 @@ import vd.parkmeapp.models.User;
  *
  */
 
-public interface ParkMeAppView extends View{
+public interface ParkMeAppView extends ActivitiesThatNeedInternetAccess{
 
 
     void setCamera(LatLng mLatLng);

@@ -27,7 +27,7 @@ public class LogInActivity extends AppCompatActivity implements LoginView {
         mPresenter = new LoginPresenter(this);
 
         //if the user is already logged in and authenticated from a previous session
-        //then when start the main activity
+        //then when start the welcome activity
         if(mPresenter.isLoggedIn()){
             welcomeActivity();
         }

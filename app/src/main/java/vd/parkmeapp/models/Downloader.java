@@ -26,7 +26,7 @@ public class Downloader {
     public String downloadUrl(String url) {
         String data = "";
         InputStream inputStream= null;
-        HttpURLConnection urlConnection = null;
+        HttpsURLConnection urlConnection = null;
         try {
 
             //Creates the Url (We access the google location API through an HTTP interface)

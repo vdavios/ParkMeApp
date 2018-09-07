@@ -1,6 +1,7 @@
 package vd.parkmeapp.presenters;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -13,6 +14,7 @@ import vd.parkmeapp.models.DirectionsUrl;
 import vd.parkmeapp.models.Downloader;
 import vd.parkmeapp.models.GetLatLngWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
+import vd.parkmeapp.models.HasInternetAccess;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
 import vd.parkmeapp.views.ParkMeAppActivity;
@@ -22,7 +24,7 @@ import vd.parkmeapp.views.ParkMeAppView;
  * Presenter for main activity
  */
 
-public class ParkMeAppPresenter implements Presenter{
+public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInternetAccess{
 
     private LocationRequests locationRequests;
     private ParkMeAppView mView;
@@ -119,4 +121,20 @@ public class ParkMeAppPresenter implements Presenter{
     }
 
 
+    @Override
+    public void activeInternetConnection(ConnectivityManager connectivityManager) {
+
+        HasInternetAccess hasInternetAccess = new HasInternetAccess();
+        Object objects[] = new Object[2];
+        objects[0] = connectivityManager;
+        objects[1] = this;
+        hasInternetAccess.execute(objects);
+
+    }
+
+    @Override
+    public void connectionResults(Boolean result) {
+        mView.hasConnection(result);
+
+    }
 }

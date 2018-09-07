@@ -1,9 +1,11 @@
 package vd.parkmeapp.views;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -64,7 +66,8 @@ public class ParkMeAppActivity extends AppCompatActivity
     private static final int CODE = 1;
     private User tenant;
     private ParkMeAppPresenter mPresenter;
-    private DirectionsUrl mDirectrionsUrl;
+    private ConnectivityManager connectivityManager;
+
 
 
 
@@ -82,11 +85,8 @@ public class ParkMeAppActivity extends AppCompatActivity
             tenant  = getIntent().getParcelableExtra("User");
         }
 
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        String shouldBeEmpty = getIntent().getStringExtra("Empty");
-        if(shouldBeEmpty == null){
-            showMessage("Empty string mofo");
-        }
 
         //request permission for location (must be done inside an activity or a fragment)
         accessUsersLocation();
@@ -150,9 +150,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         }
 
 
-        //Create directions url object
 
-        mDirectrionsUrl = new DirectionsUrl();
     }
 
 
@@ -282,7 +280,8 @@ public class ParkMeAppActivity extends AppCompatActivity
                         || actionId == EditorInfo.IME_ACTION_DONE){
 
                     //Locate the input address
-                    geoLocate();
+                    mPresenter.activeInternetConnection(connectivityManager);
+                   // geoLocate();
                 }
 
                 return false;
@@ -415,5 +414,21 @@ public class ParkMeAppActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("User",tenant);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void moveToInternetFailureActivity() {
+        Intent intent = new Intent(ParkMeAppActivity.this,
+                InternetFailureActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void hasConnection(Boolean result) {
+        if(result){
+            geoLocate();
+        } else {
+            moveToInternetFailureActivity();
+        }
     }
 }

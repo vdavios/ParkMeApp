@@ -90,10 +90,6 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-
-
-
-
     public void cancelLocationRequest(){
         if(mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
@@ -137,9 +133,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             list = geocoder.getFromLocationName(address, 1);
         }catch (IOException e){
             Log.e("Test", "geoLocate: IOException: " + e.getMessage() );
-            //Well-known android framework problem
-            presenter.passMessage("NetworkLocation service is not working" +
-                    " please restart your phone to resolve this issue");
+
         }
         if(list.size() > 0){
             Address addrss = list.get(0);
