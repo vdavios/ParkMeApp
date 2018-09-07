@@ -2,9 +2,6 @@ package vd.parkmeapp.views;
 
 import vd.parkmeapp.models.User;
 
-/**
- * Created by vasileiosdavios on 8/5/17.
- */
 
 public interface EditUserInfoView extends View{
 

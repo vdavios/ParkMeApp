@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 import vd.parkmeapp.models.User;
 
-/**
- *
- */
 
 public interface ParkMeAppView extends ActivitiesThatNeedInternetAccess{
 
