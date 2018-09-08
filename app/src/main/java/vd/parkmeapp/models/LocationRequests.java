@@ -84,8 +84,11 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
         if (ContextCompat.checkSelfPermission(mContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            if(mGoogleApiClient.isConnected()){
                 LocationServices.FusedLocationApi
                         .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+
 
         }
     }
@@ -101,7 +104,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     public void onLocationChanged(Location location) {
         LatLng mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         Log.d("Location changed: ", " True");
-        ((ParkMeAppPresenter)presenter).setUserLocation(mLatLng);
+        (presenter).setUserLocation(mLatLng);
 
     }
 

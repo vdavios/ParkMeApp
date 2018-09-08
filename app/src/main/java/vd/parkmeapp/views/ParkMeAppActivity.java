@@ -412,8 +412,7 @@ public class ParkMeAppActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.connectApiClient();
-        //mPresenter.resumeRequests();
+        mPresenter.resumeRequests();
     }
 
     @Override
