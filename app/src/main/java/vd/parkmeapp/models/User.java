@@ -23,7 +23,7 @@ public interface User extends Parcelable {
 
     String getHouseNumber();
 
-    String getAddressOfTheParkingThatHeIsCurrentlyRenting();
+
 
     String getPostCode();
     String getPph();
@@ -32,6 +32,10 @@ public interface User extends Parcelable {
     String getUid();
     String getIsHeRenting();
     String getUsersIdParkingThatHeIsRenting();
+    double getLatOfParkingThatHeIsCurrentlyRenting();
+    double getLngOfParkingThatHeIsCurrentlyRenting();
+    double getLatOfHisParking();
+    double getLngOfHisParking();
 
     void setUsersIdParkingThatHeIsRenting(String usersIdParkingThatHeIsRenting);
     void setIsHeRenting(String isHeRenting);
@@ -62,5 +66,8 @@ public interface User extends Parcelable {
 
     void setHasParking(String hasParking);
 
-    void setAddressOfTheParkingThatHeIsCurrentlyRenting(String addressOfTheParkingThatHeIsCurrentlyRenting);
+    void setLatOfHisParking(double lat);
+    void setLngOfHisParking(double lng);
+    void setLatOfParkingThatHeIsCurrentlyRenting(double lat);
+    void setLngOfParkingThatHeIsCurrentlyRenting(double lng);
 }

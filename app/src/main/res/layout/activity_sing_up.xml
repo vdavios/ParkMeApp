@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,16 +13,17 @@
         android:id="@+id/signUpText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/singUp"
-        android:gravity="center"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:paddingTop="50dp"
-        android:textSize="@dimen/large"
-        android:textColor="@color/mainColor"
-        android:layout_marginTop="52dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingTop="50dp"
+        android:text="@string/singUp"
+        android:textColor="@color/mainColor"
+        android:textSize="@dimen/large"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true" />
 
 
     <!-- First Name -->
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/SingUpEmail"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="185dp"
+        android:layout_marginTop="150dp"
         android:fontFamily="sans-serif"
         android:hint="@string/lastName"
         android:inputType="textPersonName"
@@ -110,31 +110,82 @@
     <!-- CVV -->
     <EditText
         android:id="@+id/CVV"
-        android:layout_width="170dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/creditCard_input"
-        android:layout_below="@+id/SignUpPassword"
-        android:hint="@string/CVV"
-        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignEnd="@+id/LastName"
+        android:layout_alignTop="@+id/creditCard_input"
         android:fontFamily="sans-serif"
+        android:hint="@string/CVV"
         android:inputType="number"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
         android:maxLength="3"
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignRight="@+id/LastName" />
+
+    <!-- Street Name -->
+    <EditText
+        android:id="@+id/StreetNameInSignUp"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/FirstName"
+        android:layout_below="@+id/creditCard_input"
+        android:hint="@string/StreetName"
+        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignLeft="@+id/FirstName"
+        android:fontFamily="sans-serif"
+        android:inputType="text"
         android:textColor="@color/mainColor"/>
+
+    <!-- House Number -->
+    <EditText
+        android:id="@+id/HouseNumberInSignUp"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/LastName"
+        android:layout_below="@+id/creditCard_input"
+        android:fontFamily="sans-serif"
+        android:hint="@string/HouseNumber"
+        android:inputType="number"
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignRight="@+id/LastName" />
+
+    <!-- Post Code -->
+    <EditText
+        android:id="@+id/PostCodeInSignUp"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/FirstName"
+        android:layout_below="@+id/StreetNameInSignUp"
+        android:hint="@string/PostCode"
+        android:inputType="text"
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignLeft="@+id/FirstName" />
+
+    <!-- Price Per Hour -->
+    <EditText
+        android:id="@+id/PricePerHourSignUp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/CVV"
+        android:layout_below="@+id/StreetNameInSignUp"
+        android:hint="@string/PricePerHour"
+        android:inputType="number"
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut"
+        android:layout_alignLeft="@+id/CVV" />
 
     <Button
         android:id="@+id/SignUp"
-        android:layout_width="match_parent"
+        android:layout_width="348dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/creditCard_input"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="49dp"
+        android:background="@color/mainColor"
         android:text="@string/SignUp"
-        android:textColor="@color/white"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/mainColor"/>
+        android:textColor="@color/white" />
 
 
 

@@ -44,7 +44,12 @@ public class AddParkingPresenter implements Presenter{
 
 
     public void parkingAvailableToRent(){
+        tenant.setHasParking("yes");
         DbSingleton.getInstance().setHasParking("yes");
+    }
+    public void parkingNotAvailableToRent() {
+        tenant.setHasParking("no");
+        DbSingleton.getInstance().setHasParking("no");
     }
     @Override
     public void passMessage(String message) {

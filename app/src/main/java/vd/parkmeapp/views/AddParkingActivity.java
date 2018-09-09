@@ -3,6 +3,7 @@ package vd.parkmeapp.views;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +23,6 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
     private TextView pricePerHourText;
     private User myTenant;
     private AddParkingPresenter mPresenter;
-    private Button mParkingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +41,43 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
         postCodeText = (findViewById(R.id.PostCodeText));
         pricePerHourText = findViewById(R.id.PricePerHourText);
         mPresenter.usersInfo();
-        mParkingButton = findViewById(R.id.RentMyParking);
+        Button mParkingButton = findViewById(R.id.RentMyParking);
         if(mPresenter.hasSetParkingInfo()){
+
+            //Use has set his parking info make button visible
             mParkingButton.setVisibility(View.VISIBLE);
-        }
-        mParkingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            //Check if the user made it available to rent
+            if(myTenant.getHasParking().equals("no")){
+                mParkingButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                mPresenter.parkingAvailableToRent();
-                //Jumping to main activity
-                Intent intent = new Intent(AddParkingActivity.this
-                        , ParkMeAppActivity.class);
-                intent.putExtra("User",myTenant);
-                String result = myTenant.getHasParking();
-                if(myTenant.getHasParking().equals("yes")){
-                    showMessage(result);
-                }
-
-                startActivity(intent);
+                        mPresenter.parkingAvailableToRent();
+                        //Jumping to main activity
+                        Intent intent = new Intent(AddParkingActivity.this
+                                , ParkMeAppActivity.class);
+                        intent.putExtra("User",myTenant);
+                        startActivity(intent);
 
 
+                    }
+                });
+            } else {
+                mParkingButton.setBackgroundColor(getResources().getColor(R.color.red));
+                mParkingButton.setText(R.string.RemoveUsersParkingFromAvailableParkingList);
+                mParkingButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("Removes his parking: ", "true");
+                        mPresenter.parkingNotAvailableToRent();
+                        Intent intent = new Intent(AddParkingActivity.this, ParkMeAppActivity.class);
+                        intent.putExtra("User", myTenant);
+                        startActivity(intent);
+                    }
+                });
             }
-        });
+        }
+
 
     }
 

@@ -26,24 +26,6 @@ public class GetPointsToLocation implements RequiresDataFromWeb{
         downloadTask.execute(url);
     }
 
-   /** private class DownloadTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-            Log.d("DownloadTask:", " true");
-            String data = "";
-            Downloader downloader = new Downloader();
-            data = downloader.downloadUrl(url[0]);
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-
-            downloadCompeted(result);
-        }
-
-    }**/
 
     @Override
     public void downloadCompeted(String result){

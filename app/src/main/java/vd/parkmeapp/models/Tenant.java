@@ -11,7 +11,9 @@ public class Tenant implements User {
 
     private String firstName, lastName, email, password, creditCardNumber, cVV,
             streetName, houseNumber, postCode, pph, isRented, hasParking, uId, isHeRenting,
-            usersIdParkingThatHeIsRenting, addressOfTheParkingThatHeIsCurrentlyRenting;
+            usersIdParkingThatHeIsRenting;
+    private double latOfHisParking, lngOfHisParking, latOfParkingThatHeIsCurrentlyRenting,
+            lngOfParkingThatHeIsCurrentlyRenting;
 
     public Tenant(){ }
 
@@ -20,7 +22,9 @@ public class Tenant implements User {
                   String streetName, String houseNumber, String postCode, String pph,
                   String hasParking, String isRented, String uId, String isHeRenting,
                   String usersIdParkingThatHeIsRenting,
-                  String addressOfTheParkingThatHeIsCurrentlyRenting) {
+                  double latOfHisParking,
+                  double lngOfHisParking, double latOfParkingThatHeIsCurrentlyRenting,
+                  double lngOfParkingThatHeIsCurrentlyRenting) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -37,8 +41,10 @@ public class Tenant implements User {
         this.isHeRenting = isHeRenting;
         this.uId = uId;
         this.usersIdParkingThatHeIsRenting = usersIdParkingThatHeIsRenting;
-        this.addressOfTheParkingThatHeIsCurrentlyRenting =
-                addressOfTheParkingThatHeIsCurrentlyRenting;
+        this.latOfParkingThatHeIsCurrentlyRenting = latOfParkingThatHeIsCurrentlyRenting;
+        this.lngOfParkingThatHeIsCurrentlyRenting = lngOfParkingThatHeIsCurrentlyRenting;
+        this.latOfHisParking = latOfHisParking;
+        this.lngOfHisParking = lngOfHisParking;
 
     }
 
@@ -59,7 +65,10 @@ public class Tenant implements User {
         isHeRenting = in.readString();
         uId = in.readString();
         usersIdParkingThatHeIsRenting = in.readString();
-        addressOfTheParkingThatHeIsCurrentlyRenting = in.readString();
+        latOfHisParking = in.readDouble();
+        lngOfHisParking = in.readDouble();
+        latOfParkingThatHeIsCurrentlyRenting = in.readDouble();
+        lngOfParkingThatHeIsCurrentlyRenting = in.readDouble();
 
     }
 
@@ -116,38 +125,8 @@ public class Tenant implements User {
     }
 
     @Override
-    public String getAddressOfTheParkingThatHeIsCurrentlyRenting() {
-        return addressOfTheParkingThatHeIsCurrentlyRenting;
-    }
-
-    @Override
     public String getPostCode() {
         return postCode;
-    }
-
-    @Override
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Override
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
     }
 
     @Override
@@ -179,6 +158,54 @@ public class Tenant implements User {
     @Override
     public String getUsersIdParkingThatHeIsRenting() {
         return usersIdParkingThatHeIsRenting;
+    }
+
+    @Override
+    public double getLatOfParkingThatHeIsCurrentlyRenting() {
+        return latOfParkingThatHeIsCurrentlyRenting;
+    }
+
+    @Override
+    public double getLngOfParkingThatHeIsCurrentlyRenting() {
+        return lngOfParkingThatHeIsCurrentlyRenting;
+    }
+
+    @Override
+    public double getLatOfHisParking() {
+        return latOfHisParking;
+    }
+
+    @Override
+    public double getLngOfHisParking() {
+        return lngOfHisParking;
+    }
+
+
+
+    @Override
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    @Override
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
     }
 
     @Override
@@ -231,9 +258,25 @@ public class Tenant implements User {
         this.hasParking = hasParking;
     }
 
+
     @Override
-    public void setAddressOfTheParkingThatHeIsCurrentlyRenting(String addressOfTheParkingThatHeIsCurrentlyRenting) {
-        this.addressOfTheParkingThatHeIsCurrentlyRenting = addressOfTheParkingThatHeIsCurrentlyRenting;
+    public void setLatOfHisParking(double lat) {
+        latOfHisParking = lat;
+    }
+
+    @Override
+    public void setLngOfHisParking(double lng) {
+        lngOfHisParking = lng;
+    }
+
+    @Override
+    public void setLatOfParkingThatHeIsCurrentlyRenting(double lat) {
+        latOfParkingThatHeIsCurrentlyRenting = lat;
+    }
+
+    @Override
+    public void setLngOfParkingThatHeIsCurrentlyRenting(double lng) {
+        lngOfParkingThatHeIsCurrentlyRenting = lng;
     }
 
 
@@ -259,6 +302,10 @@ public class Tenant implements User {
         dest.writeString(isHeRenting);
         dest.writeString(uId);
         dest.writeString(usersIdParkingThatHeIsRenting);
-        dest.writeString(addressOfTheParkingThatHeIsCurrentlyRenting);
+        dest.writeDouble(latOfHisParking);
+        dest.writeDouble(lngOfHisParking);
+        dest.writeDouble(latOfParkingThatHeIsCurrentlyRenting);
+        dest.writeDouble(lngOfParkingThatHeIsCurrentlyRenting);
+
     }
 }

@@ -107,6 +107,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             mPresenter.usersInfo(myTenant);
         } else {
             emptyUserInfo();
+            moveToInternetFailureActivity();
         }
     }
 }

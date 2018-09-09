@@ -8,16 +8,17 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+
 import vd.parkmeapp.models.DataParser;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.DirectionsUrl;
 import vd.parkmeapp.models.Downloader;
-import vd.parkmeapp.models.GetLatLngWithHTTPRequest;
+import vd.parkmeapp.models.GetLatLngFromAddressWithHTTPRequest;
+import vd.parkmeapp.models.GetLocationWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.HasInternetAccess;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
-import vd.parkmeapp.views.ParkMeAppActivity;
 import vd.parkmeapp.views.ParkMeAppView;
 
 /**
@@ -30,6 +31,7 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     private ParkMeAppView mView;
     private User mCurrentUser;
     private ConnectivityManager connectivityManager;
+
 
 
     public ParkMeAppPresenter(ParkMeAppView mView, Context context, User currentUser,
@@ -67,48 +69,34 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
         mView.setCamera(usersLatLng);
     }
 
-    public LatLng getCurrentLocation(){
-       return locationRequests.getDeviceLocation();
-    }
-
-    private LatLng getParkingLocation(Context context, String address){
+    public void findLocation(Context context, String address){
         Log.d("I am here: ", "calling location request");
-
-        return locationRequests.geoLocate(context, address);
-    }
-
-    public void routeToParking(Context context, String address){
-        LatLng parkingLocation = getParkingLocation(context,address);
+        LatLng parkingLocation = locationRequests.geoLocate(context, address);
         if(parkingLocation == null){
-            Log.d("result null: ", "Getting latlng via http request");
-            geocodeFailed(new DirectionsUrl(), address, new Downloader(),
-                    new DataParser());
+            geocodeFailed(new DirectionsUrl(), address, new Downloader(), new DataParser());
         } else {
-           getRouteToLocation(parkingLocation);
+            moveCameraTo(parkingLocation);
         }
-
     }
-
-    public void getRouteToLocation(LatLng parkingLocation){
-        LatLng currentLocation = getCurrentLocation();
-        DirectionsUrl directionsUrl = new DirectionsUrl();
-        String url = directionsUrl.getDirectionsUrl(currentLocation.latitude, currentLocation.longitude,
-                parkingLocation.latitude, parkingLocation.longitude);
-        new GetPointsToLocation(this, url);
-    }
-
     private void geocodeFailed(DirectionsUrl directionsUrl, String address, Downloader downloader, DataParser dataParser){
-        GetLatLngWithHTTPRequest getLatLngWithHTTPRequest
-                = new GetLatLngWithHTTPRequest(directionsUrl, address,
+        GetLocationWithHTTPRequest GetLocationWithHTTPRequest
+                = new GetLocationWithHTTPRequest(directionsUrl, address,
                 downloader, dataParser,this);
+    }
+
+    public void getRouteToLocation(double latToTheParkingThatHeIsRenting, double lngToTheParkingThatHeIsRenting){
+
+        Log.d("Requesting ","route to the parking that the user is renting" );
+        LatLng usersLocation = locationRequests.getDeviceLocation();
+        DirectionsUrl directionsUrl = new DirectionsUrl();
+        String url = directionsUrl.getDirectionsUrl(usersLocation.latitude, usersLocation.longitude,
+                latToTheParkingThatHeIsRenting, lngToTheParkingThatHeIsRenting);
+        new GetPointsToLocation(this, url);
+
     }
 
     public void routesReady(ArrayList<LatLng> route){
         mView.addPolyline(route);
-    }
-
-    public void moveCameraTo(LatLng location){
-        ((ParkMeAppActivity)mView).moveCamera(location,15f);
     }
 
     public void signOut() {
@@ -118,12 +106,14 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     public void leaveParking(String uId, User mCurrentUser){
         mCurrentUser.setIsHeRenting("no");
         mCurrentUser.setUsersIdParkingThatHeIsRenting("0");
-        mCurrentUser.setAddressOfTheParkingThatHeIsCurrentlyRenting("");
+        mCurrentUser.setLatOfParkingThatHeIsCurrentlyRenting(0d);
+        mCurrentUser.setLngOfParkingThatHeIsCurrentlyRenting(0d);
         mView.updateUser(mCurrentUser);
         DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting("0");
-        DbSingleton.getInstance().setValue(uId,"no");
+        DbSingleton.getInstance().setParkingAvailableToRent(uId,"no");
         DbSingleton.getInstance().setIsHeRenting("no");
-        DbSingleton.getInstance().setAddressOfTheParkingThatHeIsCurrentlyRenting("");
+        DbSingleton.getInstance().setLatOfTheParkingThatHeIsCurrentlyRenting(0d);
+        DbSingleton.getInstance().setLngOfTheParkingThatHeIsCurrentlyRenting(0d);
         mView.showMessage("User left parking");
     }
 
@@ -143,6 +133,10 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     public void connectionResults(Boolean result) {
         mView.hasConnection(result);
 
+    }
+
+    public void moveCameraTo(LatLng location){
+        mView.moveCamera(location,15f);
     }
 
     public void apiConnected() {

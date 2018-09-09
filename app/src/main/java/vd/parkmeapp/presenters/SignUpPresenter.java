@@ -25,7 +25,8 @@ public class SignUpPresenter implements Presenter{
 
 
     public void signUpUser(String firstName, String lastName, String email,
-                           String password, String creditCardNumber, String cVV){
+                           String password, String creditCardNumber, String cVV, String streetName,
+                           String houseNumber, String postCode, String pricePerHour){
 
         Validator validator = new ValidatorImpl();
         if(!validator.validateName(firstName) || !validator.validateName(lastName)) {
@@ -45,7 +46,8 @@ public class SignUpPresenter implements Presenter{
             passMessage("Invalid CVV number");
             return;
         }
-        myDb.signUpUser(firstName, lastName, email, password, creditCardNumber, cVV, this);
+        myDb.signUpUser(firstName, lastName, email, password, creditCardNumber,
+                cVV, streetName, houseNumber, postCode, pricePerHour,this);
 
 
     }

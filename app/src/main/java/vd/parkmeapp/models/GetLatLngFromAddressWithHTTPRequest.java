@@ -11,16 +11,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
+import vd.parkmeapp.presenters.PresentersForActivitiesThaRequireInternetAccess;
 
-public class GetLatLngWithHTTPRequest implements RequiresDataFromWeb {
+public class GetLatLngFromAddressWithHTTPRequest implements RequiresDataFromWeb {
     private String url ;
     private JSONObject jsonObject;
     private Downloader myDownloader;
     private DataParser myDataParser;
     private ParkMeAppPresenter mPresenter;
 
-    public GetLatLngWithHTTPRequest(DirectionsUrl directionsUrl, String address, Downloader downloader, DataParser dataParser,
-                                    ParkMeAppPresenter presenter){
+    public GetLatLngFromAddressWithHTTPRequest(DirectionsUrl directionsUrl, String address, Downloader downloader, DataParser dataParser,
+                                               ParkMeAppPresenter presenter){
 
         url = directionsUrl.getLocationLatLngUrl(address);
         myDownloader = downloader;
@@ -49,7 +50,8 @@ public class GetLatLngWithHTTPRequest implements RequiresDataFromWeb {
     public void downloadCompeted(String result) {
         jsonObject = createJSONObject(result);
         LatLng latLngToParking = myDataParser.getLatLngOfLocation(jsonObject);
-        mPresenter.getRouteToLocation(latLngToParking);
+        mPresenter.moveCameraTo(latLngToParking);
+
 
     }
 

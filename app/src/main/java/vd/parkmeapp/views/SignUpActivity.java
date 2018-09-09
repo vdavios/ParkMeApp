@@ -20,7 +20,12 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
     private EditText cvvText;
     private EditText firstNameText;
     private EditText lastNameText;
+    private EditText streetNameText;
+    private EditText houseNumberText;
+    private EditText postCodeText;
+    private EditText pricePerHourText;
     private SignUpPresenter mPresenter;
+
 
 
     @Override
@@ -40,6 +45,11 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
         cvvText =  (findViewById(R.id.CVV));
         firstNameText = (findViewById(R.id.FirstName));
         lastNameText = (findViewById(R.id.LastName));
+        streetNameText = findViewById(R.id.StreetNameInSignUp);
+        houseNumberText = findViewById(R.id.HouseNumberInSignUp);
+        postCodeText = findViewById(R.id.PostCodeInSignUp);
+        pricePerHourText = findViewById(R.id.PricePerHourSignUp);
+
     }
 
     @Override
@@ -57,9 +67,14 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
                 String password = passwordText.getText().toString().trim();
                 String creditCardNumber = creditCardNumberText.getText().toString().trim();
                 String cvvNumber =  cvvText.getText().toString().trim();
+                String streetName = streetNameText.getText().toString().trim();
+                String houseNumber = houseNumberText.getText().toString().trim();
+                String postCode = postCodeText.getText().toString().trim();
+                String pricePerHour = pricePerHourText.getText().toString().trim();
 
                 mPresenter.signUpUser(firstName, lastName, email,
-                        password, creditCardNumber, cvvNumber);
+                        password, creditCardNumber, cvvNumber, streetName, houseNumber,
+                        postCode, pricePerHour);
             }
         });
     }

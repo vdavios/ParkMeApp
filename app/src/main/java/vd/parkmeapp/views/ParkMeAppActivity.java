@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -37,23 +36,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
-import vd.parkmeapp.models.DataParser;
-import vd.parkmeapp.models.DirectionsUrl;
-import vd.parkmeapp.models.Downloader;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.R;
@@ -70,6 +54,9 @@ public class ParkMeAppActivity extends AppCompatActivity
     private ConnectivityManager connectivityManager;
     private String address;
     private Polyline polyline;
+    private boolean accessToLocation = false;
+    private double latOfTheParkingThatHeIsRenting;
+    private double lngOfTheParkingThatHeIsRenting;
 
 
 
@@ -129,7 +116,8 @@ public class ParkMeAppActivity extends AppCompatActivity
 
             Log.d("Renting a parking: ", "true");
             //find the parking location
-            address = tenant.getAddressOfTheParkingThatHeIsCurrentlyRenting();
+            latOfTheParkingThatHeIsRenting = tenant.getLatOfParkingThatHeIsCurrentlyRenting();
+            lngOfTheParkingThatHeIsRenting = tenant.getLngOfParkingThatHeIsCurrentlyRenting();
             //check connection and add route to parking
             //mPresenter.activeInternetConnection(connectivityManager);
 
@@ -152,11 +140,25 @@ public class ParkMeAppActivity extends AppCompatActivity
             parkMeAppButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
-                    intent.putExtra("User",tenant);
-                    startActivity(intent);
-                }
-            });
+                    //Check if we have access to the location of the user
+                    if(doWeHaveAccessToUserLocation()){
+
+                        Log.d("access user location: ", "true");
+
+                        //We have access, ParkMeApp fully functional
+                        Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
+                        intent.putExtra("User",tenant);
+                        startActivity(intent);
+                    } else {
+                        //We don't have access to location. Deny access to user with a toast message
+                        Toast.makeText(ParkMeAppActivity.this,R.string.access_location, Toast.LENGTH_LONG)
+                                .show();
+                        }
+
+                    }
+                });
+
+
         }
 
 
@@ -211,8 +213,11 @@ public class ParkMeAppActivity extends AppCompatActivity
 
             if((ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED)){
+                Log.d("Permission granted: ", "here");
                 mPresenter.connectApiClient();
                 mMap.setMyLocationEnabled(true);
+                accessToLocation = true;
+                Log.d("accessToLocation: ", String.valueOf(accessToLocation));
                 setUpMap();
             }
         }
@@ -257,10 +262,10 @@ public class ParkMeAppActivity extends AppCompatActivity
 
 
     //Geolocation
-    private static String TAG = "Test";
+    private static String TAG = "Geolocation";
     private EditText mSearchText;
 
-
+    @Override
     public void moveCamera(LatLng latLng, float zoom){
         mPresenter.pauseRequests();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
@@ -279,7 +284,7 @@ public class ParkMeAppActivity extends AppCompatActivity
     }
 
     private void init(){
-        Log.d(TAG, "init: initializing");
+        Log.d(TAG, " initializing");
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -303,11 +308,10 @@ public class ParkMeAppActivity extends AppCompatActivity
     }
 
 
-    private void geoLocate(String address){
-        Log.d(TAG, "geoLocate: geolocating");
+    private void routeToParkingThatUserIsRenting(double latOfTheParkingThatHeIsRenting, double lngOfTheParkingThatHeIsRenting){
+        Log.d(TAG, "Calling presenter method: routeToParking");
 
-        mPresenter.routeToParking(this, address);
-
+        mPresenter.getRouteToLocation(latOfTheParkingThatHeIsRenting, lngOfTheParkingThatHeIsRenting);
     }
 
     public void addPolyline(ArrayList<LatLng> points){
@@ -437,9 +441,29 @@ public class ParkMeAppActivity extends AppCompatActivity
     @Override
     public void hasConnection(Boolean result) {
         if(result){
-            geoLocate(address);
+            //Check if the user is looking for a random location
+            if(address==null || address.isEmpty()){
+                //He is not create root to the parking he is renting
+                routeToParkingThatUserIsRenting(latOfTheParkingThatHeIsRenting, lngOfTheParkingThatHeIsRenting);
+            } else {
+
+                //He is looking for parking spaces in a random location
+                //Move camera to that location
+                moveToAddress(address);
+            }
+            //Reset the address value
+            address = "";
+
         } else {
             moveToInternetFailureActivity();
         }
+    }
+
+    public void moveToAddress(String address){
+        mPresenter.findLocation(this,address);
+    }
+
+    public boolean doWeHaveAccessToUserLocation(){
+        return accessToLocation;
     }
 }

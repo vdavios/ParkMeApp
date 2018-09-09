@@ -39,6 +39,7 @@ public class ValidationTest  {
         validNames = new String[]{"Bill", "vAsiLis", "GeorGe"};
         invalidNames = new String[]{"Bi ll", "vasi3lis", "V@s1lis"};
 
+
     }
 
     @Test

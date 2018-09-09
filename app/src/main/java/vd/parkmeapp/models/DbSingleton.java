@@ -117,7 +117,11 @@ public class DbSingleton {
 
     public void signUpUser(final String firstName, final String lastName,
                            final String email, final String password,
-                           final String creditCardNumber, final String cvvNumber, final Presenter presenter) {
+                           final String creditCardNumber, final String cvvNumber,
+                           final String streetName,final String houseNumber,
+                           final String postCode,
+                           final String pricePerHour,
+                           final Presenter presenter) {
         authorizeUser();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -135,13 +139,15 @@ public class DbSingleton {
                                 Log.d(TAG, "onComplete: Authstate changed: " + userID);
                                 User newUser = new Tenant(firstName, lastName, email, password,
                                         creditCardNumber, cvvNumber,
-                                        "Please add the Street Name",
-                                        "Please add the House Number",
-                                        "Please add the Post Code",
-                                        "Please add Price per Hour",
+                                        streetName,
+                                        houseNumber,
+                                        postCode,
+                                        pricePerHour,
                                         "no","no",userID,"no"
                                         ,"0",
-                                        "");
+                                        0d,0d,
+                                        0d,
+                                        0d);
                                 mReference.child("Users").child(userID).setValue(newUser);
                                 ((SignUpPresenter)presenter).singUpSuccessfully();
                             }
@@ -260,9 +266,7 @@ public class DbSingleton {
         }
     }
 
-    private void setValue(String userId, String field, String value) {
-        mReference.child("Users").child(userId).child(field).setValue(value);
-    }
+
 
 
     public void signOut() {
@@ -361,18 +365,52 @@ public class DbSingleton {
         }
     }
 
-    public void setAddressOfTheParkingThatHeIsCurrentlyRenting(String parkingAddress){
+    public void setLatOfUsersParking(double lat){
         FirebaseUser mUser = mAuth.getCurrentUser();
         if(mUser!=null){
             String userId = mUser.getUid();
-            setValue(userId,"addressOfTheParkingThatHeIsCurrentlyRenting", parkingAddress);
+
+            setDoubleValue(userId,"latOfHisParking", lat);
         }
     }
 
-    public void setValue(String uId, String rented){
-        Log.d("Inside setValue: ", "true");
-        Log.d("uID: ", uId);
-        mReference.child("Users").child(uId).child("rented").setValue(rented);
+    public void setLngOfUsersParking(double lng){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setDoubleValue(userId,"lngOfHisParking",lng);
+        }
+    }
+
+    public void setLatOfTheParkingThatHeIsCurrentlyRenting(double lat){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setDoubleValue(userId,"latOfParkingThatHeIsCurrentlyRenting",lat);
+        }
+    }
+
+    public void setLngOfTheParkingThatHeIsCurrentlyRenting(double lng){
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        if(mUser!=null){
+            String userId = mUser.getUid();
+            setDoubleValue(userId,"lngOfParkingThatHeIsCurrentlyRenting",lng);
+        }
+    }
+
+    public void setDoubleValue(String uId, String field, double value){
+        mReference.child("Users").child(uId).child(field).setValue(value);
 
     }
+    public void setParkingAvailableToRent(String uId, String rented){
+        setValue(uId,"rented",rented);
+    }
+
+    private void setValue(String userId, String field, String value) {
+        mReference.child("Users").child(userId).child(field).setValue(value);
+    }
+
+
+
+
 }

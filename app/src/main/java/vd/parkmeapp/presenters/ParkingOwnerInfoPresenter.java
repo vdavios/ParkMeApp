@@ -24,14 +24,19 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
         mView.showMessage(message);
     }
 
-    public void isNowRented(String ownerId, String parkingAddress){
+    public void isNowRented(Tenant parkingOwner){
+        String parkingOwnerId = parkingOwner.getUid();
+        double parkingOwnerLat = parkingOwner.getLatOfHisParking();
+        double parkingOwnerLng = parkingOwner.getLngOfHisParking();
         currentUser.setIsHeRenting("yes");
-        currentUser.setUsersIdParkingThatHeIsRenting(ownerId);
-        currentUser.setAddressOfTheParkingThatHeIsCurrentlyRenting(parkingAddress);
+        currentUser.setUsersIdParkingThatHeIsRenting(parkingOwnerId);
+        currentUser.setLatOfParkingThatHeIsCurrentlyRenting(parkingOwnerLat);
+        currentUser.setLngOfParkingThatHeIsCurrentlyRenting(parkingOwnerLng);
         mView.updateUser(currentUser);
-        DbSingleton.getInstance().setAddressOfTheParkingThatHeIsCurrentlyRenting(parkingAddress);
-        DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting(ownerId);
-        DbSingleton.getInstance().setValue(ownerId,"yes");
+        DbSingleton.getInstance().setLatOfTheParkingThatHeIsCurrentlyRenting(parkingOwnerLat);
+        DbSingleton.getInstance().setLngOfTheParkingThatHeIsCurrentlyRenting(parkingOwnerLng);
+        DbSingleton.getInstance().setUsersIdParkingThatHeIsRenting(parkingOwnerId);
+        DbSingleton.getInstance().setParkingAvailableToRent(parkingOwnerId,"yes");
         DbSingleton.getInstance().setIsHeRenting("yes");
         mView.showMessage("Is rented now");
     }
@@ -53,7 +58,7 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
     public void parkingOwnersInfo(Tenant parkingOwner){
         String name = parkingOwner.getFirstName() + " " + parkingOwner.getLastName();
         String address = parkingOwner.getStreetName() + " "+ parkingOwner.getHouseNumber();
-        String price = parkingOwner.getPph() + " P/h";
+        String price = parkingOwner.getPph() + " £/h";
         String distance = "15 min";
         mView.setParkingOwnerInfo(name,address,distance,price);
     }

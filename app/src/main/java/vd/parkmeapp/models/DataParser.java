@@ -2,7 +2,7 @@ package vd.parkmeapp.models;
 
 
 
-import android.util.Log;
+
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -109,7 +109,6 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     }
 
 
-
     //Last known Location
     public LatLng getDeviceLocation(){
 
@@ -132,6 +131,8 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
     }
 
 
+
+
     //Returns the LatLng object of the desired location
     public LatLng geoLocate(Context context, String address){
         Geocoder geocoder = new Geocoder(context);
@@ -146,6 +147,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
             Address addrss = list.get(0);
 
             Log.d("Test", "geoLocate: found a location: " + addrss.toString());
+
 
             return new LatLng(addrss.getLatitude(),addrss.getLongitude());
 
