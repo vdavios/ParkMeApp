@@ -2,8 +2,11 @@ package vd.parkmeapp.presenters;
 
 import android.net.ConnectivityManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.HasInternetAccess;
 import vd.parkmeapp.models.Tenant;
@@ -24,9 +27,9 @@ public class LoadingDataPresenter implements PresentersForActivitiesThaRequireIn
     }
 
 
-    public void getParkingList(){
+    public void getParkingList(LatLng usersLocation){
         DbSingleton myDb = DbSingleton.getInstance();
-        myDb.fetchData(this,currentUser);
+        myDb.fetchData(this,currentUser,  usersLocation, new CalculateDistance());
 
     }
 

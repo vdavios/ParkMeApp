@@ -86,6 +86,8 @@ public class ParkMeAppActivity extends AppCompatActivity
 
 
 
+
+
         //----------------- Drawer -----------------//
 
         final DrawerLayout drawer =  findViewById(R.id.drawer_layout);
@@ -145,9 +147,13 @@ public class ParkMeAppActivity extends AppCompatActivity
 
                         Log.d("access user location: ", "true");
 
+                        //Users last known location
+                        LatLng userLocation = mPresenter.usersLocation();
+
                         //We have access, ParkMeApp fully functional
                         Intent intent = new Intent(ParkMeAppActivity.this, LoadingScreenActivity.class);
                         intent.putExtra("User",tenant);
+                        intent.putExtra("UsersLocation", userLocation);
                         startActivity(intent);
                     } else {
                         //We don't have access to location. Deny access to user with a toast message

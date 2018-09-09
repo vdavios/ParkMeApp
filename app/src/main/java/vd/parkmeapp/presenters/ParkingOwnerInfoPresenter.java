@@ -4,6 +4,9 @@ package vd.parkmeapp.presenters;
 
 import android.net.ConnectivityManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.HasInternetAccess;
 import vd.parkmeapp.models.Tenant;
@@ -61,5 +64,11 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
         String price = parkingOwner.getPph() + " £/h";
         String distance = "15 min";
         mView.setParkingOwnerInfo(name,address,distance,price);
+    }
+
+    public String calculateDistanceToParking(LatLng usersLocation, double latToParking, double lngToParking){
+        CalculateDistance calculateDistance = new CalculateDistance();
+        return calculateDistance.distanceFormated(usersLocation.latitude, usersLocation.longitude,
+                latToParking,  lngToParking);
     }
 }

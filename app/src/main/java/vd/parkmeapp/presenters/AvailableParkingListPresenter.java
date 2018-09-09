@@ -1,9 +1,9 @@
 package vd.parkmeapp.presenters;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import vd.parkmeapp.models.DbSingleton;
+import com.google.android.gms.maps.model.LatLng;
+
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.views.AvailableParkingListActivity;
 
 public class AvailableParkingListPresenter implements Presenter{
@@ -23,12 +23,12 @@ public class AvailableParkingListPresenter implements Presenter{
 
     }
 
-
-    public void getParkingList(){
-        DbSingleton myDb = DbSingleton.getInstance();
-
-         //return myDb.fetchData();
+    public String calculateDistanceToParking(LatLng usersLocation, double latToParking, double lngToParking){
+        CalculateDistance calculateDistance = new CalculateDistance();
+        return calculateDistance.distanceFormated(usersLocation.latitude, usersLocation.longitude,
+                latToParking,  lngToParking);
     }
+
 
 
 }

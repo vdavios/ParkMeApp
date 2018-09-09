@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vd.parkmeapp.presenters.LoadingParkingPresenter;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.presenters.PresentersForActivitiesThaRequireInternetAccess;
 import vd.parkmeapp.presenters.WelcomeActivityPresenter;
@@ -51,6 +52,9 @@ public class GetLocationWithHTTPRequest implements RequiresDataFromWeb {
                 break;
             case "ParkMeAppPresenter":
                 ((ParkMeAppPresenter) mPresenter).moveCameraTo(parkingLatLng);
+                break;
+            case "LoadingParkingPresenter":
+                ((LoadingParkingPresenter)mPresenter).latLngFound(parkingLatLng.latitude, parkingLatLng.longitude);
 
         }
     }

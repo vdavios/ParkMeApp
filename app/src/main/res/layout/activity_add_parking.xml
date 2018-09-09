@@ -14,168 +14,62 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:textColor="@color/mainColor"
-        android:text="@string/AddParking"
+        android:text="@string/RentMyParking"
         android:textSize="25sp"
         android:gravity="center"
         android:textStyle="bold"
-
         android:fontFamily="sans-serif" />
 
 
-    <!-- Street Name Label -->
+    <!-- Parking Location Label -->
     <TextView
-        android:id="@+id/StreetNameLabel"
+        android:id="@+id/ParkingLocationLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editProfile_header"
-        android:text="@string/StreetName"
+        android:text="@string/ParkingLocation"
         android:textColor="@color/grey"
         android:layout_marginTop="30dp"
-        android:textSize="15sp"
-        android:paddingLeft="20dp"/>
+        android:textSize="18sp"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
 
-    <!-- Street Name Text-->
+    <!-- Parking Location Text-->
     <TextView
-        android:id="@+id/StreetNameText"
+        android:id="@+id/ParkingLocationText"
         android:layout_width="316dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/StreetNameLabel"
+        android:layout_below="@+id/ParkingLocationLabel"
         android:paddingLeft="20dp"
         android:textColor="@color/mainColor"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
 
-    <!-- Street Name Line -->
+    <!-- Parking Location Line -->
     <View
-        android:id="@+id/StreetNameLine"
+        android:id="@+id/ParkingLocationLine"
         android:layout_width="352dp"
         android:layout_height="1dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/StreetNameText"
+        android:layout_below="@+id/ParkingLocationText"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
         android:background="@color/mainColor"
-        android:paddingLeft="20dp" />
-
-    <!-- House Number Label -->
-    <TextView
-        android:id="@+id/HouseNumberLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/HouseNumber"
-        android:textColor="@color/grey"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/StreetNameLine"
-        android:textSize="15sp"
-        android:paddingLeft="20dp"/>
-
-
-    <!-- House Number Text -->
-    <TextView
-        android:id="@+id/HouseNumberText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/mainColor"
-        android:layout_below="@+id/HouseNumberLabel"
-        android:textSize="18sp"
-        android:paddingLeft="20dp"/>
-
-
-    <!-- House Number Line -->
-    <View
-        android:id="@+id/HouseNumberLine"
-        android:layout_width="352dp"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/HouseNumberText"
-        android:layout_marginStart="20dp"
-        android:background="@color/mainColor"
         android:paddingLeft="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp" />
+        android:paddingStart="20dp"
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-
-    <!-- Post Code Label -->
-    <TextView
-        android:id="@+id/PostCodeLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/PostCode"
-        android:textColor="@color/grey"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/HouseNumberLine"
-        android:textSize="15sp"
-        android:paddingLeft="20dp"/>
-
-
-    <!-- Post code Text -->
-    <TextView
-        android:id="@+id/PostCodeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/PostCodeLabel"
-        android:textColor="@color/mainColor"
-        android:textSize="18sp"
-        android:paddingLeft="20dp"/>
-
-
-    <!-- Post Code Line -->
-    <View
-        android:id="@+id/PostCodeLine"
-        android:layout_width="352dp"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/PostCodeText"
-        android:layout_marginStart="20dp"
-        android:background="@color/mainColor"
-        android:paddingLeft="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp" />
-
-
-    <!-- Price Per Hour Label -->
-    <TextView
-        android:id="@+id/PricePerHourLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/PricePerHour"
-        android:textColor="@color/grey"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/PostCodeLine"
-        android:textSize="15sp"
-        android:paddingLeft="20dp"/>
-
-
-    <!-- Post code Text -->
-    <TextView
-        android:id="@+id/PricePerHourText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/PricePerHourLabel"
-        android:textColor="@color/mainColor"
-        android:textSize="18sp"
-        android:paddingLeft="20dp"/>
-
-    <!-- Price Per Hour Line -->
-    <View
-        android:id="@+id/PricePerHourLine"
-        android:layout_width="352dp"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/PricePerHourText"
-        android:layout_marginStart="20dp"
-        android:background="@color/mainColor"
-        android:paddingLeft="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp" />
 
     <Button
         android:id="@+id/RentMyParking"
         android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="101dp"
+        android:layout_marginTop="201dp"
         android:background="@color/mainColor"
         android:text="@string/RentMyParking"
         android:textColor="@color/white"

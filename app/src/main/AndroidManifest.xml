@@ -59,7 +59,8 @@
         <activity android:name=".views.ParkingOwnerInfoActivity" />
         <activity android:name=".views.HistoryActivity" />
         <activity android:name=".views.InternetFailureActivity" />
-        <activity android:name=".views.AddParkingLoadingScreenActivity"></activity>
+        <activity android:name=".views.EditParkingInfoActivity" />
+        <activity android:name=".views.LoadingParkingActivity"></activity>
     </application>
 
 </manifest>

@@ -15,9 +15,15 @@ import vd.parkmeapp.models.User;
 public class UserTest {
     private User myUser;
     private User tenant;
-    //rivate String firstName, lastName, email, password, creditCardNumber, cVV,
-    //            streetName, houseNumber, postCode, pph, isRented, hasParking, uId, isHeRenting,
-    //            usersIdParkingThatHeIsRenting;
+    // Constructor
+    //       String firstName, String lastName, String email,
+    //                  String password, String creditCardNumber, String cVV,
+    //                  String streetName, String houseNumber, String postCode, String pph,
+    //                  String hasParking, String isRented, String uId, String isHeRenting,
+    //                  String usersIdParkingThatHeIsRenting,
+    //                  double latOfHisParking,
+    //                  double lngOfHisParking, double latOfParkingThatHeIsCurrentlyRenting,
+    //                  double lngOfParkingThatHeIsCurrentlyRentinggThatHeIsCurrentlyRenting
 
     @Before
     public void beforeTest(){
@@ -26,7 +32,8 @@ public class UserTest {
                 "123456bB", "1234567890123456",
                 "123","ddd", "12", "12412",
                 "12", "no", "no", "sdjaskenk1k123@",
-                "no", "0");
+                "no","",
+                0d,0d,0d,0d);
     }
 
 
@@ -179,7 +186,7 @@ public class UserTest {
 
     @Test
     public void usersIdParkingThatHeIsRentingTestSuccess(){
-        Assert.assertEquals("0" , tenant.getUsersIdParkingThatHeIsRenting());
+        Assert.assertEquals("" , tenant.getUsersIdParkingThatHeIsRenting());
     }
 
 

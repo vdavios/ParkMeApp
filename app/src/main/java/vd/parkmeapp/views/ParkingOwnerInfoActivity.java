@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import vd.parkmeapp.R;
@@ -23,6 +25,7 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
     private ArrayList<Tenant> owners;
     private ParkingOwnerInfoPresenter parkingOwnerInfoPresenter;
     private ConnectivityManager connectivityManager;
+    private LatLng usersCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
         mCurrentUser = getIntent().getParcelableExtra("User");
         parkingOwner = getIntent().getParcelableExtra("ParkingOwner");
         owners = getIntent().getParcelableArrayListExtra("Results");
+        usersCurrentLocation = getIntent().getParcelableExtra("UsersLocation");
         parkingOwnerInfoPresenter = new ParkingOwnerInfoPresenter(this, mCurrentUser);
 
         //Creating a connectivity manager
@@ -61,6 +65,7 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
         Intent intent = new Intent(ParkingOwnerInfoActivity.this, AvailableParkingListActivity.class);
         intent.putExtra("User", mCurrentUser);
         intent.putExtra("Results", owners);
+        intent.putExtra("UsersLocation", usersCurrentLocation);
         startActivity(intent);
 
     }
@@ -100,7 +105,9 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
     public void setParkingOwnerInfo(String name, String address, String distance, String pricePerHour) {
         parkingOwnerName.setText(name);
         parkingAddress.setText(address);
-        distanceFromParking.setText("15min");
+        String distanceToParking = parkingOwnerInfoPresenter.calculateDistanceToParking(usersCurrentLocation,
+                parkingOwner.getLatOfHisParking(), parkingOwner.getLngOfHisParking());
+        distanceFromParking.setText(distanceToParking);
         parkingPrice.setText(pricePerHour);
     }
 }

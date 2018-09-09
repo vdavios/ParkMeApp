@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import vd.parkmeapp.R;
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.LoadingDataPresenter;
@@ -18,12 +21,15 @@ import vd.parkmeapp.presenters.LoadingDataPresenter;
 public class LoadingScreenActivity extends AppCompatActivity implements ActivitiesThatNeedInternetAccess {
     private LoadingDataPresenter mPresenter;
     private User currentUser;
+    private LatLng currentUserLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
         currentUser = getIntent().getParcelableExtra("User");
+        currentUserLocation = getIntent().getParcelableExtra("UsersLocation");
+
         mPresenter = new LoadingDataPresenter(this,currentUser);
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         //Checking for active internet connection
@@ -37,6 +43,7 @@ public class LoadingScreenActivity extends AppCompatActivity implements Activiti
         Intent intent = new Intent(LoadingScreenActivity.this, AvailableParkingListActivity.class);
         intent.putExtra("Results", results);
         intent.putExtra("User",currentUser);
+        intent.putExtra("UsersLocation",currentUserLocation);
         startActivity(intent);
     }
 
@@ -56,7 +63,7 @@ public class LoadingScreenActivity extends AppCompatActivity implements Activiti
     @Override
     public void hasConnection(Boolean result) {
         if(result){
-            mPresenter.getParkingList();
+            mPresenter.getParkingList(currentUserLocation);
         } else {
             moveToInternetFailureActivity();
         }

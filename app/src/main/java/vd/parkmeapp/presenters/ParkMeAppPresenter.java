@@ -13,7 +13,6 @@ import vd.parkmeapp.models.DataParser;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.DirectionsUrl;
 import vd.parkmeapp.models.Downloader;
-import vd.parkmeapp.models.GetLatLngFromAddressWithHTTPRequest;
 import vd.parkmeapp.models.GetLocationWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.HasInternetAccess;
@@ -83,11 +82,12 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
                 = new GetLocationWithHTTPRequest(directionsUrl, address,
                 downloader, dataParser,this);
     }
+    public LatLng usersLocation(){return locationRequests.getDeviceLocation();}
 
     public void getRouteToLocation(double latToTheParkingThatHeIsRenting, double lngToTheParkingThatHeIsRenting){
 
         Log.d("Requesting ","route to the parking that the user is renting" );
-        LatLng usersLocation = locationRequests.getDeviceLocation();
+        LatLng usersLocation = usersLocation();
         DirectionsUrl directionsUrl = new DirectionsUrl();
         String url = directionsUrl.getDirectionsUrl(usersLocation.latitude, usersLocation.longitude,
                 latToTheParkingThatHeIsRenting, lngToTheParkingThatHeIsRenting);

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -57,7 +58,8 @@ public class DbSingleton {
     }
 
 
-    public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser){
+    public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser,
+                          final LatLng usersLocation, final CalculateDistance calculateDistance){
 
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -91,9 +93,18 @@ public class DbSingleton {
                              && tenant.getHasParking().equals("yes")
                              && tenant.getRented().equals("no")){
                             Log.d("FirstCondition: ", "Passed"+"\n");
-                         if(!myArrL.contains(tenant)){
-                             Log.d("Added: ", tenant.toString()+"\n");
-                             myArrL.add(tenant);
+                            //Checking parking distance from users current location
+                         Float distance = calculateDistance.
+                                 returnDistance(usersLocation.latitude, usersLocation.longitude,
+                                         tenant.getLatOfHisParking(), tenant.getLngOfHisParking());
+                         if(calculateDistance.
+                                 returnDistance(usersLocation.latitude, usersLocation.longitude,
+                                         tenant.getLatOfHisParking(), tenant.getLngOfHisParking()) < 5000){
+                             //Distance of user from the parking is less than 5Km
+                             if(!myArrL.contains(tenant)){
+                                 Log.d("Added: ", tenant.toString()+"\n");
+                                 myArrL.add(tenant);
+                             }
                          }
                      }
 

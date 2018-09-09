@@ -57,6 +57,8 @@
     <string name="ParkingHistory">No parking history</string>
     <string name="UserIsCurrentlyRentingParking">Leave Parking</string>
     <string name="RemoveUsersParkingFromAvailableParkingList">Remove from Available Parking</string>
+    <string name="LoadingParkingCoordinates">We are loading your Parking coordinates\n this won't take long</string>
+    <string name="ParkingLocation">Parking Location</string>
 
 
 </resources>

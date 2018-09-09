@@ -17,18 +17,13 @@ public class AddParkingPresenter implements Presenter{
         Log.d("Presenter", "Created Presenter");
     }
 
-    public void usersInfo() {
-        if(tenant.getFirstName() == null || tenant.getLastName() == null
-                || tenant.getEmail() == null || tenant.getPassword() == null) {
-            Log.d("Error: ", "Something is wrong");
-            passMessage("Please check your internet connection");
-        } else {
-            String strN = tenant.getStreetName();
-            Log.d("Street Name", "[" + strN + "]");
-            mView.setParkingInfo(tenant.getStreetName(), tenant.getHouseNumber(),
-                    tenant.getPostCode(), tenant.getPph());
+    public void setUsersInfo() {
+
+            String locationAddress = tenant.getHouseNumber() + " "
+                    + tenant.getStreetName() + " " + tenant.getPostCode();
+            mView.setParkingInfo(locationAddress);
             mView.enableListeners();
-        }
+
     }
 
 

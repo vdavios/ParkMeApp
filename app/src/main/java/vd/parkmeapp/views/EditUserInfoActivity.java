@@ -46,7 +46,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
                     if(mPresenter.newText(valueText.getText().toString().trim())){
                         Log.d("Caller: ", caller);
                         if(caller.equals("AddParkingActivity")){
-                            userAddParkingActivity();
+                            editParkingInfoActivity();
                         } else {
                             userProfileActivity();
                         }
@@ -64,8 +64,8 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
           @Override
           public void onClick(View view) {
               if(mPresenter.newText(valueText.getText().toString())){
-                  if(caller.equals("AddParkingActivity")){
-                      userAddParkingActivity();
+                  if(caller.equals("EditParkingInfoActivity")){
+                      editParkingInfoActivity();
                   } else {
                       userProfileActivity();
                   }
@@ -76,9 +76,9 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
       });
     }
 
-    public void userAddParkingActivity(){
-        Log.d("Going to: ", "AddParkingActivity");
-        Intent intent = new Intent(EditUserInfoActivity.this, AddParkingActivity.class);
+    public void editParkingInfoActivity(){
+        Log.d("Going to: ", "EditParkingInfoActivity");
+        Intent intent = new Intent(EditUserInfoActivity.this, EditParkingInfoActivity.class);
         intent.putExtra("User", tenant);
         startActivity(intent);
     }
@@ -96,8 +96,8 @@ public class EditUserInfoActivity extends AppCompatActivity implements EditUserI
 
     @Override
     public void onBackPressed(){
-         if(caller.equals("AddParkingActivity")){
-            userAddParkingActivity();
+         if(caller.equals("EditParkingInfoActivity")){
+            editParkingInfoActivity();
          } else {
             userProfileActivity();
          }

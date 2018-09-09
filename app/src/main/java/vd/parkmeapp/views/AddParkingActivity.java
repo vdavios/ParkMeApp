@@ -17,10 +17,7 @@ import vd.parkmeapp.presenters.AddParkingPresenter;
 
 
 public class AddParkingActivity extends AppCompatActivity implements AddParkingView, View.OnClickListener{
-    private TextView streetNameText;
-    private TextView houseNumberText;
-    private TextView postCodeText;
-    private TextView pricePerHourText;
+    private TextView parkingLocation;
     private User myTenant;
     private AddParkingPresenter mPresenter;
 
@@ -36,11 +33,8 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
             myTenant = getIntent().getParcelableExtra("User");
         }
         mPresenter = new AddParkingPresenter(this,myTenant);
-        streetNameText = (findViewById(R.id.StreetNameText));
-        houseNumberText = (findViewById(R.id.HouseNumberText));
-        postCodeText = (findViewById(R.id.PostCodeText));
-        pricePerHourText = findViewById(R.id.PricePerHourText);
-        mPresenter.usersInfo();
+        parkingLocation = findViewById(R.id.ParkingLocationText);
+        mPresenter.setUsersInfo();
         Button mParkingButton = findViewById(R.id.RentMyParking);
         if(mPresenter.hasSetParkingInfo()){
 
@@ -78,7 +72,6 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
             }
         }
 
-
     }
 
 
@@ -89,18 +82,13 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
     }
 
     @Override
-    public void setParkingInfo(String streetName, String houseNumber, String postCode, String pph) {
-        streetNameText.setText(streetName);
-        houseNumberText.setText(houseNumber);
-        postCodeText.setText(postCode);
-        pricePerHourText.setText(pph);
+    public void setParkingInfo(String locationAddress) {
+        parkingLocation.setText(locationAddress);
+
     }
     @Override
     public void enableListeners() {
-        streetNameText.setOnClickListener(this);
-        houseNumberText.setOnClickListener(this);
-        postCodeText.setOnClickListener(this);
-        pricePerHourText.setOnClickListener(this);
+       parkingLocation.setOnClickListener(this);
     }
 
     @Override
@@ -113,7 +101,7 @@ public class AddParkingActivity extends AppCompatActivity implements AddParkingV
     @Override
     public void onClick(View view) {
         int rId = view.getId();
-        Intent intent = new Intent(AddParkingActivity.this, EditUserInfoActivity.class);
+        Intent intent = new Intent(AddParkingActivity.this, EditParkingInfoActivity.class);
         intent.putExtra("R.id", rId);
         intent.putExtra("User", myTenant);
         intent.putExtra("caller", "AddParkingActivity");

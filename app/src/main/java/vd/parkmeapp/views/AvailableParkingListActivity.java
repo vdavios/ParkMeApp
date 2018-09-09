@@ -12,9 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import vd.parkmeapp.R;
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.AvailableParkingListPresenter;
@@ -25,6 +28,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
     private AvailableParkingListPresenter mPresenter;
     private ArrayList<Tenant> aL;
     private User mCurrentUser;
+    private LatLng usersLocation;
 
 
     @Override
@@ -40,6 +44,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
 
         //Array List with parking owners
         aL = getIntent().getParcelableArrayListExtra("Results");
+        usersLocation = getIntent().getParcelableExtra("UsersLocation");
 
 
         //Setting List View with Custom Adapter
@@ -58,6 +63,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
                 intent.putExtra("User",mCurrentUser);
                 intent.putExtra("ParkingOwner", selected);
                 intent.putParcelableArrayListExtra("Results",aL);
+                intent.putExtra("UsersLocation", usersLocation);
                 startActivity(intent);
             }
         });
@@ -73,7 +79,11 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
     }
 
     @Override
-    public void onBackPressed(){}
+    public void onBackPressed(){
+        Intent intent = new Intent(AvailableParkingListActivity.this, ParkMeAppActivity.class);
+        intent.putExtra("User", mCurrentUser);
+        startActivity(intent);
+    }
 
 
 
@@ -113,8 +123,9 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
             parkingAddress.setText(street);
             String poundsPerHour = parkingOwner.getPph() + " £/h";
             pricePerHour.setText(poundsPerHour);
-            distance.setText("15min");
-            // add distance
+            String distanceToParking = mPresenter.calculateDistanceToParking(usersLocation,
+                    parkingOwner.getLatOfHisParking(), parkingOwner.getLngOfHisParking());
+            distance.setText(distanceToParking);
             return view;
         }
     }
