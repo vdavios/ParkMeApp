@@ -12,6 +12,7 @@
         android:textColor="@color/mainColor"
         android:gravity="center"
         android:textStyle="bold"
+        android:textSize="25sp"
         android:text="@string/LoadingParkingCoordinates"/>
 
 </RelativeLayout>

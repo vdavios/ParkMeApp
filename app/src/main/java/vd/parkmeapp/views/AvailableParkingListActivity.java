@@ -121,7 +121,7 @@ public class AvailableParkingListActivity  extends AppCompatActivity implements 
             User parkingOwner = uList.get(i);
             String street = parkingOwner.getStreetName() + " " + parkingOwner.getHouseNumber();
             parkingAddress.setText(street);
-            String poundsPerHour = parkingOwner.getPph() + " £/h";
+            String poundsPerHour = parkingOwner.getPph() + " €/h";
             pricePerHour.setText(poundsPerHour);
             String distanceToParking = mPresenter.calculateDistanceToParking(usersLocation,
                     parkingOwner.getLatOfHisParking(), parkingOwner.getLngOfHisParking());

@@ -49,6 +49,9 @@ public class LoadingParkingActivity extends AppCompatActivity implements Activit
     }
 
     @Override
+    public void onBackPressed(){}
+
+    @Override
     public void showMessage(String message) {
         Toast.makeText(this,message,Toast.LENGTH_LONG)
                 .show();

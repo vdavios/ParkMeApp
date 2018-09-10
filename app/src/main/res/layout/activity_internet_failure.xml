@@ -13,6 +13,7 @@
         android:textColor="@color/mainColor"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="Please check your Internet connection\n and restart the application"/>
+        android:textSize="25sp"
+        android:text="@string/CheckInternetConnection"/>
 
 </RelativeLayout>

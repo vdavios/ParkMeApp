@@ -61,7 +61,7 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
     public void parkingOwnersInfo(Tenant parkingOwner){
         String name = parkingOwner.getFirstName() + " " + parkingOwner.getLastName();
         String address = parkingOwner.getStreetName() + " "+ parkingOwner.getHouseNumber();
-        String price = parkingOwner.getPph() + " £/h";
+        String price = parkingOwner.getPph() + " €/h";
         String distance = "15 min";
         mView.setParkingOwnerInfo(name,address,distance,price);
     }
