@@ -61,6 +61,9 @@ public class LoadingScreenActivity extends AppCompatActivity implements Activiti
     }
 
     @Override
+    public void onBackPressed(){}
+
+    @Override
     public void hasConnection(Boolean result) {
         if(result){
             mPresenter.getParkingList(currentUserLocation);

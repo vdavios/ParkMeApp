@@ -80,5 +80,7 @@ public class WelcomeActivity extends AppCompatActivity implements ActivitiesThat
                 .show();
     }
 
+    @Override
+    public void onBackPressed(){}
 
 }
