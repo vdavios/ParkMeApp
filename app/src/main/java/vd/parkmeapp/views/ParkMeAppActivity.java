@@ -32,12 +32,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
+import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.R;
@@ -53,10 +55,10 @@ public class ParkMeAppActivity extends AppCompatActivity
     private ParkMeAppPresenter mPresenter;
     private ConnectivityManager connectivityManager;
     private String address;
-    private Polyline polyline;
     private boolean accessToLocation = false;
     private double latOfTheParkingThatHeIsRenting;
     private double lngOfTheParkingThatHeIsRenting;
+    private ArrayList<Marker> markerList = new ArrayList<>();
 
 
 
@@ -223,7 +225,6 @@ public class ParkMeAppActivity extends AppCompatActivity
                 mPresenter.connectApiClient();
                 mMap.setMyLocationEnabled(true);
                 accessToLocation = true;
-                Log.d("accessToLocation: ", String.valueOf(accessToLocation));
                 setUpMap();
             }
         }
@@ -239,6 +240,11 @@ public class ParkMeAppActivity extends AppCompatActivity
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
+                if(markerList !=null){
+                    for(Marker marker: markerList){
+                        marker.remove();
+                    }
+                }
                 mPresenter.resumeRequests();
                 return true;
             }
@@ -256,36 +262,26 @@ public class ParkMeAppActivity extends AppCompatActivity
     }
 
 
-
-
-    //SetMarker test function
-
-    public void setMarker(LatLng point){
-
-        mMap.addMarker(new MarkerOptions().position(point));
-
-    }
-
-
     //Geolocation
     private static String TAG = "Geolocation";
     private EditText mSearchText;
 
     @Override
-    public void moveCamera(LatLng latLng, float zoom){
+    public void moveCamera(LatLng latLng, float zoom, ArrayList<LatLng> locations, ArrayList<Tenant> owners){
         mPresenter.pauseRequests();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        MarkerOptions options = new MarkerOptions();
+        for(int i = 0 ; i < locations.size(); i++){
 
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                mMap.clear();
-                mPresenter.resumeRequests();
-                return true;
-            }
-        });
-
+            options.position(locations.get(i));
+            Tenant parkingOwner = owners.get(i);
+            String title = parkingOwner.getHouseNumber() + " " + parkingOwner.getStreetName() + ", "
+                    + parkingOwner.getPostCode();
+            options.title(title);
+            Marker marker = mMap.addMarker(options);
+            markerList.add(marker);
+        }
 
     }
 
@@ -326,7 +322,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         polylineOptions.addAll(points);
         polylineOptions.width(7);
         polylineOptions.color(Color.RED);
-        polyline =  mMap.addPolyline(polylineOptions);
+        mMap.addPolyline(polylineOptions);
 
     }
 

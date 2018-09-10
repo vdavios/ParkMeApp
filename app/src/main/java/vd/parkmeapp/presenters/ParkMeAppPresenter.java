@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 
+import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.DataParser;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.DirectionsUrl;
@@ -16,6 +17,7 @@ import vd.parkmeapp.models.Downloader;
 import vd.parkmeapp.models.GetLocationWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.HasInternetAccess;
+import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
 import vd.parkmeapp.views.ParkMeAppView;
@@ -30,6 +32,7 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     private ParkMeAppView mView;
     private User mCurrentUser;
     private ConnectivityManager connectivityManager;
+    private LatLng locationWeAreLookingFor;
 
 
 
@@ -74,7 +77,7 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
         if(parkingLocation == null){
             geocodeFailed(new DirectionsUrl(), address, new Downloader(), new DataParser());
         } else {
-            moveCameraTo(parkingLocation);
+            fetchData(parkingLocation);
         }
     }
     private void geocodeFailed(DirectionsUrl directionsUrl, String address, Downloader downloader, DataParser dataParser){
@@ -135,8 +138,18 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
 
     }
 
-    public void moveCameraTo(LatLng location){
-        mView.moveCamera(location,15f);
+    public void fetchData(LatLng location){
+        locationWeAreLookingFor = location;
+        DbSingleton.getInstance().fetchData(this,mCurrentUser,location, new CalculateDistance());
+    }
+
+    public void parkingSpaceNearTheSelectedLocationResults(ArrayList<Tenant> parkingOwner){
+        ArrayList<LatLng> parkingArrayList= new ArrayList<>();
+        for(Tenant pOwner: parkingOwner){
+            parkingArrayList.add(new LatLng(pOwner.getLatOfHisParking(), pOwner.getLngOfHisParking()));
+        }
+
+        mView.moveCamera(locationWeAreLookingFor, 15f, parkingArrayList, parkingOwner);
     }
 
     public void apiConnected() {

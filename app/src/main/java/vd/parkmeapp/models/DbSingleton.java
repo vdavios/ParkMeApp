@@ -21,7 +21,9 @@ import java.util.ArrayList;
 
 import vd.parkmeapp.presenters.LoadingDataPresenter;
 import vd.parkmeapp.presenters.LoginPresenter;
+import vd.parkmeapp.presenters.ParkMeAppPresenter;
 import vd.parkmeapp.presenters.Presenter;
+import vd.parkmeapp.presenters.PresentersForActivitiesThaRequireInternetAccess;
 import vd.parkmeapp.presenters.SignUpPresenter;
 import vd.parkmeapp.presenters.WelcomeActivityPresenter;
 import vd.parkmeapp.views.WelcomeActivity;
@@ -58,7 +60,7 @@ public class DbSingleton {
     }
 
 
-    public void fetchData(final LoadingDataPresenter lDPresenter, final User currentUser,
+    public void fetchData(final PresentersForActivitiesThaRequireInternetAccess lDPresenter, final User currentUser,
                           final LatLng usersLocation, final CalculateDistance calculateDistance){
 
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,21 +111,31 @@ public class DbSingleton {
                      }
 
                      if(count>= chCount-1){
-                         loadingCompleted(myArrL, lDPresenter);
+                         loadingCompleted(myArrL,  lDPresenter);
                      }
                  }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                lDPresenter.moveToInternetFailureActivity();
+                //((LoadingDataPresenter)lDPresenter).moveToInternetFailureActivity();
             }
         });
     }
 
     // Loading data completed passing the results to the presenter so we can move to the next activity
-    private void loadingCompleted(ArrayList<Tenant> results, LoadingDataPresenter ldPresenter){
-        ldPresenter.resultsLoaded(results);
+    private void loadingCompleted(ArrayList<Tenant> results,
+                                  PresentersForActivitiesThaRequireInternetAccess ldPresenter){
+        String className = ldPresenter.getClass().getSimpleName();
+        switch (className){
+            case "LoadingDataPresenter":
+                ((LoadingDataPresenter)ldPresenter).resultsLoaded(results);
+                break;
+            case "ParkMeAppPresenter":
+                ((ParkMeAppPresenter)ldPresenter).parkingSpaceNearTheSelectedLocationResults(results);
+                break;
+        }
+
     }
 
     public void signUpUser(final String firstName, final String lastName,

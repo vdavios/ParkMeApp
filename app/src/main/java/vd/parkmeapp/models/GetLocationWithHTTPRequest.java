@@ -51,7 +51,7 @@ public class GetLocationWithHTTPRequest implements RequiresDataFromWeb {
                 ((WelcomeActivityPresenter) mPresenter).latLngFound(parkingLatLng.latitude, parkingLatLng.longitude);
                 break;
             case "ParkMeAppPresenter":
-                ((ParkMeAppPresenter) mPresenter).moveCameraTo(parkingLatLng);
+                ((ParkMeAppPresenter) mPresenter).fetchData(parkingLatLng);
                 break;
             case "LoadingParkingPresenter":
                 ((LoadingParkingPresenter)mPresenter).latLngFound(parkingLatLng.latitude, parkingLatLng.longitude);
