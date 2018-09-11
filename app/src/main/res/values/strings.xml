@@ -61,6 +61,7 @@
     <string name="ParkingLocation">Parking Location</string>
     <string name="EditParkingInfo">Edit Parking</string>
     <string name="CheckInternetConnection">Please check your Internet connection\n and restart the application</string>
+    <string name="enter_address_city_or_zip_code">Enter Address, City or Zip Code</string>
 
 
 </resources>

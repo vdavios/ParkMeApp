@@ -42,7 +42,7 @@ public class GetLocationWithHTTPRequest implements RequiresDataFromWeb {
     }
 
     @Override
-    public void downloadCompeted(String result) {
+    public void downloadCompleted(String result) {
         JSONObject jObject = createJSONObject(result);
         LatLng parkingLatLng = myDataParser.getLatLngOfLocation(jObject);
         String presenterClass = mPresenter.getClass().getSimpleName();

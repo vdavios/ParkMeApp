@@ -28,7 +28,7 @@ public class GetPointsToLocation implements RequiresDataFromWeb{
 
 
     @Override
-    public void downloadCompeted(String result){
+    public void downloadCompleted(String result){
         ParserTask parserTask = new ParserTask();
         parserTask.execute(result);
     }

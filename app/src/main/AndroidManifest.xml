@@ -17,6 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <activity
             android:name=".views.LogInActivity"
             android:screenOrientation="portrait">
@@ -60,7 +63,7 @@
         <activity android:name=".views.HistoryActivity" />
         <activity android:name=".views.InternetFailureActivity" />
         <activity android:name=".views.EditParkingInfoActivity" />
-        <activity android:name=".views.LoadingParkingActivity"></activity>
+        <activity android:name=".views.LoadingParkingActivity"/>
     </application>
 
 </manifest>

@@ -84,10 +84,9 @@ public class ParkMeAppActivity extends AppCompatActivity
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
-
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
 
         //----------------- Drawer -----------------//
@@ -223,9 +222,12 @@ public class ParkMeAppActivity extends AppCompatActivity
                     == PackageManager.PERMISSION_GRANTED)){
                 Log.d("Permission granted: ", "here");
                 mPresenter.connectApiClient();
-                mMap.setMyLocationEnabled(true);
                 accessToLocation = true;
-                setUpMap();
+                if(mMap !=null){
+                    mMap.setMyLocationEnabled(true);
+                    setUpMap();
+                }
+
             }
         }
     }
@@ -298,8 +300,13 @@ public class ParkMeAppActivity extends AppCompatActivity
 
                     address = mSearchText.getText().toString();
 
-                    //Check if user has active internet connection
-                    mPresenter.activeInternetConnection(connectivityManager);
+                    //Check if the address is not empty
+                    if(!address.isEmpty()){
+                        //Check if user has active internet connection
+                        mPresenter.activeInternetConnection(connectivityManager);
+                    }
+
+
 
                 }
 
@@ -445,8 +452,15 @@ public class ParkMeAppActivity extends AppCompatActivity
         if(result){
             //Check if the user is looking for a random location
             if(address==null || address.isEmpty()){
-                //He is not create root to the parking he is renting
-                routeToParkingThatUserIsRenting(latOfTheParkingThatHeIsRenting, lngOfTheParkingThatHeIsRenting);
+                if(doWeHaveAccessToUserLocation()){
+                    //He is not create root to the parking he is renting
+                    routeToParkingThatUserIsRenting(latOfTheParkingThatHeIsRenting, lngOfTheParkingThatHeIsRenting);
+                } else {
+                    //In the rare case that the user rents a parking space then decides to remove the application
+                    //from his device. And then re-install it this message will be shown.
+                    showMessage("Please restart your application to see the route to the parking");
+                }
+
             } else {
 
                 //He is looking for parking spaces in a random location

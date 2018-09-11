@@ -23,6 +23,6 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result){
 
-        requiresDataFromWeb.downloadCompeted(result);
+        requiresDataFromWeb.downloadCompleted(result);
     }
 }

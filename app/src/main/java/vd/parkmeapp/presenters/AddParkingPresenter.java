@@ -31,9 +31,13 @@ public class AddParkingPresenter implements Presenter{
     public boolean hasSetParkingInfo(){
 
             return !tenant.getStreetName().startsWith("Please")
+                    && !tenant.getStreetName().isEmpty()
                     && !tenant.getHouseNumber().startsWith("Please")
+                    && !tenant.getHouseNumber().isEmpty()
                     && !tenant.getPostCode().startsWith("Please")
-                    && !tenant.getPph().startsWith("Please");
+                    && !tenant.getPostCode().isEmpty()
+                    && !tenant.getPph().startsWith("Please")
+                    && !tenant.getPph().isEmpty();
 
     }
 

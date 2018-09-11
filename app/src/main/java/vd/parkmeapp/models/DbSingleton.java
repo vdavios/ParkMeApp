@@ -80,39 +80,42 @@ public class DbSingleton {
                      Log.d("Inside DataSnapshot: ", "passed");
                      count++;
                      Tenant tenant = user.getValue(Tenant.class);
-                     String usrFn = tenant.getFirstName();
-                     String usrLastName = tenant.getLastName();
-                     Log.d("Compairing: ", "First Name "+usrFn+" with "+ currentUser.getFirstName()+"\n");
-                     Log.d("Compairing: ", "Last Name "+usrLastName+" with "+ currentUser.getLastName()+"\n");
-                     Boolean flag = tenant.getHasParking().equals("yes");
-                     Boolean flag1 = tenant.getRented().equals("no");
+                     if(tenant !=null){
+                         String usrFn = tenant.getFirstName();
+                         String usrLastName = tenant.getLastName();
+                         Log.d("Compairing: ", "First Name "+usrFn+" with "+ currentUser.getFirstName()+"\n");
+                         Log.d("Compairing: ", "Last Name "+usrLastName+" with "+ currentUser.getLastName()+"\n");
+                         Boolean flag = tenant.getHasParking().equals("yes");
+                         Boolean flag1 = tenant.getRented().equals("no");
 
-                     Log.d("Returns : ",flag.toString()+"\n");
-                     Log.d("Returns : ",flag1.toString()+"\n");
+                         Log.d("Returns : ",flag.toString()+"\n");
+                         Log.d("Returns : ",flag1.toString()+"\n");
 
-                     if(!currentUser.getFirstName().equals(usrFn)
-                             && !currentUser.getLastName().equals(usrLastName)
-                             && tenant.getHasParking().equals("yes")
-                             && tenant.getRented().equals("no")){
-                            Log.d("FirstCondition: ", "Passed"+"\n");
-                            //Checking parking distance from users current location
-                         Float distance = calculateDistance.
-                                 returnDistance(usersLocation.latitude, usersLocation.longitude,
-                                         tenant.getLatOfHisParking(), tenant.getLngOfHisParking());
-                         if(calculateDistance.
-                                 returnDistance(usersLocation.latitude, usersLocation.longitude,
-                                         tenant.getLatOfHisParking(), tenant.getLngOfHisParking()) < 5000){
-                             //Distance of user from the parking is less than 5Km
-                             if(!myArrL.contains(tenant)){
-                                 Log.d("Added: ", tenant.toString()+"\n");
-                                 myArrL.add(tenant);
+                         if(!currentUser.getFirstName().equals(usrFn)
+                                 && !currentUser.getLastName().equals(usrLastName)
+                                 && tenant.getHasParking().equals("yes")
+                                 && tenant.getRented().equals("no")){
+                             Log.d("FirstCondition: ", "Passed"+"\n");
+                             //Checking parking distance from users current location
+                             Float distance = calculateDistance.
+                                     returnDistance(usersLocation.latitude, usersLocation.longitude,
+                                             tenant.getLatOfHisParking(), tenant.getLngOfHisParking());
+                             if(calculateDistance.
+                                     returnDistance(usersLocation.latitude, usersLocation.longitude,
+                                             tenant.getLatOfHisParking(), tenant.getLngOfHisParking()) < 5000){
+                                 //Distance of user from the parking is less than 5Km
+                                 if(!myArrL.contains(tenant)){
+                                     Log.d("Added: ", tenant.toString()+"\n");
+                                     myArrL.add(tenant);
+                                 }
                              }
+                         }
+
+                         if(count>= chCount-1){
+                             loadingCompleted(myArrL,  lDPresenter);
                          }
                      }
 
-                     if(count>= chCount-1){
-                         loadingCompleted(myArrL,  lDPresenter);
-                     }
                  }
             }
 
@@ -421,7 +424,7 @@ public class DbSingleton {
         }
     }
 
-    public void setDoubleValue(String uId, String field, double value){
+    private void setDoubleValue(String uId, String field, double value){
         mReference.child("Users").child(uId).child(field).setValue(value);
 
     }
