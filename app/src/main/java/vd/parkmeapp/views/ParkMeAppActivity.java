@@ -273,17 +273,11 @@ public class ParkMeAppActivity extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         MarkerOptions options = new MarkerOptions();
         for(int i = 0 ; i < locations.size(); i++){
-            Log.d("Locations size: ", String.valueOf(locations.size()));
-            Log.d("Parking owners : ", String.valueOf(owners.size()));
-            Log.d("i equal: ", String.valueOf(i));
-            Log.d("location : ", locations.get(i).toString());
             options.position(locations.get(i));
             User parkingOwner = owners.get(i);
             String title = parkingOwner.getHouseNumber() + " " + parkingOwner.getStreetName() + ", "
                     + parkingOwner.getPostCode();
             options.title(title);
-            Log.d("Title : ", title);
-            Log.d("Adding marker :", " oeo");
             markerList.add(mMap.addMarker(options));
         }
 
