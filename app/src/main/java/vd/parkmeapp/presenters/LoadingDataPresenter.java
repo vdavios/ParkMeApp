@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.DbSingleton;
+import vd.parkmeapp.models.FilterDataImpl;
 import vd.parkmeapp.models.HasInternetAccess;
-import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.views.LoadingScreenActivity;
 
@@ -29,11 +29,11 @@ public class LoadingDataPresenter implements PresentersForActivitiesThaRequireIn
 
     public void getParkingList(LatLng usersLocation){
         DbSingleton myDb = DbSingleton.getInstance();
-        myDb.fetchData(this,currentUser,  usersLocation, new CalculateDistance());
+        myDb.fetchAvailableParkingNearUsersLocation(this,currentUser,  usersLocation, new CalculateDistance(), new FilterDataImpl());
 
     }
 
-    public void resultsLoaded(ArrayList<Tenant> results){
+    public void resultsLoaded(ArrayList<User> results){
         mLds.dataLoaded(results);
     }
 

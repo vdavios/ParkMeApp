@@ -39,7 +39,7 @@ public class LoadingScreenActivity extends AppCompatActivity implements Activiti
 
 
 
-    public void dataLoaded(ArrayList<Tenant> results){
+    public void dataLoaded(ArrayList<User> results){
         Intent intent = new Intent(LoadingScreenActivity.this, AvailableParkingListActivity.class);
         intent.putExtra("Results", results);
         intent.putExtra("User",currentUser);

@@ -17,6 +17,10 @@ public class ValidationTest  {
     private String[] invalidPasswords;
     private String[] validNames;
     private String[] invalidNames;
+    private String[] validCreditCardNumbers;
+    private String[] invalidCreditCardNumbers;
+    private String[] validCvvNumbers;
+    private String[] invalidCvvNumbers;
 
     @Before
     public void beforeTest(){
@@ -39,6 +43,36 @@ public class ValidationTest  {
         validNames = new String[]{"Bill", "vAsiLis", "GeorGe"};
         invalidNames = new String[]{"Bi ll", "vasi3lis", "V@s1lis"};
 
+        validCreditCardNumbers = new String[]{
+                "4892683405112577", "3608924468231477", "6828044450130178",
+                "8709422104837261", "5238383903790177", "1015935953643788", "0374987926096258",
+                "0498252197828928", "2268562154834472", "0719503284273796"
+        };
+
+        invalidCreditCardNumbers = new String[]{
+                "56036", "30362", "36624", "70136", "14249", "69062", "30180", "80429",
+                "02432", "33687"
+        };
+
+        validCvvNumbers = new String[] {
+                "369",
+                "034",
+                "592",
+                "942",
+                "017",
+                "822",
+                "320",
+                "747",
+                "668",
+                "231"
+        };
+
+        invalidCvvNumbers = new String[]{
+                "1234567891123456", "4892683405112577", "3608924468231477", "6828044450130178",
+                "8709422104837261", "5238383903790177", "1015935953643788", "0374987926096258",
+                "0498252197828928", "2268562154834472", "0719503284273796"
+        };
+
 
     }
 
@@ -46,7 +80,6 @@ public class ValidationTest  {
     public void validEmailTest(){
         for(String email : validEmails){
             boolean isValid = validator.validateEmail(email);
-            System.out.println("Email("+email+")" + " is valid : " + isValid);
             Assert.assertEquals(isValid, true);
 
         }
@@ -56,7 +89,6 @@ public class ValidationTest  {
     public void invalidEmailTest(){
         for(String email : invalidEmails){
             boolean isNotValid = validator.validateEmail(email);
-            System.out.println("Email("+email +")"+ " is valid : "+ isNotValid);
             Assert.assertEquals(isNotValid, false);
         }
     }
@@ -66,7 +98,6 @@ public class ValidationTest  {
 
         for(String password: validPasswords){
             boolean isValid = validator.validatePassword(password);
-            System.out.println("Password("+password+") is valid :"+ isValid);
             Assert.assertEquals(isValid, true);
         }
     }
@@ -75,7 +106,6 @@ public class ValidationTest  {
     public void invalidPasswords(){
         for(String password: invalidPasswords){
             boolean isNotValid = validator.validatePassword(password);
-            System.out.println("Password("+password+") is valid :"+ isNotValid);
             Assert.assertEquals(isNotValid,false);
         }
     }
@@ -84,7 +114,6 @@ public class ValidationTest  {
     public void validNames(){
         for(String name: validNames){
             boolean isValid = validator.validateName(name);
-            System.out.println("Name("+name+") is valid :"+ isValid);
             Assert.assertEquals(isValid, true);
         }
     }
@@ -93,8 +122,55 @@ public class ValidationTest  {
     public void invalidNames(){
         for(String name: invalidNames){
             boolean isNotValid = validator.validateName(name);
-            System.out.println("Name("+name+") is valid :"+ isNotValid);
             Assert.assertEquals(isNotValid, false);
+        }
+    }
+
+    @Test
+    public void validCreditCardNumbers(){
+        for(String creditCardNumber: validCreditCardNumbers){
+            boolean isValid = validator.validateCreditCardNumber(creditCardNumber);
+            Assert.assertEquals(isValid, true);
+        }
+    }
+
+    @Test
+    public void invalidCreditCardNumbers(){
+        for(String creditCardNumber: invalidCreditCardNumbers){
+            boolean isNotValid = validator.validateCreditCardNumber(creditCardNumber);
+            Assert.assertEquals(isNotValid, false);
+        }
+    }
+
+    @Test
+    public void validCvvNumbers(){
+        for(String cvvNumber: validCvvNumbers){
+            boolean isValid = validator.validateCVV(cvvNumber);
+            Assert.assertEquals(isValid, true);
+        }
+    }
+
+    @Test
+    public void invalidCvvNumbers(){
+        for(String cvvNumber: invalidCvvNumbers){
+            boolean isValid = validator.validateCVV(cvvNumber);
+            Assert.assertEquals(isValid, false);
+        }
+    }
+
+    @Test
+    public void checkingForSameValuesSuccess(){
+        for(String creditCardNumber: validCreditCardNumbers){
+            boolean sameValue = validator.sameValues(creditCardNumber,creditCardNumber);
+            Assert.assertEquals(sameValue, true);
+        }
+    }
+
+    @Test
+    public void checkingForSameValuesFailure(){
+        for(int i = 0; i< validCreditCardNumbers.length ; i ++){
+            boolean sameValue = validator.sameValues(validCreditCardNumbers[i], invalidCreditCardNumbers[i]);
+            Assert.assertEquals(sameValue, false);
         }
     }
 
@@ -106,6 +182,10 @@ public class ValidationTest  {
         invalidPasswords = null;
         validNames = null;
         invalidNames = null;
+        validCreditCardNumbers = null;
+        invalidCreditCardNumbers = null;
+        validCvvNumbers = null;
+        invalidCvvNumbers = null;
         validator = null;
 
     }

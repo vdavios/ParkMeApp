@@ -50,6 +50,7 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
 
 
     private synchronized void buildGoogleApiClient() {
+        Log.d("Building ", "Google Api client");
 
         if(mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(mContext)
@@ -61,18 +62,39 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
         mGoogleApiClient.connect();
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d("Google Api Client ", "connected");
+        customLocationRequest();
+        presenter.apiConnected();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     public void disconnectGoogleApiClient() {
 
-        if(mGoogleApiClient.isConnected()) {
+        if(isApiClientConnected()) {
             mGoogleApiClient.disconnect();
         }
 
     }
 
     public void connectGoogleApiClient() {
-        if(!mGoogleApiClient.isConnected()) {
+        if(!isApiClientConnected()) {
             mGoogleApiClient.connect();
         }
+    }
+
+    public boolean isApiClientConnected(){
+        return mGoogleApiClient.isConnected();
     }
 
     public void customLocationRequest(){
@@ -88,7 +110,6 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
                 LocationServices.FusedLocationApi
                         .requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
-
 
         }
     }
@@ -160,19 +181,5 @@ public class LocationRequests implements  GoogleApiClient.ConnectionCallbacks,
 
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        customLocationRequest();
-        presenter.apiConnected();
-    }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }

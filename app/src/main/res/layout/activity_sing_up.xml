@@ -94,52 +94,52 @@
     <!-- Credit Card -->
     <EditText
         android:id="@+id/creditCard_input"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/SignUpPassword"
-        android:hint="@string/creditCard"
-        android:theme="@style/Theme.TextInputLayOut"
-        android:fontFamily="sans-serif"
-        android:inputType="number"
-        android:maxLength="16"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/mainColor"/>
+        android:fontFamily="sans-serif"
+        android:hint="@string/creditCard"
+        android:inputType="number"
+        android:maxLength="16"
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut" />
 
     <!-- CVV -->
     <EditText
         android:id="@+id/CVV"
-        android:layout_width="150dp"
+        android:layout_width="82dp"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/LastName"
+        android:layout_alignRight="@+id/LastName"
         android:layout_alignTop="@+id/creditCard_input"
         android:fontFamily="sans-serif"
         android:hint="@string/CVV"
         android:inputType="number"
         android:maxLength="3"
         android:textColor="@color/mainColor"
-        android:theme="@style/Theme.TextInputLayOut"
-        android:layout_alignRight="@+id/LastName" />
+        android:theme="@style/Theme.TextInputLayOut" />
 
     <!-- Street Name -->
     <EditText
         android:id="@+id/StreetNameInSignUp"
-        android:layout_width="180dp"
+        android:layout_width="164dp"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/FirstName"
         android:layout_alignStart="@+id/FirstName"
         android:layout_below="@+id/creditCard_input"
-        android:hint="@string/StreetName"
-        android:theme="@style/Theme.TextInputLayOut"
-        android:layout_alignLeft="@+id/FirstName"
         android:fontFamily="sans-serif"
+        android:hint="@string/StreetName"
         android:inputType="text"
-        android:textColor="@color/mainColor"/>
+        android:textColor="@color/mainColor"
+        android:theme="@style/Theme.TextInputLayOut" />
 
     <!-- House Number -->
     <EditText
         android:id="@+id/HouseNumberInSignUp"
-        android:layout_width="152dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/LastName"
         android:layout_below="@+id/creditCard_input"
@@ -166,15 +166,15 @@
     <!-- Price Per Hour -->
     <EditText
         android:id="@+id/PricePerHourSignUp"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/CVV"
+        android:layout_alignStart="@+id/LastName"
         android:layout_below="@+id/StreetNameInSignUp"
         android:hint="@string/PricePerHour"
         android:inputType="number"
         android:textColor="@color/mainColor"
         android:theme="@style/Theme.TextInputLayOut"
-        android:layout_alignLeft="@+id/CVV" />
+        android:layout_alignLeft="@+id/LastName" />
 
     <Button
         android:id="@+id/SignUp"

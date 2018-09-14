@@ -55,7 +55,6 @@ public class ParkMeAppActivity extends AppCompatActivity
     private ParkMeAppPresenter mPresenter;
     private ConnectivityManager connectivityManager;
     private String address;
-    private boolean accessToLocation = false;
     private double latOfTheParkingThatHeIsRenting;
     private double lngOfTheParkingThatHeIsRenting;
     private ArrayList<Marker> markerList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_me_app);
 
-        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
 
         if(savedInstanceState !=null){
             tenant = savedInstanceState.getParcelable("User");
@@ -76,11 +75,12 @@ public class ParkMeAppActivity extends AppCompatActivity
             tenant  = getIntent().getParcelableExtra("User");
         }
 
+        //Creating connectivity manager that is used to check if we have internet access
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         // Creating ParkMeApp presenter-controller
         mPresenter = new ParkMeAppPresenter(this, getApplicationContext(),tenant,connectivityManager);
 
-        //request permission for location (must be done inside an activity or a fragment)
-        accessUsersLocation();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -144,7 +144,7 @@ public class ParkMeAppActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     //Check if we have access to the location of the user
-                    if(doWeHaveAccessToUserLocation()){
+                    if(checkPermission()){
 
                         Log.d("access user location: ", "true");
 
@@ -180,16 +180,20 @@ public class ParkMeAppActivity extends AppCompatActivity
     public void onMapReady( GoogleMap googleMap) {
         mMap = googleMap;
 
-        if(!(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)) {
-            accessUsersLocation();
-        }else {
+        if(checkPermission()) {
             mMap.setMyLocationEnabled(true);
             setUpMap();
             init();
+        }else {
+            askPermission();
 
         }
 
+    }
+
+    public boolean checkPermission(){
+        return (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
     }
 
     private void setUpMap(){
@@ -198,9 +202,7 @@ public class ParkMeAppActivity extends AppCompatActivity
         mMap.setOnCameraMoveStartedListener(this);
     }
 
-
-
-    private void accessUsersLocation(){
+    private void askPermission(){
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
     }
@@ -218,16 +220,13 @@ public class ParkMeAppActivity extends AppCompatActivity
             }
         } else {
 
-            if((ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED)){
-                Log.d("Permission granted: ", "here");
-                mPresenter.connectApiClient();
-                accessToLocation = true;
+            if(checkPermission()){
+                mPresenter.resumeRequests();
+                Log.d("Permission granted: ", "true");
                 if(mMap !=null){
                     mMap.setMyLocationEnabled(true);
                     setUpMap();
                 }
-
             }
         }
     }
@@ -238,7 +237,6 @@ public class ParkMeAppActivity extends AppCompatActivity
             mPresenter.pauseRequests();
 
         }
-
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -269,20 +267,24 @@ public class ParkMeAppActivity extends AppCompatActivity
     private EditText mSearchText;
 
     @Override
-    public void moveCamera(LatLng latLng, float zoom, ArrayList<LatLng> locations, ArrayList<Tenant> owners){
+    public void moveCamera(LatLng latLng, float zoom, ArrayList<LatLng> locations, ArrayList<User> owners){
         mPresenter.pauseRequests();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         MarkerOptions options = new MarkerOptions();
         for(int i = 0 ; i < locations.size(); i++){
-
+            Log.d("Locations size: ", String.valueOf(locations.size()));
+            Log.d("Parking owners : ", String.valueOf(owners.size()));
+            Log.d("i equal: ", String.valueOf(i));
+            Log.d("location : ", locations.get(i).toString());
             options.position(locations.get(i));
-            Tenant parkingOwner = owners.get(i);
+            User parkingOwner = owners.get(i);
             String title = parkingOwner.getHouseNumber() + " " + parkingOwner.getStreetName() + ", "
                     + parkingOwner.getPostCode();
             options.title(title);
-            Marker marker = mMap.addMarker(options);
-            markerList.add(marker);
+            Log.d("Title : ", title);
+            Log.d("Adding marker :", " oeo");
+            markerList.add(mMap.addMarker(options));
         }
 
     }
@@ -425,13 +427,14 @@ public class ParkMeAppActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.resumeRequests();
+        Log.d("On resume ", " called");
+        //mPresenter.resumeRequests();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mPresenter.pauseRequests();
+       // mPresenter.pauseRequests();
     }
 
     @Override
@@ -452,8 +455,9 @@ public class ParkMeAppActivity extends AppCompatActivity
         if(result){
             //Check if the user is looking for a random location
             if(address==null || address.isEmpty()){
-                if(doWeHaveAccessToUserLocation()){
-                    //He is not create root to the parking he is renting
+                //He is
+                if(checkPermission()){
+
                     routeToParkingThatUserIsRenting(latOfTheParkingThatHeIsRenting, lngOfTheParkingThatHeIsRenting);
                 } else {
                     //In the rare case that the user rents a parking space then decides to remove the application
@@ -479,7 +483,4 @@ public class ParkMeAppActivity extends AppCompatActivity
         mPresenter.findLocation(this,address);
     }
 
-    public boolean doWeHaveAccessToUserLocation(){
-        return accessToLocation;
-    }
 }

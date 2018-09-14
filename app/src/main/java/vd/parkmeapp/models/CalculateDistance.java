@@ -24,7 +24,7 @@ public class CalculateDistance {
 
     }
 
-    public String distanceFormated(double fromLat, double fromLng, double toLat, double toLng) {
+    public String distanceFormatted(double fromLat, double fromLng, double toLat, double toLng) {
         Float result = returnDistance(fromLat, fromLng, toLat, toLng)/1000;
         DecimalFormat kiloFormat = new DecimalFormat("####.#");
         kiloFormat.setRoundingMode(RoundingMode.CEILING);

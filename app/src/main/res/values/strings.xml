@@ -44,10 +44,10 @@
     <string name="NoChanges">You didn\'t make any changes</string>
     <string name="PaymentMethods">Payment Methods</string>
     <string name="AddParking">Add Parking</string>
-    <string name="StreetName">Street Name</string>
-    <string name="HouseNumber">House Number</string>
-    <string name="PostCode">Post Code</string>
-    <string name="PricePerHour">Price Per Hour</string>
+    <string name="StreetName">Street Name(Opt)</string>
+    <string name="HouseNumber">House Number(Opt)</string>
+    <string name="PostCode">Post Code(Opt)</string>
+    <string name="PricePerHour">Price Per Hour(Opt)</string>
     <string name="RentMyParking">Rent My Parking</string>
     <string name="AvailableParking">Available Parking</string>
     <string name="RentParking">Rent Parking</string>

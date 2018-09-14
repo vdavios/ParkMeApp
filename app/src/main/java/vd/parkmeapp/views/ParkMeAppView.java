@@ -14,6 +14,6 @@ public interface ParkMeAppView extends ActivitiesThatNeedInternetAccess{
     void setCamera(LatLng mLatLng);
     void updateUser(User tenant);
     void addPolyline(ArrayList<LatLng> points);
-    void moveCamera(LatLng latLng, float zoom, ArrayList<LatLng> locations, ArrayList<Tenant> owners);
+    void moveCamera(LatLng latLng, float zoom, ArrayList<LatLng> locations, ArrayList<User> owners);
 
 }

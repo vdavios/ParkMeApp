@@ -60,13 +60,13 @@ public class DbSingleton {
     }
 
 
-    public void fetchData(final PresentersForActivitiesThaRequireInternetAccess lDPresenter, final User currentUser,
-                          final LatLng usersLocation, final CalculateDistance calculateDistance){
+    public void fetchAvailableParkingNearUsersLocation(final PresentersForActivitiesThaRequireInternetAccess lDPresenter, final User currentUser,
+                                                       final LatLng usersLocation, final CalculateDistance calculateDistance, final FilterData filterData){
 
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
             int count=0;
-            ArrayList<Tenant> myArrL = new ArrayList<>();
+            ArrayList<User> myArrL = new ArrayList<>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  DataSnapshot usersSnapShot = dataSnapshot.child("Users");
@@ -79,7 +79,7 @@ public class DbSingleton {
                  for(DataSnapshot user: usersChildren){
                      Log.d("Inside DataSnapshot: ", "passed");
                      count++;
-                     Tenant tenant = user.getValue(Tenant.class);
+                     User tenant = user.getValue(Tenant.class);
                      if(tenant !=null){
                          String usrFn = tenant.getFirstName();
                          String usrLastName = tenant.getLastName();
@@ -88,13 +88,10 @@ public class DbSingleton {
                          Boolean flag = tenant.getHasParking().equals("yes");
                          Boolean flag1 = tenant.getRented().equals("no");
 
-                         Log.d("Returns : ",flag.toString()+"\n");
-                         Log.d("Returns : ",flag1.toString()+"\n");
+                         Log.d("HasParking returns : ",flag.toString()+"\n");
+                         Log.d("Rented returns : ",flag1.toString()+"\n");
 
-                         if(!currentUser.getFirstName().equals(usrFn)
-                                 && !currentUser.getLastName().equals(usrLastName)
-                                 && tenant.getHasParking().equals("yes")
-                                 && tenant.getRented().equals("no")){
+                         if(filterData.filter(currentUser, tenant)){
                              Log.d("FirstCondition: ", "Passed"+"\n");
                              //Checking parking distance from users current location
                              Float distance = calculateDistance.
@@ -127,7 +124,7 @@ public class DbSingleton {
     }
 
     // Loading data completed passing the results to the presenter so we can move to the next activity
-    private void loadingCompleted(ArrayList<Tenant> results,
+    private void loadingCompleted(ArrayList<User> results,
                                   PresentersForActivitiesThaRequireInternetAccess ldPresenter){
         String className = ldPresenter.getClass().getSimpleName();
         switch (className){
@@ -276,7 +273,7 @@ public class DbSingleton {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot data: dataSnapshot.getChildren()) {
-                        Tenant tenant = data.child(uID).getValue(Tenant.class);
+                        User tenant = data.child(uID).getValue(Tenant.class);
                         Log.d("Done: ", "Pulling for db");
                         presenter.loadingUsersDataCompleted(tenant);
 

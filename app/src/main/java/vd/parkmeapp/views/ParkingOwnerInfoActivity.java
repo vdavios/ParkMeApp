@@ -17,10 +17,11 @@ import java.util.ArrayList;
 
 import vd.parkmeapp.R;
 import vd.parkmeapp.models.Tenant;
+import vd.parkmeapp.models.User;
 import vd.parkmeapp.presenters.ParkingOwnerInfoPresenter;
 
 public class ParkingOwnerInfoActivity extends AppCompatActivity implements ParkingOwnerInfoView{
-    private Tenant mCurrentUser, parkingOwner;
+    private User mCurrentUser, parkingOwner;
     private TextView parkingOwnerName, parkingAddress, parkingPrice, distanceFromParking;
     private ArrayList<Tenant> owners;
     private ParkingOwnerInfoPresenter parkingOwnerInfoPresenter;
@@ -77,7 +78,7 @@ public class ParkingOwnerInfoActivity extends AppCompatActivity implements Parki
 
     }
 
-    public void updateUser(Tenant tenant){
+    public void updateUser(User tenant){
         mCurrentUser = tenant;
     }
 

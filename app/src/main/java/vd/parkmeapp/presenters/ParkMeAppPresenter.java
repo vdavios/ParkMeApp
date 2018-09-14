@@ -14,10 +14,10 @@ import vd.parkmeapp.models.DataParser;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.DirectionsUrl;
 import vd.parkmeapp.models.Downloader;
+import vd.parkmeapp.models.FilterDataImpl;
 import vd.parkmeapp.models.GetLocationWithHTTPRequest;
 import vd.parkmeapp.models.GetPointsToLocation;
 import vd.parkmeapp.models.HasInternetAccess;
-import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.models.LocationRequests;
 import vd.parkmeapp.views.ParkMeAppView;
@@ -60,11 +60,21 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
     }
 
     public void pauseRequests() {
-        locationRequests.cancelLocationRequest();
+        if(locationRequests.isApiClientConnected()){
+            Log.d("Pausing ", " Location updates");
+            locationRequests.cancelLocationRequest();
+        }
+
     }
 
     public void resumeRequests() {
-        locationRequests.customLocationRequest();
+        if(locationRequests.isApiClientConnected()){
+            Log.d("Resuming ", " Location updates");
+            locationRequests.customLocationRequest();
+        } else {
+            connectApiClient();
+        }
+
     }
 
     public void setUserLocation(LatLng usersLatLng) {
@@ -134,18 +144,20 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
 
     @Override
     public void connectionResults(Boolean result) {
+
         mView.hasConnection(result);
 
     }
 
     public void fetchData(LatLng location){
         locationWeAreLookingFor = location;
-        DbSingleton.getInstance().fetchData(this,mCurrentUser,location, new CalculateDistance());
+        DbSingleton.getInstance().fetchAvailableParkingNearUsersLocation(this,mCurrentUser,location, new CalculateDistance(), new FilterDataImpl());
     }
 
-    public void parkingSpaceNearTheSelectedLocationResults(ArrayList<Tenant> parkingOwner){
+    public void parkingSpaceNearTheSelectedLocationResults(ArrayList<User> parkingOwner){
         ArrayList<LatLng> parkingArrayList= new ArrayList<>();
-        for(Tenant pOwner: parkingOwner){
+        for(User pOwner: parkingOwner){
+            Log.d("Parking owner name: ", pOwner.getFirstName());
             parkingArrayList.add(new LatLng(pOwner.getLatOfHisParking(), pOwner.getLngOfHisParking()));
         }
 
@@ -154,7 +166,6 @@ public class ParkMeAppPresenter implements PresentersForActivitiesThaRequireInte
 
     public void apiConnected() {
         if(mCurrentUser.getIsHeRenting().equals("yes")){
-
             activeInternetConnection(connectivityManager);
         }
     }

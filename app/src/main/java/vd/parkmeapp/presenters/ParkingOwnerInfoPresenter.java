@@ -9,15 +9,15 @@ import com.google.android.gms.maps.model.LatLng;
 import vd.parkmeapp.models.CalculateDistance;
 import vd.parkmeapp.models.DbSingleton;
 import vd.parkmeapp.models.HasInternetAccess;
-import vd.parkmeapp.models.Tenant;
+import vd.parkmeapp.models.User;
 import vd.parkmeapp.views.ParkingOwnerInfoActivity;
 
 public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequireInternetAccess{
     private ParkingOwnerInfoActivity mView;
-    private Tenant currentUser;
+    private User currentUser;
 
 
-    public ParkingOwnerInfoPresenter(ParkingOwnerInfoActivity view, Tenant currentUser){
+    public ParkingOwnerInfoPresenter(ParkingOwnerInfoActivity view, User currentUser){
         mView = view;
         this.currentUser = currentUser;
     }
@@ -27,7 +27,7 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
         mView.showMessage(message);
     }
 
-    public void isNowRented(Tenant parkingOwner){
+    public void isNowRented(User parkingOwner){
         String parkingOwnerId = parkingOwner.getUid();
         double parkingOwnerLat = parkingOwner.getLatOfHisParking();
         double parkingOwnerLng = parkingOwner.getLngOfHisParking();
@@ -58,7 +58,7 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
         mView.hasConnection(result);
     }
 
-    public void parkingOwnersInfo(Tenant parkingOwner){
+    public void parkingOwnersInfo(User parkingOwner){
         String name = parkingOwner.getFirstName() + " " + parkingOwner.getLastName();
         String address = parkingOwner.getStreetName() + " "+ parkingOwner.getHouseNumber();
         String price = parkingOwner.getPph() + " €/h";
@@ -68,7 +68,7 @@ public class ParkingOwnerInfoPresenter implements PresentersForActivitiesThaRequ
 
     public String calculateDistanceToParking(LatLng usersLocation, double latToParking, double lngToParking){
         CalculateDistance calculateDistance = new CalculateDistance();
-        return calculateDistance.distanceFormated(usersLocation.latitude, usersLocation.longitude,
+        return calculateDistance.distanceFormatted(usersLocation.latitude, usersLocation.longitude,
                 latToParking,  lngToParking);
     }
 }

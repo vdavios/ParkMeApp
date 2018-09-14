@@ -33,7 +33,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:elevation="10dp"
@@ -43,15 +43,16 @@
 
 
         <EditText
+            android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:maxLines="1"
             android:textSize="15sp"
-            android:textColor="#000"
-            android:id="@+id/input_search"
+            android:textColor="@color/white"
             android:background="@null"
             android:hint="@string/enter_address_city_or_zip_code"
+            android:textColorHint="@color/white"
             android:imeOptions="actionSearch"
             android:inputType="text" />
 

@@ -3,7 +3,6 @@ package vd.parkmeapp.presenters;
 import android.util.Log;
 
 import vd.parkmeapp.models.DbSingleton;
-import vd.parkmeapp.models.Tenant;
 import vd.parkmeapp.models.User;
 import vd.parkmeapp.views.AddParkingActivity;
 

@@ -25,7 +25,7 @@ public class AvailableParkingListPresenter implements Presenter{
 
     public String calculateDistanceToParking(LatLng usersLocation, double latToParking, double lngToParking){
         CalculateDistance calculateDistance = new CalculateDistance();
-        return calculateDistance.distanceFormated(usersLocation.latitude, usersLocation.longitude,
+        return calculateDistance.distanceFormatted(usersLocation.latitude, usersLocation.longitude,
                 latToParking,  lngToParking);
     }
 
