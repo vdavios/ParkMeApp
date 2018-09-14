@@ -43,8 +43,10 @@
         <activity android:name=".views.AvailableParkingListActivity" />
         <activity android:name=".views.LoadingScreenActivity" />
         <activity android:name=".views.AddParkingActivity" />
-        <activity android:name=".views.EditUserInfoActivity" />
-        <activity android:name=".views.UserProfileActivity" />
+        <activity android:name=".views.EditUserInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".views.UserProfileActivity"
+            android:screenOrientation="portrait"/>
 
         <!--
             The API key for Google Maps-based APIs is defined as a string resource.
@@ -59,10 +61,12 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".views.WelcomeActivity" />
-        <activity android:name=".views.ParkingOwnerInfoActivity" />
+        <activity android:name=".views.ParkingOwnerInfoActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".views.HistoryActivity" />
         <activity android:name=".views.InternetFailureActivity" />
-        <activity android:name=".views.EditParkingInfoActivity" />
+        <activity android:name=".views.EditParkingInfoActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".views.LoadingParkingActivity"/>
     </application>
 
